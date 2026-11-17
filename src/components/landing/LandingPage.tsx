@@ -15,6 +15,7 @@ import {
   Award,
   ChevronDown,
   ChevronUp,
+  ChevronRight,
   Stethoscope,
   Smile,
   Home as HomeIcon,
@@ -774,7 +775,89 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. SECTION: [ABOUT US] — Founders' Story, Mission & Vision Statements       */}
+      {/* 7. FULL-WIDTH SECTION: OUR APPROACH (As in User's Reference Layout)       */}
+      {/* ========================================================================= */}
+      <section className="w-full bg-white border-y border-slate-200/80 overflow-hidden">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 items-center min-h-[520px]">
+          {/* Left Text Column */}
+          <div className="lg:col-span-6 xl:col-span-7 px-6 sm:px-12 lg:pl-16 xl:pl-28 py-16 lg:py-24 space-y-6">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-900 text-xs font-black uppercase tracking-wider">
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span>Our Approach</span>
+            </div>
+
+            <h2 className="text-2xl sm:text-4xl xl:text-5xl font-black text-slate-900 tracking-tight leading-[1.15]">
+              Our Family-First Approach &amp; Innovative Technology Empower Colorado Families &amp; Agencies of All Sizes
+            </h2>
+
+            <p className="text-sm sm:text-base font-bold text-slate-700">
+              Compassionate Care Backed by Colorado&apos;s Dedicated Support Team
+            </p>
+
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl">
+              LiliSare helps Colorado families operate with greater visibility, efficiency, and peace of mind, without ever losing focus on the people they love. From mobile visit verification and automated paperwork to dedicated RN nurse guidance, our platform and expert care team empower caregivers and provide better, dignified care for clients.
+            </p>
+
+            <div className="pt-2 flex flex-wrap items-center gap-4">
+              <button
+                onClick={onStartOnboarding}
+                className="px-6 py-3 rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white font-black text-xs sm:text-sm transition-all flex items-center gap-2 group"
+              >
+                <span>Learn More</span>
+                <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+              </button>
+
+              <button
+                onClick={onStartOnboarding}
+                className="px-6 py-3 rounded-full bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-slate-950 font-black text-xs sm:text-sm shadow-md hover:shadow-lg transition-all"
+              >
+                Apply Online Now
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4 border-t border-slate-100 text-xs">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-bold text-slate-800">100% Family Focus</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-bold text-slate-800">Colorado EVV Synced</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-bold text-slate-800">Dedicated RN Nurse</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Image Column (Full-bleed edge-to-edge with soft gradient fade) */}
+          <div className="lg:col-span-6 xl:col-span-5 relative h-80 sm:h-96 lg:h-full min-h-[420px] lg:min-h-[580px] w-full overflow-hidden">
+            <img
+              src="/images/mother-child-art.jpg"
+              alt="Loving mother embracing her son with special needs in art studio"
+              className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
+            />
+            {/* Soft gradient fade on the left edge to blend seamlessly into white */}
+            <div className="hidden lg:block absolute inset-y-0 left-0 w-36 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
+
+            <div className="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md p-3.5 rounded-2xl shadow-xl border border-white/80 max-w-xs space-y-1">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-full bg-primary-100 text-primary flex items-center justify-center">
+                  <Heart className="w-4 h-4 fill-primary" />
+                </div>
+                <div>
+                  <p className="text-xs font-black text-slate-900">Because We Care</p>
+                  <p className="text-[10px] text-slate-500">Supporting Colorado families together</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 8. SECTION: [ABOUT US] — Founders' Story, Mission & Vision Statements       */}
       {/* ========================================================================= */}
       <section id="about-us" className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
         <div className="max-w-6xl mx-auto space-y-12">
