@@ -66,7 +66,7 @@ export function Header() {
             }`}
           >
             <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
-            <span>Onboarding Wizard</span>
+            <span>Dual Onboarding Hub</span>
           </button>
 
           <button
@@ -90,7 +90,7 @@ export function Header() {
             }`}
           >
             <Compass className="w-3.5 h-3.5 text-teal-500" />
-            <span>Caregiver Flow (15 Steps)</span>
+            <span>Caregiver Flow (10 Steps)</span>
           </button>
 
           <button
@@ -102,7 +102,7 @@ export function Header() {
             }`}
           >
             <Heart className="w-3.5 h-3.5 text-rose-500" />
-            <span>Patient Flow (11 Steps)</span>
+            <span>Patient Flow (8 Steps)</span>
           </button>
 
           <button

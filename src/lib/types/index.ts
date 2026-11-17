@@ -30,6 +30,26 @@ export type CaregiverClassification =
   | 'Independent Contractor (1099)'
   | 'Dual (Employee + Contractor)';
 
+export type PatientOnboardingStatus =
+  | 'Not Started'
+  | 'In Progress'
+  | 'Documents Pending'
+  | 'Under Review'
+  | 'Approval Pending'
+  | 'Ready for Service'
+  | 'Active'
+  | 'On Hold';
+
+export type CaregiverOnboardingStatus =
+  | 'Not Started'
+  | 'Application Sent'
+  | 'Documents Pending'
+  | 'Under Review'
+  | 'Background Check Pending'
+  | 'Training Pending'
+  | 'Ready for Activation'
+  | 'Active';
+
 export type LeadStatus =
   | 'New Inquiry'
   | 'Contact Pending'

@@ -2,871 +2,845 @@
 
 import React, { useState } from 'react';
 import { usePortal } from '@/lib/store/portal-context';
-import { ServiceType, CaregiverClassification } from '@/lib/types';
+import { PatientOnboardingStatus, CaregiverOnboardingStatus, ServiceType, CaregiverClassification } from '@/lib/types';
+import { PatientOnboardingFlow } from '@/components/flows/PatientOnboardingFlow';
+import { CaregiverOnboardingFlow } from '@/components/flows/CaregiverOnboardingFlow';
 import {
   Users,
-  UserPlus,
   Heart,
-  FileText,
   ShieldCheck,
   CheckCircle2,
-  AlertTriangle,
+  Clock,
   ArrowRight,
-  ArrowLeft,
   Sparkles,
-  Building2,
-  Trash2,
+  AlertCircle,
   FileCheck,
-  CreditCard,
+  Award,
+  Layers,
+  ChevronRight,
   Check,
-  Info
+  Building,
+  UserCheck,
+  Phone,
+  Mail,
+  ShieldAlert,
+  Info,
+  Calendar,
+  ExternalLink,
+  RefreshCw,
+  Sliders,
+  Play
 } from 'lucide-react';
-
-interface WizardPatient {
-  id: string;
-  fullName: string;
-  dateOfBirth: string;
-  medicaidId: string;
-  serviceType: ServiceType;
-  caseManagerAgency: string;
-  hoursRequested: number;
-}
-
-interface WizardCaregiver {
-  id: string;
-  fullName: string;
-  phone: string;
-  email: string;
-  relationship: string;
-  classification: CaregiverClassification;
-  assignedPatientIds: string[];
-}
 
 export function OnboardingWizard({ onComplete }: { onComplete?: () => void }) {
   const { notify, setActiveView } = usePortal();
-  const [currentStep, setCurrentStep] = useState<number>(1);
 
-  // STEP 1 STATE: Patients & Caregivers (Enforcing Rules 1, 2, 3)
-  const [patients, setPatients] = useState<WizardPatient[]>([
-    {
-      id: 'PAT-101',
-      fullName: 'Mateo Morales',
-      dateOfBirth: '2016-04-12',
-      medicaidId: 'CO-984421008',
-      serviceType: 'IHSS',
-      caseManagerAgency: 'Rocky Mountain Human Services (RMHS)',
-      hoursRequested: 28.5,
-    },
-  ]);
+  // Internal tab: 'overview' (Shared Dashboard) | 'patient' (8 Steps) | 'caregiver' (10 Steps)
+  const [activeTab, setActiveTab] = useState<'overview' | 'patient' | 'caregiver'>('overview');
 
-  const [caregivers, setCaregivers] = useState<WizardCaregiver[]>([
-    {
-      id: 'CG-801',
-      fullName: 'Elena Morales',
-      phone: '(303) 555-0142',
-      email: 'elena.morales@coloradomail.net',
-      relationship: 'Mother',
-      classification: 'Employee (W-2)',
-      assignedPatientIds: ['PAT-101'],
-    },
-    {
-      id: 'CG-802',
-      fullName: 'Carlos Morales',
-      phone: '(303) 555-0199',
-      email: 'carlos.morales@coloradomail.net',
-      relationship: 'Uncle / Respite Attendant',
-      classification: 'Independent Contractor (1099)',
-      assignedPatientIds: ['PAT-101'],
-    },
-  ]);
+  // Live Case Study: Mother (Elena) and Child (Mateo)
+  const [childPatientStatus, setChildPatientStatus] = useState<PatientOnboardingStatus>('Approval Pending');
+  const [motherCaregiverStatus, setMotherCaregiverStatus] = useState<CaregiverOnboardingStatus>('Training Pending');
+  const [uncleCaregiverStatus, setUncleCaregiverStatus] = useState<CaregiverOnboardingStatus>('Application Sent');
 
-  // Form helpers for adding more patients/caregivers
-  const [newPatientName, setNewPatientName] = useState('');
-  const [newCaregiverName, setNewCaregiverName] = useState('');
-  const [newCaregiverRel, setNewCaregiverRel] = useState('Spouse');
+  // Matrix Checklist Simulator Flags
+  const [matrixState, setMatrixState] = useState({
+    patientProfile: true,
+    caregiverProfile: true,
+    patientDocuments: true,
+    caregiverDocuments: true,
+    serviceSelection: true,
+    stateAuthorization: false, // Pending State PAR
+    backgroundChecks: true,    // CBI Cleared
+    trainingOrientation: false, // LearnWorlds in progress
+  });
 
-  // STEP 4 SIMULATION: Document verification flags
-  const [patientDocSigned, setPatientDocSigned] = useState(true);
-  const [caregiverDocUploaded, setCaregiverDocUploaded] = useState(false);
-  const [cbiCleared, setCbiCleared] = useState(false);
+  const isPatientReady = matrixState.patientProfile && matrixState.patientDocuments && matrixState.serviceSelection && matrixState.stateAuthorization;
+  const isCaregiverReady = matrixState.caregiverProfile && matrixState.caregiverDocuments && matrixState.backgroundChecks && matrixState.trainingOrientation;
+  const canServiceStart = isPatientReady && isCaregiverReady;
 
-  // Rule 4: System Automatically selects required documents based on service & caregiver classification
-  const getCaregiverRequiredDocs = (cg: WizardCaregiver, service: ServiceType) => {
-    const docs = ['State I-9 Identity Verification (Photo ID + SSN)', 'Direct Deposit Authorization'];
-    if (cg.classification === 'Employee (W-2)') {
-      docs.push('Form W-4 Federal Tax Withholding');
-      docs.push('Family Attestation & Mutual Consent Agreement');
-      docs.push('Colorado Bureau of Investigation (CBI) Fingerprints');
-      docs.push('OIG List of Excluded Entities Check');
-    } else if (cg.classification === 'Independent Contractor (1099)') {
-      docs.push('Form W-9 Taxpayer ID Request');
-      docs.push('Independent Contractor Agreement');
-      docs.push('CBI State Background Verification');
-    } else {
-      // Dual
-      docs.push('Dual W-4 / W-9 Employment Packet');
-      docs.push('Family Attestation & Respite Agreement');
-      docs.push('CBI Fingerprints & OIG Screening');
-    }
-
-    if (service === 'CNA') {
-      docs.push('Colorado DORA Certified Nurse Aide (CNA) License');
-      docs.push('American Heart Association BLS / CPR Card');
-      docs.push('7-Year DMV Motor Vehicle Record (MVR)');
-    } else if (service === 'HMA') {
-      docs.push('RN Health Maintenance Skill Validation Protocol');
-      docs.push('Medication Administration Delegation Form');
-    }
-    return docs;
+  const handleSimulateFullReadiness = () => {
+    setMatrixState({
+      patientProfile: true,
+      caregiverProfile: true,
+      patientDocuments: true,
+      caregiverDocuments: true,
+      serviceSelection: true,
+      stateAuthorization: true,
+      backgroundChecks: true,
+      trainingOrientation: true,
+    });
+    setChildPatientStatus('Ready for Service');
+    setMotherCaregiverStatus('Active');
+    notify(
+      'Service Start Cleared!',
+      'Both Mateo (Patient) and Elena (Caregiver) satisfy all state & agency requirements. EVV shifts can now begin!',
+      'success'
+    );
   };
 
-  const getPatientRequiredDocs = (service: ServiceType) => {
-    return [
-      'Colorado State Prior Authorization Request (PAR)',
-      'Client Rights & Freedom of Choice Notice',
-      'Physician Order & Attestation Statement (Form 485)',
-      `State Task Allocation Matrix (${service})`,
-    ];
-  };
-
-  const handleAddPatient = () => {
-    if (!newPatientName) return;
-    const newId = `PAT-${100 + patients.length + 1}`;
-    setPatients([
-      ...patients,
-      {
-        id: newId,
-        fullName: newPatientName,
-        dateOfBirth: '2018-09-15',
-        medicaidId: `CO-${Math.floor(100000000 + Math.random() * 900000000)}`,
-        serviceType: 'IHSS',
-        caseManagerAgency: 'Rocky Mountain Human Services (RMHS)',
-        hoursRequested: 20.0,
-      },
-    ]);
-    setNewPatientName('');
-    notify('Patient Added', `Created separate patient record ${newId} (Rule 1 & Rule 3 satisfied).`, 'info');
-  };
-
-  const handleAddCaregiver = () => {
-    if (!newCaregiverName) return;
-    const newId = `CG-${800 + caregivers.length + 1}`;
-    setCaregivers([
-      ...caregivers,
-      {
-        id: newId,
-        fullName: newCaregiverName,
-        phone: '(303) 555-0177',
-        email: 'family.caregiver@coloradomail.net',
-        relationship: newCaregiverRel,
-        classification: 'Employee (W-2)',
-        assignedPatientIds: [patients[0].id],
-      },
-    ]);
-    setNewCaregiverName('');
-    notify('Caregiver Added', `Created separate caregiver record ${newId} (Rule 1 & Rule 2 satisfied).`, 'info');
+  const handleResetSimulation = () => {
+    setMatrixState({
+      patientProfile: true,
+      caregiverProfile: true,
+      patientDocuments: true,
+      caregiverDocuments: true,
+      serviceSelection: true,
+      stateAuthorization: false,
+      backgroundChecks: true,
+      trainingOrientation: false,
+    });
+    setChildPatientStatus('Approval Pending');
+    setMotherCaregiverStatus('Training Pending');
+    notify('Simulation Reset', 'Status restored to initial Mother & Child onboarding state.', 'info');
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 antialiased pb-12">
-      {/* Wizard Header Bar */}
-      <div className="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
-          <div
-            className="flex items-center gap-3 cursor-pointer"
-            onClick={() => setActiveView('landing')}
-          >
-            <img
-              src="/images/lilisare-logo.png"
-              alt="LiliSare"
-              className="h-9 w-auto object-contain"
-            />
-            <div className="hidden sm:block border-l border-slate-200 pl-3">
-              <p className="text-xs font-black text-slate-800">Onboarding Enrollment Wizard</p>
-              <p className="text-[10px] text-slate-500 font-medium">Task 2 • Dual Patient & Caregiver Setup</p>
-            </div>
+    <div className="space-y-6 max-w-7xl mx-auto pb-12 antialiased">
+      {/* ========================================================================= */}
+      {/* 1. TOP TAB NAVIGATION BAR (Home Page Styled)                              */}
+      {/* ========================================================================= */}
+      <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-xl bg-primary text-white flex items-center justify-center font-black text-xs shadow-xs">
+            LS
           </div>
-
-          <div className="flex items-center gap-3">
-            <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-primary-50 text-primary border border-primary-200">
-              <Sparkles className="w-3 h-3" />
-              Rules 1–5 Enforced
-            </span>
-            <button
-              onClick={() => setActiveView('landing')}
-              className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3.5 py-1.5 rounded-xl transition-all"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span>Back to Home</span>
-            </button>
+          <div>
+            <h2 className="text-xs font-black text-slate-900 flex items-center gap-1.5">
+              <span>LiliSphere Onboarding Engine</span>
+              <span className="text-[10px] font-bold px-2 py-0.2 rounded-full bg-emerald-100 text-emerald-900">
+                Dual-Track System
+              </span>
+            </h2>
+            <p className="text-[11px] text-slate-500">Connected journeys with separate progress and independent statuses</p>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6 pt-6">
-        {/* 5-Rule Mandatory System Banner */}
-        <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm">
-        <div className="flex items-center gap-2 mb-2">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
-            LiliSphere 5 Fundamental Architecture Rules Active
-          </h2>
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2 text-[11px] text-slate-600">
-          <div className="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
-            <strong>Rule 1:</strong> Separate profiles for Patient vs Caregiver
-          </div>
-          <div className="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
-            <strong>Rule 2:</strong> 1 Patient can have multiple Caregivers
-          </div>
-          <div className="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
-            <strong>Rule 3:</strong> 1 Caregiver can serve multiple Patients
-          </div>
-          <div className="p-2 rounded-xl bg-slate-50 border border-slate-200/70">
-            <strong>Rule 4:</strong> Auto-select docs by service & classification
-          </div>
-          <div className="p-2 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-900 font-bold">
-            <strong>Rule 5:</strong> Patient completion never completes Caregiver
-          </div>
-        </div>
-      </div>
-
-      {/* Stepper Navigation */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-sm">
-        <div className="flex items-center justify-between overflow-x-auto pb-2 sm:pb-0 gap-2 text-xs">
-          {[
-            { num: 1, label: '1. Care Circle Structure', sub: 'Rules 1, 2 & 3' },
-            { num: 2, label: '2. Patient Profiles', sub: 'Medicaid & Needs' },
-            { num: 3, label: '3. Caregiver Profiles', sub: 'W-2 / 1099 Classification' },
-            { num: 4, label: '4. Smart Documents', sub: 'Rule 4 Auto-Engine' },
-            { num: 5, label: '5. Independent Status', sub: 'Rule 5 Dual Progress' },
-          ].map((s) => (
-            <button
-              key={s.num}
-              onClick={() => setCurrentStep(s.num)}
-              className={`flex-1 min-w-[140px] text-left p-3 rounded-xl border transition-all ${
-                currentStep === s.num
-                  ? 'border-primary bg-primary-50/80 shadow-sm'
-                  : currentStep > s.num
-                  ? 'border-emerald-200 bg-emerald-50/50 text-slate-700'
-                  : 'border-slate-100 bg-slate-50 text-slate-400'
+        {/* Journey Tabs */}
+        <div className="flex items-center gap-1 bg-slate-100/80 p-1 rounded-xl">
+          <button
+            onClick={() => setActiveTab('overview')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === 'overview'
+              ? 'bg-white text-primary shadow-xs'
+              : 'text-slate-600 hover:text-slate-900'
               }`}
-            >
-              <div className="flex items-center justify-between">
-                <span className={`font-bold ${currentStep === s.num ? 'text-primary' : 'text-slate-700'}`}>
-                  {s.label}
-                </span>
-                {currentStep > s.num && <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />}
-              </div>
-              <p className="text-[10px] text-slate-500 mt-0.5">{s.sub}</p>
-            </button>
-          ))}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
+            <span>Shared Overview Dashboard</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('patient')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === 'patient'
+              ? 'bg-white text-primary shadow-xs'
+              : 'text-slate-600 hover:text-slate-900'
+              }`}
+          >
+            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <span>Patient Flow (8 Steps)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('caregiver')}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === 'caregiver'
+              ? 'bg-white text-primary shadow-xs'
+              : 'text-slate-600 hover:text-slate-900'
+              }`}
+          >
+            <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
+            <span>Caregiver Flow (10 Steps)</span>
+          </button>
         </div>
       </div>
 
-      {/* STEP 1: CARE CIRCLE & RELATIONSHIPS (RULES 1, 2, 3) */}
-      {currentStep === 1 && (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-6">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Step 1 of 5</span>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-1">
-              Household Care Circle & Entity Configuration
-            </h2>
-            <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-              Define the patients receiving care and the caregivers providing care. The system establishes distinct records while mapping relationships.
-            </p>
-          </div>
+      {/* Render Selected View */}
+      {activeTab === 'patient' && <PatientOnboardingFlow />}
+      {activeTab === 'caregiver' && <CaregiverOnboardingFlow />}
 
-          {/* Demonstration Diagram for Rules 1, 2 & 3 */}
-          <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
-            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-              Live Relational Architecture Map
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
-              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-900">Patients ({patients.length})</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-teal-100 text-teal-800 font-bold">Rule 1 & 2</span>
+      {activeTab === 'overview' && (
+        <div className="space-y-6">
+          {/* ========================================================================= */}
+          {/* 2. HERO BANNER: Brand Authority & Dual Concept                             */}
+          {/* ========================================================================= */}
+          <div className="bg-gradient-to-r from-[#1b3614] via-[#2a3d20] to-[#3e6b2b] text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+            <div className="absolute -right-8 -bottom-8 w-64 h-64 bg-secondary/15 rounded-full blur-3xl pointer-events-none" />
+            <div className="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+              <div className="max-w-3xl">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur border border-white/20 text-xs font-bold text-secondary mb-3">
+                  <ShieldCheck className="w-3.5 h-3.5 text-[#00d084]" />
+                  Connected Journeys • Independent Compliance Tracking
                 </div>
-                {patients.map((p) => (
-                  <div key={p.id} className="p-2 rounded-lg bg-teal-50/60 border border-teal-200/60 flex items-center justify-between">
+                <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
+                  Patient &amp; Caregiver Onboarding Command Center
+                </h1>
+                <p className="text-emerald-100 text-xs sm:text-sm mt-2 leading-relaxed max-w-2xl">
+                  Both onboarding workflows start together when a family chooses LiliSare, but they progress independently. The system maintains separate profiles, distinct compliance tracks, and independent readiness criteria.
+                </p>
+
+                {/* Important Difference Clarification Box */}
+                <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="p-3 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 flex items-start gap-2.5">
+                    <Heart className="w-4 h-4 text-rose-400 fill-rose-400 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-bold text-teal-950">{p.fullName}</p>
-                      <p className="text-[10px] text-teal-700 font-mono">ID: {p.id} • Medicaid: {p.medicaidId}</p>
+                      <strong className="text-emerald-200">Patient Onboarding:</strong>
+                      <p className="text-slate-300 text-[11px] mt-0.5">
+                        Registering the person who <strong>needs care</strong>. Understand care needs, collect guardian consent, and obtain state Medicaid approvals.
+                      </p>
                     </div>
-                    <span className="text-[10px] font-semibold text-slate-600">
-                      {caregivers.filter((cg) => cg.assignedPatientIds.includes(p.id)).length} Caregiver(s)
-                    </span>
                   </div>
-                ))}
-              </div>
 
-              <div className="p-3.5 rounded-xl bg-white border border-slate-200 space-y-2">
-                <div className="flex items-center justify-between">
-                  <span className="font-bold text-slate-900">Caregivers ({caregivers.length})</span>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-primary-100 text-primary-800 font-bold">Rule 1 & 3</span>
-                </div>
-                {caregivers.map((cg) => (
-                  <div key={cg.id} className="p-2 rounded-lg bg-primary-50/60 border border-primary-200/60 flex items-center justify-between">
+                  <div className="p-3 rounded-2xl bg-emerald-950/60 border border-emerald-500/30 flex items-start gap-2.5">
+                    <UserCheck className="w-4 h-4 text-[#00d084] shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-bold text-primary-950">{cg.fullName} ({cg.relationship})</p>
-                      <p className="text-[10px] text-primary-700">ID: {cg.id} • {cg.classification}</p>
+                      <strong className="text-emerald-200">Caregiver Onboarding:</strong>
+                      <p className="text-slate-300 text-[11px] mt-0.5">
+                        Registering and preparing the person who will <strong>provide care</strong>. Collect docs, run CBI background checks, train, and setup payroll.
+                      </p>
                     </div>
-                    <span className="text-[10px] font-semibold text-slate-600">
-                      Cares for {cg.assignedPatientIds.length} Patient(s)
-                    </span>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Quick Controls to add another patient or caregiver to test multi-relationships */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-2">
-              <label className="text-xs font-bold text-slate-700 flex items-center gap-1">
-                <UserPlus className="w-3.5 h-3.5 text-teal-600" />
-                Add Another Patient (e.g. Sibling or Parent)
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="e.g. Sophia Morales"
-                  value={newPatientName}
-                  onChange={(e) => setNewPatientName(e.target.value)}
-                  className="flex-1 text-xs px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                />
-                <button
-                  onClick={handleAddPatient}
-                  className="px-3 py-2 bg-teal-700 hover:bg-teal-800 text-white rounded-xl text-xs font-bold shrink-0"
-                >
-                  Add Patient
-                </button>
-              </div>
-            </div>
-
-            <div className="p-4 rounded-2xl border border-slate-200 bg-white space-y-2">
-              <label className="text-xs font-bold text-slate-700 flex items-center gap-1">
-                <UserPlus className="w-3.5 h-3.5 text-primary" />
-                Add Another Caregiver (e.g. Respite or Backup)
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="e.g. Maria Morales"
-                  value={newCaregiverName}
-                  onChange={(e) => setNewCaregiverName(e.target.value)}
-                  className="flex-1 text-xs px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                />
-                <button
-                  onClick={handleAddCaregiver}
-                  className="px-3 py-2 bg-primary hover:bg-primary-600 text-white rounded-xl text-xs font-bold shrink-0"
-                >
-                  Add Caregiver
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-end">
-            <button
-              onClick={() => setCurrentStep(2)}
-              className="bg-primary hover:bg-primary-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md flex items-center gap-2"
-            >
-              <span>Continue to Patient Profiles</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 2: PATIENT PROFILES & CARE SERVICE */}
-      {currentStep === 2 && (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-6">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Step 2 of 5</span>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-1">
-              Patient Profiles & Service Program Selection
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Configure authorized Medicaid program and clinical supervision requirements for each patient.
-            </p>
-          </div>
-
-          {patients.map((patient, pIdx) => (
-            <div key={patient.id} className="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-teal-100 text-teal-800 text-xs font-bold flex items-center justify-center">
-                    {pIdx + 1}
-                  </span>
-                  <h3 className="text-sm font-bold text-slate-900">{patient.fullName}</h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white border text-slate-700">
-                    {patient.id}
-                  </span>
                 </div>
-                <span className="text-xs font-bold text-teal-800 bg-teal-50 px-2.5 py-1 rounded-full border border-teal-200">
-                  Patient Record
+              </div>
+
+              {/* Quick Telemetry Summary */}
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-5 border border-white/20 shrink-0 min-w-[240px] text-center space-y-3">
+                <span className="text-[11px] uppercase tracking-wider text-slate-300 font-bold">
+                  Service Readiness Gate
                 </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div>
-                  <label className="font-semibold text-slate-700">Medicaid Number (State ID)</label>
-                  <input
-                    type="text"
-                    value={patient.medicaidId}
-                    onChange={(e) => {
-                      const updated = [...patients];
-                      updated[pIdx].medicaidId = e.target.value;
-                      setPatients(updated);
-                    }}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-300 font-mono focus:ring-2 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-semibold text-slate-700">Care Program (Service)</label>
-                  <select
-                    value={patient.serviceType}
-                    onChange={(e) => {
-                      const updated = [...patients];
-                      updated[pIdx].serviceType = e.target.value as ServiceType;
-                      setPatients(updated);
-                    }}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-300 font-bold text-slate-800 focus:ring-2 focus:ring-primary focus:outline-none"
+                  <span
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-black shadow-xs ${canServiceStart
+                      ? 'bg-[#00d084] text-white'
+                      : 'bg-amber-400 text-amber-950'
+                      }`}
                   >
-                    <option value="IHSS">IHSS (In-Home Support Services)</option>
-                    <option value="CNA">CNA (Certified Nurse Aide)</option>
-                    <option value="HMA">HMA (Health Maintenance Activities)</option>
-                    <option value="Personal Care">Personal Care & Homemaker</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="font-semibold text-slate-700">Requested Weekly Hours</label>
-                  <input
-                    type="number"
-                    value={patient.hoursRequested}
-                    onChange={(e) => {
-                      const updated = [...patients];
-                      updated[pIdx].hoursRequested = parseFloat(e.target.value) || 0;
-                      setPatients(updated);
-                    }}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-300 font-bold focus:ring-2 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                <div>
-                  <label className="font-semibold text-slate-700">Case Management Agency</label>
-                  <input
-                    type="text"
-                    value={patient.caseManagerAgency}
-                    onChange={(e) => {
-                      const updated = [...patients];
-                      updated[pIdx].caseManagerAgency = e.target.value;
-                      setPatients(updated);
-                    }}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-                <div>
-                  <label className="font-semibold text-slate-700">Supervisory Rule Applied</label>
-                  <div className="mt-1 p-2 rounded-xl bg-white border border-slate-200 text-slate-600 font-medium text-[11px]">
-                    {patient.serviceType === 'CNA'
-                      ? 'Requires Initial RN visit + 60-day onsite nurse evaluation'
-                      : patient.serviceType === 'HMA'
-                      ? 'Requires Initial RN visit + quarterly virtual nurse check'
-                      : 'Quarterly oversight review (telehealth eligible)'}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-            <button
-              onClick={() => setCurrentStep(1)}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold hover:bg-slate-50"
-            >
-              Back
-            </button>
-            <button
-              onClick={() => setCurrentStep(3)}
-              className="bg-primary hover:bg-primary-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md flex items-center gap-2"
-            >
-              <span>Continue to Caregiver Profiles</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 3: CAREGIVER PROFILES & CLASSIFICATION */}
-      {currentStep === 3 && (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-6">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Step 3 of 5</span>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight mt-1">
-              Caregiver Profiles & Tax Classification
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Select employment classification (W-2 vs 1099 vs Dual) to configure ADP payroll and required credentials.
-            </p>
-          </div>
-
-          {caregivers.map((cg, cIdx) => (
-            <div key={cg.id} className="p-5 rounded-2xl border border-slate-200 bg-slate-50/50 space-y-4">
-              <div className="flex items-center justify-between pb-2 border-b border-slate-200">
-                <div className="flex items-center gap-2">
-                  <span className="w-6 h-6 rounded-full bg-primary-100 text-primary text-xs font-bold flex items-center justify-center">
-                    {cIdx + 1}
-                  </span>
-                  <h3 className="text-sm font-bold text-slate-900">{cg.fullName}</h3>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white border text-slate-700">
-                    {cg.id}
+                    {canServiceStart ? (
+                      <>
+                        <CheckCircle2 className="w-4 h-4 text-white" />
+                        Service Cleared to Begin
+                      </>
+                    ) : (
+                      <>
+                        <Clock className="w-4 h-4" />
+                        Service on Hold (Pending Approvals)
+                      </>
+                    )}
                   </span>
                 </div>
-                <span className="text-xs font-bold text-primary-900 bg-primary-100 px-2.5 py-1 rounded-full">
-                  Caregiver Record
-                </span>
-              </div>
+                <p className="text-[10px] text-slate-300 leading-snug">
+                  Service can begin when <strong>all applicable requirements</strong> for both Patient and Caregiver are satisfied.
+                </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
-                <div>
-                  <label className="font-semibold text-slate-700">Family Relationship</label>
-                  <input
-                    type="text"
-                    value={cg.relationship}
-                    onChange={(e) => {
-                      const updated = [...caregivers];
-                      updated[cIdx].relationship = e.target.value;
-                      setCaregivers(updated);
-                    }}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="font-semibold text-slate-700">Employment Classification</label>
-                  <select
-                    value={cg.classification}
-                    onChange={(e) => {
-                      const updated = [...caregivers];
-                      updated[cIdx].classification = e.target.value as CaregiverClassification;
-                      setCaregivers(updated);
-                    }}
-                    className="w-full mt-1 px-3 py-2 rounded-xl border border-slate-300 font-bold text-slate-800 focus:ring-2 focus:ring-primary focus:outline-none"
+                <div className="pt-2 border-t border-white/15 flex justify-center gap-2">
+                  <button
+                    onClick={handleSimulateFullReadiness}
+                    className="px-2.5 py-1 bg-white/20 hover:bg-white/30 text-white text-[10px] font-bold rounded-lg transition-all cursor-pointer"
                   >
-                    <option value="Employee (W-2)">Employee (W-2) — Form W-4</option>
-                    <option value="Independent Contractor (1099)">1099 Contractor — Form W-9</option>
-                    <option value="Dual (Employee + Contractor)">Dual (W-2 Employee + 1099 Contractor)</option>
-                  </select>
+                    Simulate Full Clearance
+                  </button>
+                  <button
+                    onClick={handleResetSimulation}
+                    className="px-2.5 py-1 bg-black/20 hover:bg-black/30 text-slate-300 text-[10px] font-semibold rounded-lg transition-all cursor-pointer"
+                  >
+                    Reset
+                  </button>
                 </div>
+              </div>
+            </div>
+          </div>
 
-                <div>
-                  <label className="font-semibold text-slate-700">Assigned ADP Engine</label>
-                  <div className="mt-1 p-2 rounded-xl bg-white border border-slate-200 text-slate-700 font-bold text-[11px] flex items-center gap-1.5">
-                    <CreditCard className="w-3.5 h-3.5 text-primary" />
-                    <span>
-                      {cg.classification === 'Independent Contractor (1099)'
-                        ? 'ADP Workforce Now (1099)'
-                        : 'ADP Run (W-2 Direct Deposit)'}
+          {/* ========================================================================= */}
+          {/* 3. HOW BOTH ONBOARDING PROCESSES WORK TOGETHER (Visual Architecture)       */}
+          {/* ========================================================================= */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div>
+                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-primary" />
+                  How Both Onboarding Processes Work Together
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Two separate workflows that launch simultaneously upon family intake but advance independently
+                </p>
+              </div>
+              <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">
+                Dual-Pipeline Architecture
+              </span>
+            </div>
+
+            {/* Visual Flow Graphic */}
+            <div className="bg-[#fbfdfa] rounded-2xl p-5 border border-slate-200/80 space-y-4">
+              {/* Intake Trigger */}
+              <div className="flex items-center justify-center">
+                <div className="px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs flex items-center gap-2 shadow-xs">
+                  <span>Family Chooses LiliSare</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-secondary" />
+                  <span className="text-secondary font-black">Staff Starts Onboarding</span>
+                </div>
+              </div>
+
+              {/* Parallel Split Streams */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                {/* Track A: Patient */}
+                <div className="bg-white rounded-2xl p-4 border border-rose-200/80 shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-rose-700 flex items-center gap-1.5">
+                      <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+                      Patient Onboarding Stream (8 Steps)
                     </span>
+                    <button
+                      onClick={() => setActiveTab('patient')}
+                      className="text-[10px] font-bold text-primary hover:underline flex items-center gap-1"
+                    >
+                      Open Flow <ChevronRight className="w-3 h-3" />
+                    </button>
                   </div>
+
+                  <div className="flex items-center justify-between text-[11px] font-semibold text-slate-700 gap-1 overflow-x-auto py-2">
+                    <span className="px-2 py-1 rounded bg-rose-50 border border-rose-100 text-rose-900 shrink-0">Profile</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-rose-50 border border-rose-100 text-rose-900 shrink-0">Service</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-rose-50 border border-rose-100 text-rose-900 shrink-0">Documents</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-amber-50 border border-amber-200 text-amber-900 shrink-0 font-bold">Authorization (PAR)</span>
+                  </div>
+
+                  <p className="text-[11px] text-slate-500 leading-snug">
+                    Focus: Medicaid ID, responsible party consent, CMA coordination, and state service plan approval.
+                  </p>
                 </div>
-              </div>
 
-              {/* Patient Mapping (Rule 2 & 3: Multi-mapping) */}
-              <div className="pt-2 text-xs">
-                <label className="font-semibold text-slate-700 block mb-1">
-                  Authorized to Provide Care for Patient(s):
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {patients.map((p) => {
-                    const isAssigned = cg.assignedPatientIds.includes(p.id);
-                    return (
-                      <button
-                        key={p.id}
-                        type="button"
-                        onClick={() => {
-                          const updated = [...caregivers];
-                          if (isAssigned) {
-                            if (cg.assignedPatientIds.length > 1) {
-                              updated[cIdx].assignedPatientIds = cg.assignedPatientIds.filter((id) => id !== p.id);
-                            }
-                          } else {
-                            updated[cIdx].assignedPatientIds.push(p.id);
-                          }
-                          setCaregivers(updated);
-                        }}
-                        className={`px-3 py-1.5 rounded-xl font-bold text-xs flex items-center gap-1.5 transition-all ${
-                          isAssigned
-                            ? 'bg-teal-700 text-white shadow-sm'
-                            : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-100'
-                        }`}
-                      >
-                        <Check className="w-3.5 h-3.5" />
-                        <span>{p.fullName} ({p.serviceType})</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-          ))}
-
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-            <button
-              onClick={() => setCurrentStep(2)}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold hover:bg-slate-50"
-            >
-              Back
-            </button>
-            <button
-              onClick={() => setCurrentStep(4)}
-              className="bg-primary hover:bg-primary-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md flex items-center gap-2"
-            >
-              <span>Continue to Smart Document Engine</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 4: SMART DOCUMENT ENGINE (RULE 4) */}
-      {currentStep === 4 && (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold mb-2">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-700" />
-              Rule 4 Active: Automated Document Packet Compiler
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Smart Document Packets Generated
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Staff do not manually select documents. The engine dynamically assigns the exact packet based on the patient service type and caregiver classification.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left: Patient Documents */}
-            <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                    <FileText className="w-4 h-4 text-teal-700" />
-                    Patient Document Packet
-                  </h3>
-                  <p className="text-[11px] text-slate-500">Service: {patients[0].serviceType}</p>
-                </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-teal-100 text-teal-800">
-                  {getPatientRequiredDocs(patients[0].serviceType).length} Required Items
-                </span>
-              </div>
-
-              <div className="space-y-2">
-                {getPatientRequiredDocs(patients[0].serviceType).map((doc, idx) => (
-                  <div key={idx} className="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between text-xs">
-                    <span className="font-semibold text-slate-800">{doc}</span>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Signed
+                {/* Track B: Caregiver */}
+                <div className="bg-white rounded-2xl p-4 border border-emerald-200/80 shadow-xs space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-black text-emerald-800 flex items-center gap-1.5">
+                      <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
+                      Caregiver Onboarding Stream (10 Steps)
                     </span>
+                    <button
+                      onClick={() => setActiveTab('caregiver')}
+                      className="text-[10px] font-bold text-primary hover:underline flex items-center gap-1"
+                    >
+                      Open Flow <ChevronRight className="w-3 h-3" />
+                    </button>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Right: Caregiver Documents */}
-            <div className="p-5 rounded-2xl border border-slate-200 bg-slate-50/60 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                    <FileCheck className="w-4 h-4 text-primary" />
-                    Caregiver Document Packet ({caregivers[0].fullName})
-                  </h3>
-                  <p className="text-[11px] text-slate-500">Classification: {caregivers[0].classification}</p>
+                  <div className="flex items-center justify-between text-[11px] font-semibold text-slate-700 gap-1 overflow-x-auto py-2">
+                    <span className="px-2 py-1 rounded bg-emerald-50 border border-emerald-100 text-emerald-900 shrink-0">Profile</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-emerald-50 border border-emerald-100 text-emerald-900 shrink-0">Docs (~20)</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-emerald-50 border border-emerald-100 text-emerald-900 shrink-0">CBI Checks</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-amber-50 border border-amber-200 text-amber-900 shrink-0 font-bold">Training</span>
+                    <span className="text-slate-300">→</span>
+                    <span className="px-2 py-1 rounded bg-emerald-50 border border-emerald-100 text-emerald-900 shrink-0">Activation</span>
+                  </div>
+
+                  <p className="text-[11px] text-slate-500 leading-snug">
+                    Focus: Tax classification (W-2 vs 1099), background checks, LearnWorlds LMS, and ADP setup.
+                  </p>
                 </div>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-primary-100 text-primary-800">
-                  {getCaregiverRequiredDocs(caregivers[0], patients[0].serviceType).length} Required Items
-                </span>
               </div>
 
-              <div className="space-y-2">
-                {getCaregiverRequiredDocs(caregivers[0], patients[0].serviceType).map((doc, idx) => {
-                  const isCbi = doc.includes('CBI');
-                  return (
-                    <div key={idx} className="p-3 rounded-xl bg-white border border-slate-200 flex items-center justify-between text-xs">
-                      <span className="font-semibold text-slate-800">{doc}</span>
-                      {isCbi ? (
-                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded ${cbiCleared ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}`}>
-                          {cbiCleared ? 'Cleared' : 'Pending CBI Result'}
-                        </span>
-                      ) : (
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 flex items-center gap-1">
-                          <CheckCircle2 className="w-3 h-3 text-emerald-600" /> Uploaded
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
+              {/* Review & Service Clearance */}
+              <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-center text-xs space-y-1">
+                <span className="font-black text-primary-900">Both Workflows Reviewed &amp; Checked Independently</span>
+                <p className="text-[11px] text-slate-600">
+                  Service can begin when all applicable requirements are satisfied for <strong>both</strong> sides.
+                </p>
               </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-            <button
-              onClick={() => setCurrentStep(3)}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold hover:bg-slate-50"
-            >
-              Back
-            </button>
-            <button
-              onClick={() => setCurrentStep(5)}
-              className="bg-primary hover:bg-primary-600 text-white font-bold text-xs px-6 py-3 rounded-xl shadow-md flex items-center gap-2"
-            >
-              <span>View Independent Statuses (Rule 5)</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* STEP 5: REVIEW & INDEPENDENT DUAL PROGRESS (RULE 5) */}
-      {currentStep === 5 && (
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-sm space-y-6">
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-900 text-xs font-bold mb-2">
-              <ShieldCheck className="w-3.5 h-3.5 text-rose-600" />
-              Rule 5 Enforced: Independent Dual Completion Engine
-            </div>
-            <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Onboarding Readiness & Approval Status
-            </h2>
-            <p className="text-xs text-slate-500 mt-1">
-              Notice below: <strong>Patient onboarding completion NEVER automatically completes caregiver onboarding</strong>. Both retain separate legal timelines and verification thresholds.
-            </p>
-          </div>
-
-          {/* Dual Independent Status Cards */}
+          {/* ========================================================================= */}
+          {/* 4. REAL-LIFE MOTHER & CHILD CASE STUDY CARDS (Mateo & Elena)              */}
+          {/* ========================================================================= */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Patient Status Card (100% Completed) */}
-            <div className="p-6 rounded-2xl border-2 border-emerald-300 bg-emerald-50/40 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-bold text-slate-900">{patients[0].fullName}</h3>
-                  <p className="text-xs text-slate-500">Patient Record: {patients[0].id}</p>
+            {/* Child / Patient Card */}
+            <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-xs border border-rose-200">
+                    <Heart className="w-4 h-4 fill-rose-500" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black text-slate-900">Mateo Morales (Child / Patient)</h4>
+                    <p className="text-[10px] text-slate-400 font-mono">Patient ID: PAT-101 • Age 8 • Denver County</p>
+                  </div>
                 </div>
-                <span className="text-xs font-black px-3 py-1 rounded-full bg-emerald-600 text-white">
-                  100% COMPLETE
+                <span className="text-[10px] font-bold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200">
+                  Needs Care
                 </span>
               </div>
 
-              <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-600 w-full" />
+              {/* Status Picker with the 8 recommended Patient Statuses */}
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-slate-700">Patient Dashboard Status:</span>
+                  <select
+                    value={childPatientStatus}
+                    onChange={(e) => {
+                      setChildPatientStatus(e.target.value as PatientOnboardingStatus);
+                      notify('Patient Status Changed', `Mateo set to: ${e.target.value}`, 'info');
+                    }}
+                    className="text-xs font-black px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-primary focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                  >
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Documents Pending">Documents Pending</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Approval Pending">Approval Pending</option>
+                    <option value="Ready for Service">Ready for Service</option>
+                    <option value="Active">Active</option>
+                    <option value="On Hold">On Hold</option>
+                  </select>
+                </div>
+                <p className="text-[10px] text-slate-500">
+                  Current Stage: Step 7/8 — State Prior Authorization review underway with RMHS case manager.
+                </p>
               </div>
 
-              <div className="space-y-1.5 text-xs text-slate-700 pt-2 border-t border-emerald-200/60">
-                <div className="flex items-center justify-between">
-                  <span>State PAR Request:</span>
-                  <strong className="text-emerald-700">Submitted & Validated</strong>
+              {/* Patient Key Metrics */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2.5 rounded-xl border border-slate-100 bg-slate-50/60">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Requested Service</span>
+                  <p className="font-bold text-slate-900 mt-0.5">IHSS (HCBS-CES)</p>
+                  <span className="text-[10px] text-slate-500">28.5 hours/week</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>Physician Form 485:</span>
-                  <strong className="text-emerald-700">Signed by MD</strong>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>Case Manager Sync:</span>
-                  <strong className="text-emerald-700">Rocky Mountain Human Services</strong>
+                <div className="p-2.5 rounded-xl border border-slate-100 bg-slate-50/60">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Responsible Party</span>
+                  <p className="font-bold text-slate-900 mt-0.5">Elena Morales</p>
+                  <span className="text-[10px] text-slate-500">Mother (Legal Guardian)</span>
                 </div>
               </div>
 
-              <div className="p-3 bg-white rounded-xl border border-emerald-200 text-[11px] text-emerald-900 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Patient care plan is certified and ready for service scheduling.</span>
+              <div className="pt-2 flex items-center justify-between">
+                <span className="text-[11px] text-amber-700 font-medium flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5" /> Blocker: State PAR Letter Pending
+                </span>
+                <button
+                  onClick={() => setActiveTab('patient')}
+                  className="px-3 py-1.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-800 transition-all cursor-pointer flex items-center gap-1 shadow-xs"
+                >
+                  <span>Open Patient Journey</span>
+                  <ChevronRight className="w-3 h-3" />
+                </button>
               </div>
             </div>
 
-            {/* Caregiver Status Card (Independent, Pending Background Check) */}
-            <div className="p-6 rounded-2xl border-2 border-amber-300 bg-amber-50/40 space-y-4">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-base font-bold text-slate-900">{caregivers[0].fullName}</h3>
-                  <p className="text-xs text-slate-500">Caregiver Record: {caregivers[0].id}</p>
+            {/* Mother / Caregiver Card */}
+            <div className="bg-white rounded-3xl border border-slate-200/90 p-5 shadow-sm space-y-4">
+              <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-9 h-9 rounded-2xl bg-emerald-50 text-primary flex items-center justify-center font-bold text-xs border border-emerald-200">
+                    <UserCheck className="w-4 h-4 text-[#00d084]" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-black text-slate-900">Elena Morales (Mother / Caregiver)</h4>
+                    <p className="text-[10px] text-slate-400 font-mono">Caregiver ID: CG-801 • Linked to Mateo</p>
+                  </div>
                 </div>
-                <span className={`text-xs font-black px-3 py-1 rounded-full ${cbiCleared ? 'bg-emerald-600 text-white' : 'bg-amber-600 text-white'}`}>
-                  {cbiCleared ? '100% ACTIVATED' : '65% IN PROGRESS'}
+                <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  Provides Care
                 </span>
               </div>
 
-              <div className="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                <div
-                  className={`h-full transition-all duration-500 ${cbiCleared ? 'bg-emerald-600 w-full' : 'bg-[#F2B632] w-[65%]'}`}
-                />
+              {/* Status Picker with the 8 recommended Caregiver Statuses */}
+              <div className="bg-slate-50 p-3 rounded-2xl border border-slate-200/80 space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-slate-700">Caregiver Dashboard Status:</span>
+                  <select
+                    value={motherCaregiverStatus}
+                    onChange={(e) => {
+                      setMotherCaregiverStatus(e.target.value as CaregiverOnboardingStatus);
+                      notify('Caregiver Status Changed', `Elena set to: ${e.target.value}`, 'info');
+                    }}
+                    className="text-xs font-black px-2.5 py-1 rounded-lg border border-slate-300 bg-white text-primary focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer"
+                  >
+                    <option value="Not Started">Not Started</option>
+                    <option value="Application Sent">Application Sent</option>
+                    <option value="Documents Pending">Documents Pending</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Background Check Pending">Background Check Pending</option>
+                    <option value="Training Pending">Training Pending</option>
+                    <option value="Ready for Activation">Ready for Activation</option>
+                    <option value="Active">Active</option>
+                  </select>
+                </div>
+                <p className="text-[10px] text-slate-500">
+                  Current Stage: Step 7/10 — Background checks passed; LearnWorlds courses &amp; RN signoff in progress.
+                </p>
               </div>
 
-              <div className="space-y-1.5 text-xs text-slate-700 pt-2 border-t border-amber-200/60">
-                <div className="flex items-center justify-between">
-                  <span>Tax Form W-4 / I-9:</span>
-                  <strong className="text-emerald-700">Verified</strong>
+              {/* Caregiver Key Metrics */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2.5 rounded-xl border border-slate-100 bg-slate-50/60">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Classification</span>
+                  <p className="font-bold text-slate-900 mt-0.5">Employee (W-2)</p>
+                  <span className="text-[10px] text-slate-500">20 Documents Packet</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span>CBI Fingerprint Background:</span>
-                  <strong className={cbiCleared ? 'text-emerald-700' : 'text-amber-800'}>
-                    {cbiCleared ? 'Passed (No Disqualifiers)' : 'Pending State Result'}
-                  </strong>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span>ADP Direct Deposit:</span>
-                  <strong className="text-slate-700">Routing Confirmed</strong>
+                <div className="p-2.5 rounded-xl border border-slate-100 bg-slate-50/60">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">Background Checks</span>
+                  <p className="font-bold text-emerald-700 mt-0.5">CBI &amp; OIG Cleared</p>
+                  <span className="text-[10px] text-slate-500">Clean Fingerprint Log</span>
                 </div>
               </div>
 
-              {/* Action Button to demonstrate Rule 5 independence */}
-              {!cbiCleared ? (
+              <div className="pt-2 flex items-center justify-between">
+                <span className="text-[11px] text-amber-700 font-medium flex items-center gap-1">
+                  <Clock className="w-3.5 h-3.5" /> Blocker: LearnWorlds LMS Quizzes
+                </span>
                 <button
-                  type="button"
-                  onClick={() => {
-                    setCbiCleared(true);
-                    notify('CBI Screening Returned', 'State background cleared! Caregiver status independently advanced to 100%.', 'success');
-                  }}
-                  className="w-full py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-sm transition-all"
+                  onClick={() => setActiveTab('caregiver')}
+                  className="px-3 py-1.5 bg-primary text-white rounded-xl text-xs font-bold hover:bg-primary-800 transition-all cursor-pointer flex items-center gap-1 shadow-xs"
                 >
-                  Simulate CBI Fingerprint Clearance
+                  <span>Open Caregiver Journey</span>
+                  <ChevronRight className="w-3 h-3" />
                 </button>
-              ) : (
-                <div className="p-3 bg-white rounded-xl border border-emerald-200 text-[11px] text-emerald-900 flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Caregiver is fully activated and cleared for EVV mobile clock-in!</span>
-                </div>
-              )}
+              </div>
             </div>
           </div>
 
-          <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-            <button
-              onClick={() => setCurrentStep(4)}
-              className="px-5 py-2.5 rounded-xl border border-slate-300 text-xs font-semibold hover:bg-slate-50"
-            >
-              Back
-            </button>
-            <button
-              onClick={() => {
-                notify('Onboarding Complete', 'Both patient and caregiver profiles securely provisioned in LiliSphere.', 'success');
-                if (onComplete) onComplete();
-              }}
-              className="bg-primary hover:bg-primary-600 text-white font-bold text-xs px-8 py-3 rounded-xl shadow-md flex items-center gap-2"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Finalize & Exit Wizard</span>
-            </button>
+          {/* ========================================================================= */}
+          {/* 5. INTERACTIVE ACTIVITY COMPARISON MATRIX (Exact User Table)              */}
+          {/* ========================================================================= */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-sm space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+              <div>
+                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                  Dual Workflow Activity Comparison Matrix
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Even if the child’s profile is complete, the mother’s onboarding is not automatically complete, and vice versa.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs">
+                <span className="text-slate-500 font-medium">Interactive Simulation:</span>
+                <button
+                  onClick={handleSimulateFullReadiness}
+                  className="px-3 py-1 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded-lg font-bold hover:bg-emerald-100 transition-all cursor-pointer"
+                >
+                  Clear All Pending
+                </button>
+              </div>
+            </div>
+
+            {/* Matrix Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr className="border-b border-slate-200 bg-slate-50/70 text-slate-700 font-black text-[11px] uppercase tracking-wider">
+                    <th className="py-3 px-4">Activity</th>
+                    <th className="py-3 px-4 text-center">Child (Patient: Mateo)</th>
+                    <th className="py-3 px-4 text-center">Mother (Caregiver: Elena)</th>
+                    <th className="py-3 px-4">System Rule &amp; Operational Independence</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {/* Row 1: Profile */}
+                  <tr className="hover:bg-slate-50/50">
+                    <td className="py-3 px-4 font-bold text-slate-900">Profile</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        <Check className="w-3.5 h-3.5" /> Completed
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        <Check className="w-3.5 h-3.5" /> Completed
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-slate-600 text-[11px]">
+                      <strong>Rule 1:</strong> Separate records (PAT-101 vs CG-801) with distinct HIPAA and operational scopes.
+                    </td>
+                  </tr>
+
+                  {/* Row 2: Documents */}
+                  <tr className="hover:bg-slate-50/50">
+                    <td className="py-3 px-4 font-bold text-slate-900">Documents</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        <Check className="w-3.5 h-3.5" /> Completed
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        <Check className="w-3.5 h-3.5" /> Completed
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-slate-600 text-[11px]">
+                      <strong>Rule 4:</strong> Patient signs consent &amp; rights; caregiver provides W-4/I-9 (~20 docs for W-2).
+                    </td>
+                  </tr>
+
+                  {/* Row 3: Service Selection */}
+                  <tr className="hover:bg-slate-50/50">
+                    <td className="py-3 px-4 font-bold text-slate-900">Service Selection</td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        <Check className="w-3.5 h-3.5" /> Completed (IHSS)
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-center text-slate-400 font-medium">
+                      — Not Applicable
+                    </td>
+                    <td className="py-3 px-4 text-slate-600 text-[11px]">
+                      Caregiver provides labor; patient program defines Medicaid waiver billing rate.
+                    </td>
+                  </tr>
+
+                  {/* Row 4: Authorization */}
+                  <tr className="hover:bg-slate-50/50">
+                    <td className="py-3 px-4 font-bold text-slate-900">Authorization (State PAR)</td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => {
+                          setMatrixState({ ...matrixState, stateAuthorization: !matrixState.stateAuthorization });
+                          notify('PAR Toggled', `State authorization: ${!matrixState.stateAuthorization ? 'Approved' : 'Pending'}`, 'info');
+                        }}
+                        className={`inline-flex items-center gap-1 font-bold px-2.5 py-1 rounded-full border cursor-pointer ${matrixState.stateAuthorization
+                          ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                          : 'text-amber-800 bg-amber-50 border-amber-200'
+                          }`}
+                      >
+                        {matrixState.stateAuthorization ? <Check className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                        {matrixState.stateAuthorization ? 'Approved' : 'Pending'}
+                      </button>
+                    </td>
+                    <td className="py-3 px-4 text-center text-slate-400 font-medium">
+                      — Not Applicable
+                    </td>
+                    <td className="py-3 px-4 text-slate-600 text-[11px]">
+                      State Medicaid issues PAR number and approved hours (28.5 hrs/wk) to the patient.
+                    </td>
+                  </tr>
+
+                  {/* Row 5: Background Checks */}
+                  <tr className="hover:bg-slate-50/50">
+                    <td className="py-3 px-4 font-bold text-slate-900">Background Checks (CBI)</td>
+                    <td className="py-3 px-4 text-center text-slate-400 font-medium">
+                      — Not Applicable
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <span className="inline-flex items-center gap-1 font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
+                        <Check className="w-3.5 h-3.5" /> Completed
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-slate-600 text-[11px]">
+                      Caregiver undergoes Colorado Bureau of Investigation fingerprint check &amp; OIG screening.
+                    </td>
+                  </tr>
+
+                  {/* Row 6: Training */}
+                  <tr className="hover:bg-slate-50/50">
+                    <td className="py-3 px-4 font-bold text-slate-900">Training &amp; Orientation</td>
+                    <td className="py-3 px-4 text-center text-slate-400 font-medium">
+                      — Not Applicable
+                    </td>
+                    <td className="py-3 px-4 text-center">
+                      <button
+                        onClick={() => {
+                          setMatrixState({ ...matrixState, trainingOrientation: !matrixState.trainingOrientation });
+                          notify('Training Toggled', `Training status: ${!matrixState.trainingOrientation ? 'Completed' : 'Pending'}`, 'info');
+                        }}
+                        className={`inline-flex items-center gap-1 font-bold px-2.5 py-1 rounded-full border cursor-pointer ${matrixState.trainingOrientation
+                          ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                          : 'text-amber-800 bg-amber-50 border-amber-200'
+                          }`}
+                      >
+                        {matrixState.trainingOrientation ? <Check className="w-3.5 h-3.5" /> : <Clock className="w-3.5 h-3.5" />}
+                        {matrixState.trainingOrientation ? 'Completed' : 'Pending'}
+                      </button>
+                    </td>
+                    <td className="py-3 px-4 text-slate-600 text-[11px]">
+                      LearnWorlds LMS courses, quiz scoring, orientation video, and RN skills verification.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            {/* Matrix Rule Enforcement Banner */}
+            <div className="p-3 bg-amber-50/80 rounded-2xl border border-amber-200 text-xs text-amber-900 flex items-start gap-2.5">
+              <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+              <div>
+                <p className="font-bold">System Enforcement (Rule 5):</p>
+                <p className="text-[11px] text-amber-800 mt-0.5 leading-relaxed">
+                  Notice that even when Mateo’s authorization arrives, Elena’s training must still be finished before care shifts can begin. Conversely, if Elena completes training first, care cannot start until Mateo’s state PAR is officially active.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* 6. RECOMMENDED SIMPLE STATUS SYSTEM REFERENCE                             */}
+          {/* ========================================================================= */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-sm space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+              <div>
+                <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                  <Sliders className="w-4 h-4 text-primary" />
+                  Recommended Simple Onboarding Status System
+                </h3>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Clear, easy-to-understand operational statuses for staff and families across the LiliSphere dashboard
+                </p>
+              </div>
+              <span className="text-[10px] font-bold text-slate-500 bg-slate-100 px-2 py-0.5 rounded">
+                8 Patient / 8 Caregiver
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              {/* Patient Status Column */}
+              <div className="p-4 rounded-2xl border border-rose-100 bg-rose-50/30 space-y-2">
+                <div className="flex items-center gap-2 pb-2 border-b border-rose-200/60 font-black text-rose-900">
+                  <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+                  Patient Status Progression
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { s: 'Not Started', desc: 'Initial inquiry received; profile not yet opened' },
+                    { s: 'In Progress', desc: 'Staff gathering demographics and emergency contacts' },
+                    { s: 'Documents Pending', desc: 'Patient forms sent to responsible party for signature' },
+                    { s: 'Under Review', desc: 'Clinical team reviewing diagnosis and care tasks' },
+                    { s: 'Approval Pending', desc: 'Waiting for state case manager PAR approval' },
+                    { s: 'Ready for Service', desc: 'All requirements satisfied; ready for care to start' },
+                    { s: 'Active', desc: 'Actively receiving approved care shifts' },
+                    { s: 'On Hold', desc: 'Temporary pause (hospitalization, travel, reassessment)' },
+                  ].map((item, idx) => (
+                    <div key={item.s} className="flex items-start gap-2 p-1.5 rounded-lg bg-white border border-rose-100/80">
+                      <span className="text-[10px] font-mono font-bold text-slate-400 w-4">{idx + 1}.</span>
+                      <div className="min-w-0">
+                        <span className="font-bold text-slate-900">{item.s}</span>
+                        <p className="text-[10px] text-slate-500">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Caregiver Status Column */}
+              <div className="p-4 rounded-2xl border border-emerald-100 bg-emerald-50/30 space-y-2">
+                <div className="flex items-center gap-2 pb-2 border-b border-emerald-200/60 font-black text-emerald-900">
+                  <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
+                  Caregiver Status Progression
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { s: 'Not Started', desc: 'Identified as caregiver; intake not yet started' },
+                    { s: 'Application Sent', desc: 'Application magic link emailed to caregiver' },
+                    { s: 'Documents Pending', desc: 'Waiting for upload of 15–20 compliance documents' },
+                    { s: 'Under Review', desc: 'Staff auditing uploaded IDs, W-4/W-9, and forms' },
+                    { s: 'Background Check Pending', desc: 'CBI fingerprint or federal screening in progress' },
+                    { s: 'Training Pending', desc: 'Caregiver completing LearnWorlds LMS courses & quizzes' },
+                    { s: 'Ready for Activation', desc: 'All checks, training, and ADP setup completed' },
+                    { s: 'Active', desc: 'Fully activated and authorized to clock into EVV shifts' },
+                  ].map((item, idx) => (
+                    <div key={item.s} className="flex items-start gap-2 p-1.5 rounded-lg bg-white border border-emerald-100/80">
+                      <span className="text-[10px] font-mono font-bold text-slate-400 w-4">{idx + 1}.</span>
+                      <div className="min-w-0">
+                        <span className="font-bold text-slate-900">{item.s}</span>
+                        <p className="text-[10px] text-slate-500">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* ========================================================================= */}
+          {/* 7. IMPORTANT SYSTEM RULES (The 5 Fundamental Rules)                        */}
+          {/* ========================================================================= */}
+          <div className="bg-white rounded-3xl border border-slate-200/90 p-6 shadow-sm space-y-4">
+            <div className="pb-3 border-b border-slate-100">
+              <h3 className="text-sm font-black text-slate-900 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-primary" />
+                5 Important System Rules from LiliSare Business Process
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Core architectural guardrails governing all family onboarding operations in LiliSphere
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-5 gap-3 text-xs">
+              {/* Rule 1 */}
+              <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col justify-between">
+                <div>
+                  <span className="w-5 h-5 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center mb-2">
+                    1
+                  </span>
+                  <p className="font-bold text-slate-900">Separate Profiles</p>
+                  <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                    Patient and caregiver must always have distinct profiles, IDs, and compliance records.
+                  </p>
+                </div>
+                <span className="text-[10px] font-semibold text-primary mt-2">PAT-101 vs CG-801</span>
+              </div>
+
+              {/* Rule 2 */}
+              <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col justify-between">
+                <div>
+                  <span className="w-5 h-5 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center mb-2">
+                    2
+                  </span>
+                  <p className="font-bold text-slate-900">Multi-Caregiver</p>
+                  <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                    One patient can have multiple caregivers linked (e.g. Mother as primary + Uncle as respite).
+                  </p>
+                </div>
+                <span className="text-[10px] font-semibold text-primary mt-2">1 Patient → N Caregivers</span>
+              </div>
+
+              {/* Rule 3 */}
+              <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col justify-between">
+                <div>
+                  <span className="w-5 h-5 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center mb-2">
+                    3
+                  </span>
+                  <p className="font-bold text-slate-900">Multi-Patient</p>
+                  <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                    One caregiver may potentially serve multiple patients across family or community cases.
+                  </p>
+                </div>
+                <span className="text-[10px] font-semibold text-primary mt-2">1 Caregiver → N Patients</span>
+              </div>
+
+              {/* Rule 4 */}
+              <div className="p-3.5 rounded-2xl border border-slate-200 bg-slate-50/60 flex flex-col justify-between">
+                <div>
+                  <span className="w-5 h-5 rounded-full bg-primary text-white font-bold text-[10px] flex items-center justify-center mb-2">
+                    4
+                  </span>
+                  <p className="font-bold text-slate-900">Automated Docs</p>
+                  <p className="text-[11px] text-slate-500 mt-1 leading-snug">
+                    System automatically compiles packet based on caregiver classification (~20 W-2 vs ~15 1099).
+                  </p>
+                </div>
+                <span className="text-[10px] font-semibold text-primary mt-2">Zero Manual Form Picking</span>
+              </div>
+
+              {/* Rule 5 */}
+              <div className="p-3.5 rounded-2xl border border-amber-300 bg-amber-50/60 flex flex-col justify-between">
+                <div>
+                  <span className="w-5 h-5 rounded-full bg-amber-600 text-white font-bold text-[10px] flex items-center justify-center mb-2">
+                    5
+                  </span>
+                  <p className="font-bold text-amber-950">Non-Cascading</p>
+                  <p className="text-[11px] text-amber-800 mt-1 leading-snug">
+                    Patient onboarding completion must <strong>never</strong> automatically complete caregiver onboarding.
+                  </p>
+                </div>
+                <span className="text-[10px] font-bold text-amber-900 mt-2">Independent Readiness</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
-      </div>
     </div>
   );
 }
