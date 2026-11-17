@@ -2,8 +2,10 @@
 const nextConfig = {
   reactStrictMode: false,
   swcMinify: true,
-  // Ensure experimental or optimization settings are solid
   poweredByHeader: false,
+  experimental: {
+    optimizePackageImports: ['lucide-react'],
+  },
 };
 
 export default nextConfig;
