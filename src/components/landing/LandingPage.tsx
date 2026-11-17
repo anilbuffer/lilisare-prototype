@@ -1101,12 +1101,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 9. HOW IT WORKS: 4 SIMPLE STEPS (Connected Roadmap)                       */}
+      {/* 9. HOW IT WORKS: 4 SIMPLE STEPS (Modern Elevated White Cards)             */}
       {/* ========================================================================= */}
-      <section id="steps" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-slate-100">
+      <section id="steps" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#f8faf7] border-b border-slate-200/60">
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#2e541c] bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Process</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#2e541c] bg-[#eef7ea] border border-[#cbe5c3] px-3.5 py-1 rounded-full shadow-2xs">
+              Process
+            </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               How It Works
             </h2>
@@ -1116,36 +1118,104 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-[#244616] font-extrabold text-xs">01</span>
-              <h3 className="text-base font-bold text-slate-900">15-Min Chat</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Call or fill out our short form to discuss your family’s care needs with no pressure.
-              </p>
+            {/* Step 1 */}
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 relative flex flex-col justify-between space-y-4">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#eef7ea] to-[#e1f0db] border border-[#cbe5c3] text-[#244616] font-extrabold text-sm flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    01
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border bg-emerald-50 text-emerald-800 border-emerald-200/80">
+                    Step 1
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
+                    15-Min Chat
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Call or fill out our short form to discuss your family’s care needs with no pressure.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-3 border-t border-slate-100">
+                <span className="text-[11px] font-semibold text-emerald-700">No obligation consultation</span>
+              </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-[#244616] font-extrabold text-xs">02</span>
-              <h3 className="text-base font-bold text-slate-900">Waiver Approval</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                We coordinate directly with your county case manager to authorize your weekly care hours.
-              </p>
+            {/* Step 2 */}
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 relative flex flex-col justify-between space-y-4">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#eef7ea] to-[#e1f0db] border border-[#cbe5c3] text-[#244616] font-extrabold text-sm flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    02
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border bg-emerald-50 text-emerald-800 border-emerald-200/80">
+                    Step 2
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
+                    Waiver Approval
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    We coordinate directly with your county case manager to authorize your weekly care hours.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-3 border-t border-slate-100">
+                <span className="text-[11px] font-semibold text-emerald-700">Direct county coordination</span>
+              </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-[#244616] font-extrabold text-xs">03</span>
-              <h3 className="text-base font-bold text-slate-900">Quick Onboarding</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Complete digital paperwork from your phone and set up your 1-tap mobile timekeeping app.
-              </p>
+            {/* Step 3 */}
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 relative flex flex-col justify-between space-y-4">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#eef7ea] to-[#e1f0db] border border-[#cbe5c3] text-[#244616] font-extrabold text-sm flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    03
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border bg-emerald-50 text-emerald-800 border-emerald-200/80">
+                    Step 3
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
+                    Quick Onboarding
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Complete digital paperwork from your phone and set up your 1-tap mobile timekeeping app.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-3 border-t border-slate-100">
+                <span className="text-[11px] font-semibold text-emerald-700">Digital paperwork from phone</span>
+              </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
-              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-[#244616] font-extrabold text-xs">04</span>
-              <h3 className="text-base font-bold text-slate-900">Care &amp; Get Paid</h3>
-              <p className="text-xs text-slate-600 leading-relaxed font-normal">
-                Clock in with 1 tap at home. Enjoy bi-weekly ADP direct deposit and ongoing nurse check-ins.
-              </p>
+            {/* Step 4 */}
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 relative flex flex-col justify-between space-y-4">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#eef7ea] to-[#e1f0db] border border-[#cbe5c3] text-[#244616] font-extrabold text-sm flex items-center justify-center shadow-2xs group-hover:scale-105 transition-transform">
+                    04
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border bg-emerald-50 text-emerald-800 border-emerald-200/80">
+                    Step 4
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-extrabold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
+                    Care &amp; Get Paid
+                  </h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Clock in with 1 tap at home. Enjoy bi-weekly ADP direct deposit and ongoing nurse check-ins.
+                  </p>
+                </div>
+              </div>
+              <div className="pt-3 border-t border-slate-100">
+                <span className="text-[11px] font-semibold text-emerald-700">Bi-weekly ADP direct deposit</span>
+              </div>
             </div>
           </div>
 
@@ -1246,13 +1316,13 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 12. WEGO COMMUNITY (Explore Our WeGo Community Events)                    */}
+      {/* 12. WEGO COMMUNITY (Modern Elevated White Cards With Soft Outer Shadow)   */}
       {/* ========================================================================= */}
-      <section id="community" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-[#2e541c]/10">
+      <section id="community" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#f8faf7] border-b border-slate-200/60">
         <div className="max-w-6xl mx-auto space-y-12">
           {/* Eyebrow & Title */}
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2e541c] uppercase">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2e541c] uppercase bg-[#eef7ea] border border-[#cbe5c3] px-3.5 py-1 rounded-full shadow-2xs">
               WeGo Community
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#11230e] tracking-tight">
@@ -1266,7 +1336,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           {/* 4 Community Event Cards with High-Legibility Modern Thumbnails */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Card 1 */}
-            <div className="group rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-200/80 bg-white flex flex-col">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] overflow-hidden border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 <img
                   src="/images/wego-park-wheelchair.jpg"
@@ -1279,18 +1349,23 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   </span>
                 </div>
               </div>
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-2 bg-white">
-                <h3 className="text-base font-bold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
-                  Accessible Park &amp; Trail Days
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                  Paved scenic Colorado trail walks, shade pavilions, and family picnic gatherings.
-                </p>
+              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-3 bg-white">
+                <div className="space-y-1.5">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
+                    Accessible Park &amp; Trail Days
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                    Paved scenic Colorado trail walks, shade pavilions, and family picnic gatherings.
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-slate-100 text-[11px] font-semibold text-emerald-700">
+                  Monthly Outdoor Outings
+                </div>
               </div>
             </div>
 
             {/* Card 2 */}
-            <div className="group rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-200/80 bg-white flex flex-col">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] overflow-hidden border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 <img
                   src="/images/wego-therapy-pony.jpg"
@@ -1303,18 +1378,23 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   </span>
                 </div>
               </div>
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-2 bg-white">
-                <h3 className="text-base font-bold text-slate-900 group-hover:text-amber-800 transition-colors leading-snug">
-                  Mini Therapy Pony Visits
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                  Calm, gentle hands-on animal sessions promoting emotional relaxation and joy.
-                </p>
+              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-3 bg-white">
+                <div className="space-y-1.5">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-amber-800 transition-colors leading-snug">
+                    Mini Therapy Pony Visits
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                    Calm, gentle hands-on animal sessions promoting emotional relaxation and joy.
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-slate-100 text-[11px] font-semibold text-amber-700">
+                  Hands-On Animal Therapy
+                </div>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="group rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-200/80 bg-white flex flex-col">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] overflow-hidden border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 <img
                   src="/images/wego-chuckecheese.jpg"
@@ -1327,18 +1407,23 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   </span>
                 </div>
               </div>
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-2 bg-white">
-                <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-800 transition-colors leading-snug">
-                  Sensory-Friendly Mornings
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                  Private low-stimulation play hours with dimmed lighting and calm surroundings.
-                </p>
+              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-3 bg-white">
+                <div className="space-y-1.5">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-blue-800 transition-colors leading-snug">
+                    Sensory-Friendly Mornings
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                    Private low-stimulation play hours with dimmed lighting and calm surroundings.
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-slate-100 text-[11px] font-semibold text-blue-700">
+                  Low-Stimulation Play Sessions
+                </div>
               </div>
             </div>
 
             {/* Card 4 */}
-            <div className="group rounded-3xl overflow-hidden shadow-[0_15px_35px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 border border-slate-200/80 bg-white flex flex-col">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] overflow-hidden border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                 <img
                   src="/images/wego-family-friends.jpg"
@@ -1351,13 +1436,18 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   </span>
                 </div>
               </div>
-              <div className="p-5 flex-1 flex flex-col justify-between space-y-2 bg-white">
-                <h3 className="text-base font-bold text-slate-900 group-hover:text-purple-800 transition-colors leading-snug">
-                  Caregiver Coffee &amp; Support
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed font-normal">
-                  Parent coffee meetups, shared caregiver wisdom, and lifelong family friendships.
-                </p>
+              <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between space-y-3 bg-white">
+                <div className="space-y-1.5">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-purple-800 transition-colors leading-snug">
+                    Caregiver Coffee &amp; Support
+                  </h3>
+                  <p className="text-xs text-slate-500 leading-relaxed font-normal">
+                    Parent coffee meetups, shared caregiver wisdom, and lifelong family friendships.
+                  </p>
+                </div>
+                <div className="pt-2 border-t border-slate-100 text-[11px] font-semibold text-purple-700">
+                  Peer Wisdom &amp; Coffee Meetups
+                </div>
               </div>
             </div>
           </div>
@@ -1398,12 +1488,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 13. FAQ (Concise & Clear)                                                 */}
+      {/* 13. FAQ (Elevated White Cards With Soft Outer Shadow)                     */}
       {/* ========================================================================= */}
-      <section id="faq" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
+      <section id="faq" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#f8faf7] border-b border-slate-200/60">
         <div className="max-w-3xl mx-auto space-y-10">
           <div className="text-center space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">FAQ</span>
+            <span className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#2e541c] bg-[#eef7ea] border border-[#cbe5c3] px-3.5 py-1 rounded-full shadow-2xs">
+              FAQ
+            </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Questions &amp; Answers
             </h2>
@@ -1412,26 +1504,36 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </p>
           </div>
 
-          <div className="space-y-3.5">
+          <div className="space-y-4">
             {faqItems.map((item, idx) => (
               <div
                 key={idx}
-                className="rounded-2xl border border-slate-200/80 overflow-hidden bg-white shadow-xs hover:border-slate-300 transition-colors"
+                className={`rounded-2xl sm:rounded-3xl border transition-all duration-300 overflow-hidden bg-white ${
+                  openFaq === idx
+                    ? 'border-[#2e541c]/40 shadow-[0_20px_50px_rgba(0,0,0,0.08)] -translate-y-0.5'
+                    : 'border-slate-200/70 shadow-[0_15px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-0.5'
+                }`}
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="w-full p-6 sm:p-7 text-left font-bold text-slate-900 text-sm sm:text-base flex items-center justify-between gap-4 hover:bg-slate-50/50 transition-colors cursor-pointer"
                 >
-                  <span>{item.q}</span>
-                  {openFaq === idx ? (
-                    <ChevronUp className="w-4 h-4 text-[#2d551e] shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
-                  )}
+                  <span className="leading-snug">{item.q}</span>
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
+                      openFaq === idx ? 'bg-[#eef7ea] text-[#2e541c]' : 'bg-slate-100 text-slate-500'
+                    }`}
+                  >
+                    {openFaq === idx ? (
+                      <ChevronUp className="w-4 h-4 text-[#2e541c]" />
+                    ) : (
+                      <ChevronDown className="w-4 h-4 text-slate-400" />
+                    )}
+                  </div>
                 </button>
                 {openFaq === idx && (
-                  <div className="p-5 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 font-normal">
+                  <div className="px-6 pb-6 sm:px-7 sm:pb-7 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-4 font-normal">
                     {item.a}
                   </div>
                 )}
@@ -1442,13 +1544,13 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 14. RESOURCES (Modern AxisCare Download Cards)                             */}
+      {/* 14. RESOURCES (Modern Elevated White Cards With Soft Outer Shadow)        */}
       {/* ========================================================================= */}
-      <section id="resources" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#f4f7f5] border-b border-slate-200/60">
+      <section id="resources" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#f8faf7] border-b border-slate-200/60">
         <div className="max-w-6xl mx-auto space-y-12">
           {/* Eyebrow & Title */}
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2d551e] uppercase">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2e541c] uppercase bg-[#eef7ea] border border-[#cbe5c3] px-3.5 py-1 rounded-full shadow-2xs">
               Free Downloads &amp; Toolkits
             </span>
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#11230e] tracking-tight">
@@ -1461,18 +1563,18 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Guide 1 */}
-            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <div className="w-12 h-12 rounded-2xl border border-emerald-200 bg-emerald-50/80 text-[#2d551e] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
-                    <FileText className="w-6 h-6 text-[#2d551e]" />
+                  <div className="w-12 h-12 rounded-2xl border border-emerald-200 bg-emerald-50/80 text-[#2e541c] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                    <FileText className="w-6 h-6 text-[#2e541c]" />
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-bold tracking-wider uppercase border bg-emerald-50 text-emerald-800 border-emerald-200/80">
                     PDF • 8 Pages
                   </span>
                 </div>
                 <div className="space-y-1.5">
-                  <h3 className="text-base font-bold text-slate-900 group-hover:text-[#2d551e] transition-colors leading-snug">
+                  <h3 className="text-base font-bold text-slate-900 group-hover:text-[#2e541c] transition-colors leading-snug">
                     Medicaid Waiver Guide
                   </h3>
                   <p className="text-xs text-slate-600 leading-relaxed font-normal">
@@ -1483,15 +1585,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <button
                 type="button"
                 onClick={() => handleResourceDownload('Medicaid Waiver Guide')}
-                className="w-full py-2.5 px-4 rounded-full border border-slate-200/90 bg-slate-50/80 hover:bg-[#2d551e] hover:border-[#2d551e] hover:text-white text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs group-hover:border-emerald-300"
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_4px_14px_rgba(255,107,74,0.3)] hover:shadow-[0_6px_20px_rgba(255,107,74,0.4)] active:scale-[0.98]"
               >
                 <span>Download Free PDF</span>
-                <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             </div>
 
             {/* Guide 2 */}
-            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-12 h-12 rounded-2xl border border-amber-200 bg-amber-50/80 text-amber-700 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
@@ -1513,15 +1615,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <button
                 type="button"
                 onClick={() => handleResourceDownload('IHSS Checklist')}
-                className="w-full py-2.5 px-4 rounded-full border border-slate-200/90 bg-slate-50/80 hover:bg-[#2d551e] hover:border-[#2d551e] hover:text-white text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs group-hover:border-amber-300"
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_4px_14px_rgba(255,107,74,0.3)] hover:shadow-[0_6px_20px_rgba(255,107,74,0.4)] active:scale-[0.98]"
               >
                 <span>Download Free PDF</span>
-                <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             </div>
 
             {/* Guide 3 */}
-            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-12 h-12 rounded-2xl border border-blue-200 bg-blue-50/80 text-blue-700 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
@@ -1543,15 +1645,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <button
                 type="button"
                 onClick={() => handleResourceDownload('EVV Manual')}
-                className="w-full py-2.5 px-4 rounded-full border border-slate-200/90 bg-slate-50/80 hover:bg-[#2d551e] hover:border-[#2d551e] hover:text-white text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs group-hover:border-blue-300"
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_4px_14px_rgba(255,107,74,0.3)] hover:shadow-[0_6px_20px_rgba(255,107,74,0.4)] active:scale-[0.98]"
               >
                 <span>Download Free PDF</span>
-                <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             </div>
 
             {/* Guide 4 */}
-            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-6 sm:p-7 border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
+            <div className="group bg-white rounded-3xl sm:rounded-[28px] p-7 sm:p-8 border border-slate-200/70 shadow-[0_20px_50px_rgba(0,0,0,0.06)] hover:shadow-[0_25px_60px_rgba(0,0,0,0.12)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div className="w-12 h-12 rounded-2xl border border-purple-200 bg-purple-50/80 text-purple-700 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
@@ -1573,10 +1675,10 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <button
                 type="button"
                 onClick={() => handleResourceDownload('Agency Directory')}
-                className="w-full py-2.5 px-4 rounded-full border border-slate-200/90 bg-slate-50/80 hover:bg-[#2d551e] hover:border-[#2d551e] hover:text-white text-slate-700 font-semibold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-xs group-hover:border-purple-300"
+                className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white font-bold text-xs flex items-center justify-center gap-2 transition-all cursor-pointer shadow-[0_4px_14px_rgba(255,107,74,0.3)] hover:shadow-[0_6px_20px_rgba(255,107,74,0.4)] active:scale-[0.98]"
               >
                 <span>Download Free PDF</span>
-                <Download className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform" />
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             </div>
           </div>
