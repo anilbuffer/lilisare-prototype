@@ -91,7 +91,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           {/* Nav Pills in Orange Gradient (Matching reference) */}
           <nav className="hidden lg:flex items-center bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] rounded-full px-5 py-2 shadow-sm text-slate-950 font-bold text-xs tracking-wide space-x-6">
             <a href="#hero" className="hover:text-white transition-colors underline decoration-white decoration-2 underline-offset-4">Home</a>
-            <a href="#how-it-works" className="hover:text-white transition-colors">About Us</a>
+            <a href="#about-us" className="hover:text-white transition-colors">About Us</a>
             <a href="#services" className="hover:text-white transition-colors">Services</a>
             <a href="#eligibility" className="hover:text-white transition-colors">Resources</a>
             <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
@@ -210,6 +210,134 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 <div className="absolute -top-3 -right-3 w-10 h-10 rounded-full bg-[#fffbeb] text-rose-500 flex items-center justify-center shadow-lg border-2 border-[#F2B632]">
                   <Heart className="w-5 h-5 fill-rose-500" />
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 3.5 ABOUT US & FOUNDERS' STORY (Authentic LiliSare Story, Mission & Vision) */}
+      <section id="about-us" className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-white via-slate-50/60 to-white relative overflow-hidden">
+        {/* Soft decorative background accents */}
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 w-[800px] h-[300px] bg-primary-100/40 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto space-y-14 relative z-10">
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-100 text-primary-900 text-xs font-extrabold uppercase tracking-wider">
+              <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
+              <span>Who We Are — LiliSare</span>
+            </div>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-slate-900 tracking-tight leading-tight">
+              Live-In Caregivers, Family Caregivers, and Family Friends
+            </h2>
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+              At LiliSare, we believe caregiving comes in many forms. Whether you&apos;re a family member or a close friend, we’re here to support you. We value the strength of community and the deep bond between those who provide care and those who receive it. No matter your role, we’re here to guide and empower you every step of the way.
+            </p>
+          </div>
+
+          {/* Founders Story Spotlight Box */}
+          <div className="bg-gradient-to-br from-[#3e6b2b] via-[#324925] to-[#2a3d20] text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
+            <div className="absolute right-0 bottom-0 w-80 h-80 bg-[#F2B632]/10 rounded-full blur-3xl pointer-events-none" />
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+              {/* Left: Lotus Icon + Founder Badges */}
+              <div className="lg:col-span-4 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-3xl bg-white/10 backdrop-blur-md p-3.5 border border-white/20 shadow-inner flex items-center justify-center">
+                  <img
+                    src="/images/lilisare-icon.png"
+                    alt="LiliSare Lotus Heart"
+                    className="w-full h-full object-contain drop-shadow"
+                  />
+                </div>
+                <div>
+                  <span className="text-[11px] font-black uppercase tracking-wider text-[#F2B632]">
+                    Our Origin
+                  </span>
+                  <h3 className="text-lg font-black text-white mt-0.5">
+                    Founded by Two Mothers
+                  </h3>
+                  <p className="text-xs text-emerald-200 mt-1">
+                    Of children with special healthcare needs
+                  </p>
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-[11px] font-semibold text-[#fef9ee] border border-white/15">
+                  <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
+                  <span>&ldquo;because we care&rdquo;</span>
+                </div>
+              </div>
+
+              {/* Right: Narrative */}
+              <div className="lg:col-span-8 space-y-4 text-xs sm:text-sm text-slate-100 leading-relaxed border-t lg:border-t-0 lg:border-l border-white/15 pt-6 lg:pt-0 lg:pl-8">
+                <p className="font-medium text-emerald-50 text-sm sm:text-base leading-relaxed">
+                  LiliSare was founded by two mothers of children with special needs who understand both the challenges and rewards of caregiving. We created this company to share our experience, knowledge, and support with others navigating similar journeys.
+                </p>
+                <p className="text-slate-200 leading-relaxed">
+                  <strong className="text-white font-bold">You’re why we do what we do.</strong> At LiliSare, we lead with the heart, understanding the love, strength, and dedication it takes to care for someone close to you—whether you&apos;re a family member or a family friend providing care. We’re here for you. Our team offers compassion, guidance, and real connection—treating you like family every step of the way.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mission & Vision Side-by-Side Dual Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            {/* Mission Statement Card */}
+            <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-primary-100 text-primary flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <ShieldCheck className="w-6 h-6" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-primary-50 text-primary-800 tracking-wider">
+                    Our Purpose
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-primary">
+                    WE ARE COMMITTED
+                  </span>
+                  <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                    Mission Statement
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  At LiliSare, our mission is to care for the whole family—both the loved one receiving care and the caregiver giving it. We share what we&apos;ve learned, navigate services alongside you, and offer the knowledge, guidance, and support that help your family thrive together.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-bold text-primary">
+                <CheckCircle2 className="w-4 h-4 text-[#00d084]" />
+                <span>Supporting the entire family circle</span>
+              </div>
+            </div>
+
+            {/* Vision Statement Card */}
+            <div className="p-8 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-4 relative group">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <div className="w-12 h-12 rounded-2xl bg-secondary-100 text-secondary-900 flex items-center justify-center group-hover:scale-105 transition-transform">
+                    <Sparkles className="w-6 h-6 text-[#F2B632]" />
+                  </div>
+                  <span className="text-[10px] font-black uppercase px-2.5 py-1 rounded-full bg-secondary-100 text-secondary-900 tracking-wider">
+                    Our Future
+                  </span>
+                </div>
+                <div className="space-y-1">
+                  <span className="text-[11px] font-extrabold uppercase tracking-wider text-[#d99719]">
+                    EMPOWERING FAMILIES AND CAREGIVERS
+                  </span>
+                  <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                    Vision Statement
+                  </h3>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                  We envision a world where no one in a caregiving family is overlooked—where the person receiving care is seen and valued, and the caregiver is supported, never depleted, and never alone. We treat your family like our own: lifting one another through compassion, connection, and community.
+                </p>
+              </div>
+
+              <div className="pt-4 border-t border-slate-100 flex items-center gap-2 text-xs font-bold text-secondary-800">
+                <Heart className="w-4 h-4 text-rose-500 fill-rose-500" />
+                <span>Never depleted, never alone</span>
               </div>
             </div>
           </div>
