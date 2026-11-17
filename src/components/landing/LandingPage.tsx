@@ -317,15 +317,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <div className="relative w-[340px] sm:w-[420px] h-[340px] sm:h-[420px] p-3 rounded-[3.5rem] bg-gradient-to-b from-[#fef08a] via-[#fde047] to-[#F2B632] shadow-2xl flex items-center justify-center overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
                 <div className="relative w-full h-full rounded-[3rem] overflow-hidden bg-slate-900">
                   <img
-                    src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=900&auto=format&fit=crop&q=80"
-                    alt="Mother joyfully caring for her happy child at home"
+                    src="/images/family-bubbles-wheelchair.jpg"
+                    alt="Colorado family with child in wheelchair playing with bubbles outdoors"
                     className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/10" />
 
                   <div className="absolute bottom-5 left-5 right-5 text-white">
                     <p className="text-xs font-black tracking-wide uppercase text-[#F2B632]">Real Colorado Family</p>
-                    <p className="text-sm sm:text-base font-extrabold leading-snug">Elena & Mateo • Denver, Colorado</p>
+                    <p className="text-sm sm:text-base font-extrabold leading-snug">Elena, Mateo &amp; Sophia • Denver, Colorado</p>
                     <p className="text-[11px] text-emerald-200 mt-0.5">Paid 28.5 hrs/week under IHSS Program</p>
                   </div>
                 </div>
@@ -519,8 +519,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 <div className="relative w-36 h-36 mx-auto">
                   <div className="w-full h-full rounded-[2rem] overflow-hidden border-4 border-[#F2B632] shadow-md">
                     <img
-                      src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=400&auto=format&fit=crop&q=80"
-                      alt="Parent caring for child"
+                      src="/images/girl-globe.jpg"
+                      alt="Happy smiling child with special needs receiving IHSS care"
                       className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
                     />
                   </div>
@@ -648,8 +648,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 <div className="relative w-36 h-36 mx-auto">
                   <div className="w-full h-full rounded-[2rem] overflow-hidden border-4 border-[#F2B632] shadow-md">
                     <img
-                      src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&auto=format&fit=crop&q=80"
-                      alt="Community First Choice"
+                      src="/images/family-bubbles-wheelchair.jpg"
+                      alt="Community First Choice family outdoors"
                       className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
                     />
                   </div>
@@ -734,8 +734,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 <div className="relative w-36 h-36 mx-auto">
                   <div className="w-full h-full rounded-[2rem] overflow-hidden border-4 border-[#F2B632] shadow-md">
                     <img
-                      src="https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=400&auto=format&fit=crop&q=80"
-                      alt="Adult and Senior Home Care"
+                      src="/images/senior-caregiver-garden.jpg"
+                      alt="Caregiver supporting elderly grandmother walking in garden"
                       className="w-full h-full object-cover transform hover:scale-110 transition-transform duration-500"
                     />
                   </div>
@@ -1117,45 +1117,45 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
               <img
-                src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=400&auto=format&fit=crop&q=80"
-                alt="Accessible Zoo Day"
+                src="/images/family-bubbles-wheelchair.jpg"
+                alt="Accessible Nature & Park Outings"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Denver Zoo Accessible Outing</p>
+                <p className="text-[11px] font-bold text-white">Accessible Nature &amp; Park Outings</p>
               </div>
             </div>
 
             <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
               <img
-                src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=80"
-                alt="Therapy Pony Day"
+                src="/images/mother-child-art.jpg"
+                alt="Art & Creative Expression Sessions"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Therapeutic Equine & Pony Experience</p>
+                <p className="text-[11px] font-bold text-white">Art &amp; Creative Expression Sessions</p>
               </div>
             </div>
 
             <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
               <img
-                src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&auto=format&fit=crop&q=80"
-                alt="Sensory Kids Gathering"
+                src="/images/girl-globe.jpg"
+                alt="Sensory Play & Kids Discovery Mornings"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Sensory Play & Kids Mornings</p>
+                <p className="text-[11px] font-bold text-white">Sensory Play &amp; Discovery Mornings</p>
               </div>
             </div>
 
             <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
               <img
-                src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&auto=format&fit=crop&q=80"
-                alt="Caregiver Meetup"
+                src="/images/senior-caregiver-garden.jpg"
+                alt="Caregiver & Family Intergenerational Meetups"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Parent & Caregiver Coffee Circle</p>
+                <p className="text-[11px] font-bold text-white">Family Intergenerational Gatherings</p>
               </div>
             </div>
           </div>
