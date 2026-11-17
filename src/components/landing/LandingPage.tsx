@@ -1081,6 +1081,60 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
+      {/* 7.5 SECTION: SIGNATURE LILISARE CORAL SUNSET CTA BANNER                   */}
+      {/* (Exact reference from user: At LiliSare, we help you get paid...)          */}
+      {/* ========================================================================= */}
+      <section className="relative bg-gradient-to-r from-[#ffa07a] via-[#ff7e5f] to-[#ff5a4e] text-white py-20 sm:py-24 px-4 sm:px-8 overflow-hidden shadow-inner">
+        {/* Soft subtle ambient blurs & watermarks */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-[#fde047]/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-6 -right-6 w-36 h-36 opacity-10 pointer-events-none">
+          <Heart className="w-full h-full fill-white" />
+        </div>
+        <div className="absolute -bottom-6 -left-6 w-36 h-36 opacity-10 pointer-events-none">
+          <Heart className="w-full h-full fill-white" />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center space-y-7 relative z-10">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-[1.15] drop-shadow-xs">
+            At LiliSare, we help you get paid to care for your loved one.
+          </h2>
+
+          <p className="text-sm sm:text-lg text-white/95 font-medium max-w-2xl mx-auto leading-relaxed drop-shadow-2xs">
+            We make it easy for families to provide care at home—while getting the support they need.
+          </p>
+
+          <div className="pt-2 flex flex-col items-center justify-center gap-3">
+            <button
+              onClick={onStartOnboarding}
+              className="px-10 py-4 rounded-full bg-[#fef08a] hover:bg-white text-slate-950 font-black text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 active:scale-95 inline-flex items-center gap-2.5 group"
+            >
+              <span>Become a Family Caregiver</span>
+              <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform text-slate-950" />
+            </button>
+
+            {/* Micro-Trust Note with Money Icon as in Reference */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-bold text-white/90 pt-1">
+              <span className="flex items-center gap-1.5">
+                <DollarSign className="w-3.5 h-3.5 text-[#fef08a]" />
+                <span>Competitive Rates ($28.50+/hr)</span>
+              </span>
+              <span className="text-white/40">•</span>
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-white" />
+                <span>100% Medicaid Covered</span>
+              </span>
+              <span className="text-white/40">•</span>
+              <span className="flex items-center gap-1.5">
+                <Heart className="w-3.5 h-3.5 fill-white text-white" />
+                <span>$0 Out-of-Pocket Cost</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 8. SECTION: [ABOUT US] — Founders' Story, Mission & Vision Statements       */}
       {/* ========================================================================= */}
       <section id="about-us" className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
