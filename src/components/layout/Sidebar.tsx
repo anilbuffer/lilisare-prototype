@@ -27,7 +27,7 @@ interface NavItem {
 }
 
 export function Sidebar() {
-  const { currentRole, switchRole } = usePortal();
+  const { currentRole, switchRole, activeView, setActiveView } = usePortal();
 
   const navigationItems: { role: UserRole; title: string; subtitle: string; icon: React.ReactNode }[] = [
     {
@@ -87,12 +87,15 @@ export function Sidebar() {
 
           <nav className="mt-3 space-y-1">
             {navigationItems.map((item) => {
-              const isActive = currentRole === item.role;
+              const isActive = activeView === 'portal' && currentRole === item.role;
               return (
                 <button
                   key={item.role}
-                  onClick={() => switchRole(item.role)}
-                  className={`w-full flex items-start gap-3 px-3 py-2.5 rounded-xl text-left transition-all ${
+                  onClick={() => {
+                    setActiveView('portal');
+                    switchRole(item.role);
+                  }}
+                  className={`w-full flex items-start gap-3 px-3 py-2 rounded-xl text-left transition-all ${
                     isActive
                       ? 'bg-primary-50 text-primary-900 font-bold border border-primary-200/80 shadow-sm'
                       : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 font-medium'
@@ -110,6 +113,48 @@ export function Sidebar() {
                 </button>
               );
             })}
+          </nav>
+        </div>
+
+        {/* Core Journey Flow Maps */}
+        <div>
+          <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3">
+            Core Process Maps
+          </span>
+          <nav className="mt-2 space-y-1">
+            <button
+              onClick={() => setActiveView('caregiver-flow')}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                activeView === 'caregiver-flow'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <UserCheck className="w-3.5 h-3.5" />
+                Caregiver (15 Steps)
+              </span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeView === 'caregiver-flow' ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                15
+              </span>
+            </button>
+
+            <button
+              onClick={() => setActiveView('patient-flow')}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                activeView === 'patient-flow'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <HeartHandshake className="w-3.5 h-3.5" />
+                Patient Flow (11 Steps)
+              </span>
+              <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeView === 'patient-flow' ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                11
+              </span>
+            </button>
           </nav>
         </div>
 
