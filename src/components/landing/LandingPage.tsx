@@ -120,6 +120,108 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
     );
   };
 
+  // Active Service Tab State for AxisCare-Style Interactive Showcase
+  const [activeServiceTab, setActiveServiceTab] = useState<number>(0);
+
+  const servicesList = [
+    {
+      id: 'cna',
+      pill: 'Become a CNA',
+      badge: 'Skilled Nursing & Certified Aide',
+      title: 'Become a CNA for your Loved One',
+      desc: 'Certified Nurse Aide services (CNA) and Private Duty Nursing services (PDN). LiliSare guides and sponsors family members through Colorado CNA training, testing, and state licensing so you can provide skilled medical care to your loved one right at home with competitive hourly pay.',
+      image: '/images/service-cna-mother-son.jpg',
+      imageAlt: 'Loving mother with son receiving certified nurse aide care at home',
+      features: [
+        { icon: Award, title: 'Certified Nurse Aide (CNA)', desc: 'State-approved clinical care for high-need family members' },
+        { icon: Stethoscope, title: 'Private Duty Nursing (PDN)', desc: 'RN/LPN supervised complex in-home medical care' },
+        { icon: DollarSign, title: 'Earn Up to $32.50 / hour', desc: 'Elevated hourly pay rate for licensed skilled care' },
+        { icon: BookOpen, title: 'Free Class & Testing Sponsorship', desc: 'We help you prepare and obtain your Colorado license' },
+      ],
+      tagline: '100% Covered by Colorado Medicaid • Family Caregiver Licensing Support'
+    },
+    {
+      id: 'cfc',
+      pill: 'Community First Choice',
+      badge: 'Medicaid Community Benefit',
+      title: 'Community First Choice (CFC)',
+      desc: 'A Medicaid program that provides greater access to home and community-based services for eligible individuals. CFC empowers participants to choose their own personal care attendants, direct their daily routines, and maintain active community living.',
+      image: '/images/service-cfc-sisters.jpg',
+      imageAlt: 'Sisters smiling together outdoors in Colorado',
+      features: [
+        { icon: ShieldCheck, title: 'Medicaid State Plan Entitlement', desc: 'Available to all eligible Colorado Medicaid recipients' },
+        { icon: HomeIcon, title: 'Full In-Home Independence', desc: 'Personal attendant care tailored to daily living tasks' },
+        { icon: Users, title: 'Individualized Attendant Selection', desc: 'Choose your trusted caregiver from family or friends' },
+        { icon: Clock, title: 'Zero Waiting List Enrollment', desc: 'State plan coverage without multi-year waiver delays' },
+      ],
+      tagline: 'Colorado Medicaid Entitlement • Unrestricted In-Home Community Support'
+    },
+    {
+      id: 'ihss',
+      pill: 'In-Home Support (IHSS)',
+      badge: 'Parent as Paid Attendant',
+      title: 'In-Home Support Services (IHSS)',
+      desc: 'Become an attendant to assist with daily activities, personal care, and household tasks for your loved ones. Under Colorado Medicaid, parents of minor children, spouses, and adult children can be hired as legal attendants with reliable bi-weekly pay.',
+      image: '/images/service-ihss-father-son.jpg',
+      imageAlt: 'Father embracing son in wheelchair with love and dignity',
+      features: [
+        { icon: Heart, title: 'Parents & Family Members Hired', desc: 'No medical background or license needed to start' },
+        { icon: Smartphone, title: '1-Tap Mobile GPS Clock-In (EVV)', desc: 'Fast, hassle-free visit verification via mobile app' },
+        { icon: DollarSign, title: 'Bi-Weekly Pay via Direct Deposit', desc: 'W-2 employment, ADP payroll, and overtime eligible' },
+        { icon: Stethoscope, title: 'Dedicated Registered Nurse Oversight', desc: 'Continuous clinical coaching and care coordination' },
+      ],
+      tagline: 'Colorado IHSS Attendant • Authorized for 15 to 40+ hours per week'
+    },
+    {
+      id: 'hcbs',
+      pill: 'HCBS Waivers',
+      badge: 'Home & Community Care',
+      title: 'Home and Community Based Services (HCBS Waivers)',
+      desc: 'Support and care provided by a family caregiver in the comfort of home and within the community. Colorado HCBS waivers provide comprehensive funding so individuals with disabilities or complex medical needs thrive in family settings.',
+      image: '/images/service-hcbs-mother-daughter.jpg',
+      imageAlt: 'Mother holding daughter outdoors in green Colorado park',
+      features: [
+        { icon: ShieldCheck, title: '100% Colorado Medicaid Funded', desc: 'Zero copays, fees, or deductions from existing benefits' },
+        { icon: Baby, title: 'Children & Adults with Disabilities', desc: 'Comprehensive coverage across developmental lifespans' },
+        { icon: BadgeCheck, title: 'Local Case Management Agency Synced', desc: 'Seamless authorization with RMHS, DP, TRE & Imagine!' },
+        { icon: Clock, title: 'Flexible Care Scheduling', desc: 'Daytime, evening, and weekend personal care coverage' },
+      ],
+      tagline: '100% Medicaid Covered • Personalized In-Home Care Plans'
+    },
+    {
+      id: 'irss',
+      pill: 'IRSS & Host Homes',
+      badge: 'Host Homes & Family Caregiver',
+      title: 'Individual Residential Services and Supports (IRSS)',
+      desc: 'Family Caregiver, Host Homes. Providing comprehensive residential living arrangements and individualized support services for adults with intellectual and developmental disabilities to live safely, build life skills, and thrive in warm household communities.',
+      image: '/images/service-irss-mother-son-laptop.jpg',
+      imageAlt: 'Mother and son reviewing tablet learning activities together',
+      features: [
+        { icon: HomeIcon, title: 'Dedicated Family Caregiver Model', desc: 'Care provided in the client’s family residence' },
+        { icon: Smile, title: 'Vetted Colorado Host Homes', desc: 'Loving community host home providers across the state' },
+        { icon: Activity, title: 'Daily Living & Social Skills', desc: 'Community integration, meal preparation, and hygiene' },
+        { icon: ShieldCheck, title: '24/7 Agency Emergency Backup', desc: 'Ongoing respite, safety oversight, and support' },
+      ],
+      tagline: 'Colorado Adult IDD Residential • Dignified Community Living'
+    },
+    {
+      id: 'waivers',
+      pill: 'Accepted Waivers',
+      badge: '100% Medicaid Covered',
+      title: 'We Accept Medicaid and the Following Medicaid Waivers:',
+      desc: 'We are fully certified to bill and manage services under: CES (Children’s Extensive Support), CHRP (Children’s Habilitation Residential Program), SLS (Supported Living Services), DD (Developmental Disabilities), EBD (Elderly, Blind & Disabled), CHCBS (Children’s HCBS), CIH (Complementary & Integrative Health), and CFC Benefit.',
+      image: '/images/service-waivers-family-lake.jpg',
+      imageAlt: 'Colorado family standing together happily at lake mountain resort',
+      features: [
+        { icon: FileCheck, title: 'Children’s Waivers: CES, CHRP, CHCBS', desc: 'Specialized for high-medical and behavioral needs' },
+        { icon: Award, title: 'Adult Waivers: SLS, DD, EBD, CIH', desc: 'Independent living, residential, and elder care supports' },
+        { icon: Check, title: 'Community First Choice (CFC) Benefit', desc: 'Colorado state plan Medicaid personal attendant coverage' },
+        { icon: Phone, title: 'Free Waiver Verification Call', desc: 'Speak directly with our Care Coordinators at 303-578-0181' },
+      ],
+      tagline: 'CES • CHRP • SLS • DD • EBD • CHCBS • CIH • CFC'
+    }
+  ];
+
   const faqItems = [
     {
       q: 'Can I really get paid as a parent or family member to care for my loved one in Colorado?',
@@ -522,323 +624,171 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. SECTION: [SERVICES] — Our Available Services (Light, Premium SaaS Cards) */}
+      {/* 6. SECTION: [SERVICES] — Interactive AxisCare-Style Feature Showcase      */}
+      {/* (Pills Bar + 2-Column Main Showcase + Key Features Card + Bottom Action)  */}
       {/* ========================================================================= */}
       <section id="services" className="py-20 sm:py-28 px-4 sm:px-8 bg-gradient-to-b from-[#f8faf7] via-white to-[#f4f7f2] text-slate-900 border-t border-slate-200/80 relative overflow-hidden">
         <div className="absolute top-0 right-10 w-96 h-96 bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#F2B632]/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-14 relative z-10">
-          <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-[#2d4722] text-xs font-black uppercase tracking-wider shadow-xs">
-              <Heart className="w-3.5 h-3.5 fill-[#3e6b2b] text-[#3e6b2b]" />
-              <span>Compassionate Care Programs</span>
-            </div>
+        <div className="max-w-6xl mx-auto space-y-10 relative z-10">
+          {/* Header matching AxisCare: Subtitle on top, Main Title below */}
+          <div className="text-center max-w-2xl mx-auto space-y-2">
+            <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#3e6b2b]">
+              What You Get
+            </span>
             <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
               Our Available Services
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto pt-1 font-medium">
               We specialize in Colorado Medicaid waivers supporting children with special healthcare needs and adults with disabilities in their own homes.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8">
-            {/* CARD 1: Become a CNA for your Loved One */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-              <div className="space-y-5">
-                {/* Photo Container */}
-                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/service-cna-mother-son.jpg"
-                    alt="Become a CNA for your Loved One"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
-                  </div>
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-emerald-900 shadow-sm backdrop-blur-md">
-                      Skilled Nursing &amp; Certified Aide
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 sm:p-7 pt-1 space-y-3">
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                    Become a CNA for your Loved One
-                  </h3>
-                  <div className="text-xs text-slate-600 leading-relaxed space-y-1.5 font-medium">
-                    <p className="font-semibold text-slate-800 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Certified Nurse Aide services (CNA)</span>
-                    </p>
-                    <p className="font-semibold text-slate-800 flex items-center gap-1.5">
-                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                      <span>Private Duty Nursing services (PDN)</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
+          {/* Horizontal Pills/Tabs row matching AxisCare reference */}
+          <div className="flex items-center justify-start md:justify-center gap-2.5 overflow-x-auto pb-2 scrollbar-none px-1">
+            {servicesList.map((service, idx) => {
+              const isActive = activeServiceTab === idx;
+              return (
                 <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  key={service.id}
+                  onClick={() => setActiveServiceTab(idx)}
+                  className={`px-5 py-2.5 rounded-full text-xs sm:text-sm font-bold transition-all whitespace-nowrap shadow-xs ${
+                    isActive
+                      ? 'bg-[#3e6b2b] text-white shadow-md font-black ring-2 ring-[#3e6b2b]/30'
+                      : 'bg-white text-slate-700 border border-slate-200/90 hover:border-[#3e6b2b] hover:text-[#3e6b2b]'
+                  }`}
                 >
-                  <span>Become a Family Caregiver</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  {service.pill}
                 </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
-                >
-                  More Info
-                </button>
-              </div>
-            </div>
+              );
+            })}
+          </div>
 
-            {/* CARD 2: Community First Choice (CFC) */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-              <div className="space-y-5">
-                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/service-cfc-sisters.jpg"
-                    alt="Community First Choice (CFC)"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
-                  </div>
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-blue-900 shadow-sm backdrop-blur-md">
-                      Medicaid Community Benefit
-                    </span>
-                  </div>
-                </div>
+          {/* Interactive 2-Card Layout matching AxisCare reference */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            {/* Left Main Card: Text on Left, Photo on Right */}
+            <div className="lg:col-span-8 bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden grid grid-cols-1 md:grid-cols-12">
+              {/* Left Column: Heading, Description, Action Buttons */}
+              <div className="md:col-span-7 p-7 sm:p-9 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
+                  <span className="text-[10px] font-black uppercase tracking-wider text-emerald-900 bg-emerald-100 px-3 py-1 rounded-full inline-block">
+                    {servicesList[activeServiceTab].badge}
+                  </span>
 
-                <div className="p-6 sm:p-7 pt-1 space-y-3">
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                    Community First Choice (CFC)
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 leading-tight">
+                    {servicesList[activeServiceTab].title}
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    A Medicaid program that provides greater access to home and community-based services for eligible individuals.
+
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    {servicesList[activeServiceTab].desc}
                   </p>
+
+                  {/* Special Waiver Badges for Waiver Card */}
+                  {activeServiceTab === 5 && (
+                    <div className="grid grid-cols-4 gap-1.5 pt-2 text-[11px] font-extrabold text-slate-800 text-center">
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">CES</span>
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">CHRP</span>
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">SLS</span>
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">DD</span>
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">EBD</span>
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">CHCBS</span>
+                      <span className="p-1 rounded-md bg-slate-50 border border-slate-200">CIH</span>
+                      <span className="p-1 rounded-md bg-amber-50 text-amber-900 border border-amber-300 font-black">CFC</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons: [Become a Family Caregiver] & [More Info] as requested */}
+                <div className="flex flex-col sm:flex-row items-center gap-3 pt-2">
+                  <button
+                    onClick={onStartOnboarding}
+                    className="w-full sm:w-auto bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs sm:text-sm px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 active:scale-95 whitespace-nowrap"
+                  >
+                    <span>Become a Family Caregiver</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={onStartOnboarding}
+                    className="w-full sm:w-auto px-5 py-3.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold text-slate-700 hover:bg-slate-50 hover:border-[#3e6b2b] hover:text-[#3e6b2b] transition-colors text-center whitespace-nowrap"
+                  >
+                    More Info
+                  </button>
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
-                >
-                  <span>Become a Family Caregiver</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
-                >
-                  More Info
-                </button>
+              {/* Right Column: High-Res Real User Photo */}
+              <div className="md:col-span-5 relative h-64 md:h-auto min-h-[300px] overflow-hidden bg-slate-100">
+                <img
+                  src={servicesList[activeServiceTab].image}
+                  alt={servicesList[activeServiceTab].imageAlt}
+                  className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                  <Heart className="w-5 h-5 fill-[#3e6b2b]" />
+                </div>
+                <div className="absolute bottom-4 left-4 right-4 text-white">
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#F2B632] block">
+                    Colorado Care Program
+                  </span>
+                  <span className="text-xs font-bold text-white leading-tight block">
+                    {servicesList[activeServiceTab].pill}
+                  </span>
+                </div>
               </div>
             </div>
 
-            {/* CARD 3: In-Home Support Services (IHSS) */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-              <div className="space-y-5">
-                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/service-ihss-father-son.jpg"
-                    alt="In-Home Support Services (IHSS)"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
-                  </div>
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-amber-900 shadow-sm backdrop-blur-md">
-                      Parent as Paid Attendant
-                    </span>
-                  </div>
+            {/* Right Card: Key Features matching AxisCare reference */}
+            <div className="lg:col-span-4 bg-white rounded-3xl border border-slate-200/90 shadow-xl p-7 sm:p-9 flex flex-col justify-between space-y-6">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
+                  <h3 className="text-xl font-black text-slate-900">Key Features</h3>
+                  <span className="text-[11px] font-bold text-[#3e6b2b] bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
+                    Colorado Medicaid
+                  </span>
                 </div>
 
-                <div className="p-6 sm:p-7 pt-1 space-y-3">
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                    In-Home Support Services (IHSS)
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    Become an attendant to assist with daily activities, personal care, and household tasks for your loved ones.
-                  </p>
+                <div className="space-y-4">
+                  {servicesList[activeServiceTab].features.map((feature, idx) => {
+                    const IconComp = feature.icon;
+                    return (
+                      <div key={idx} className="flex items-start gap-3.5 group">
+                        <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#3e6b2b] border border-emerald-100/80 flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#3e6b2b] group-hover:text-white transition-all">
+                          <IconComp className="w-5 h-5" />
+                        </div>
+                        <div className="space-y-0.5">
+                          <h4 className="text-xs sm:text-sm font-black text-slate-900 group-hover:text-[#3e6b2b] transition-colors leading-snug">
+                            {feature.title}
+                          </h4>
+                          <p className="text-[11px] text-slate-500 leading-snug">
+                            {feature.desc}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
-                >
-                  <span>Become a Family Caregiver</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
-                >
-                  More Info
-                </button>
+              <div className="p-3.5 rounded-2xl bg-[#f8faf7] border border-emerald-100 text-xs text-slate-600 flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span className="font-semibold text-slate-700 leading-tight">
+                  {servicesList[activeServiceTab].tagline}
+                </span>
               </div>
             </div>
+          </div>
 
-            {/* CARD 4: Home and Community Based Services (HCBS Waivers) */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-              <div className="space-y-5">
-                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/service-hcbs-mother-daughter.jpg"
-                    alt="Home and Community Based Services (HCBS Waivers)"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
-                  </div>
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-rose-900 shadow-sm backdrop-blur-md">
-                      Home &amp; Community Care
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 sm:p-7 pt-1 space-y-3">
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                    Home and Community Based Services (HCBS Waivers)
-                  </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-medium">
-                    Support and care provided by a family caregiver in the comfort of home and within the community.
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
-                >
-                  <span>Become a Family Caregiver</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
-                >
-                  More Info
-                </button>
-              </div>
-            </div>
-
-            {/* CARD 5: Individual Residential Services and Supports (IRSS) */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-              <div className="space-y-5">
-                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/service-irss-mother-son-laptop.jpg"
-                    alt="Individual Residential Services and Supports (IRSS)"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
-                  </div>
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-purple-900 shadow-sm backdrop-blur-md">
-                      Host Homes &amp; Family Caregiver
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 sm:p-7 pt-1 space-y-3">
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                    Individual Residential Services and Supports (IRSS)
-                  </h3>
-                  <p className="text-xs text-slate-700 font-bold leading-relaxed">
-                    Family Caregiver, Host Homes
-                  </p>
-                </div>
-              </div>
-
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
-                >
-                  <span>Become a Family Caregiver</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
-                >
-                  More Info
-                </button>
-              </div>
-            </div>
-
-            {/* CARD 6: We Accept Medicaid and the Following Medicaid Waivers */}
-            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
-              <div className="space-y-5">
-                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
-                  <img
-                    src="/images/service-waivers-family-lake.jpg"
-                    alt="We Accept Medicaid and Waivers"
-                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
-                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
-                  </div>
-                  <div className="absolute bottom-3 left-4">
-                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-emerald-900 shadow-sm backdrop-blur-md">
-                      100% Colorado Medicaid Covered
-                    </span>
-                  </div>
-                </div>
-
-                <div className="p-6 sm:p-7 pt-1 space-y-3">
-                  <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
-                    We Accept Medicaid and the Following Medicaid Waivers:
-                  </h3>
-                  <div className="grid grid-cols-4 gap-2 pt-1 text-[11px] font-extrabold text-slate-800 text-center">
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CES</span>
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CHRP</span>
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">SLS</span>
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">DD</span>
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">EBD</span>
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CHCBS</span>
-                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CIH</span>
-                    <span className="p-1.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-300 font-black shadow-2xs">CFC</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
-                >
-                  <span>Become a Family Caregiver</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
-                >
-                  More Info
-                </button>
-              </div>
-            </div>
+          {/* Centered Bottom Action matching AxisCare reference */}
+          <div className="text-center pt-2">
+            <button
+              onClick={onStartOnboarding}
+              className="px-8 py-3.5 rounded-full border-2 border-slate-300 hover:border-[#3e6b2b] text-slate-800 hover:text-[#3e6b2b] font-black text-xs sm:text-sm transition-all shadow-xs hover:shadow-md inline-flex items-center gap-2 group bg-white"
+            >
+              <span>Explore All Services &amp; Waivers</span>
+              <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
+            </button>
           </div>
         </div>
       </section>
