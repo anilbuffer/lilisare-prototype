@@ -9,7 +9,7 @@ interface HeroHeartVisualProps {
 
 export function HeroHeartVisual({
   className = '',
-  imageSrc = '/images/senior-caregiver-garden.jpg',
+  imageSrc = '/images/mother-child-art.jpg',
 }: HeroHeartVisualProps) {
   return (
     <div className={`relative flex items-center justify-center ${className}`}>
