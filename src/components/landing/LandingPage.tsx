@@ -1363,66 +1363,118 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 12. ENTERPRISE FOOTER WITH MATCHING MENUS                                 */}
+      {/* 12. CLEAN & SIMPLE BRAND FOOTER (Exact Match to LiliSare Website)          */}
       {/* ========================================================================= */}
-      <footer className="bg-[#14210e] text-slate-300 py-16 px-4 sm:px-8 border-t border-primary-950">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
-          <div className="space-y-4">
-            <img
-              src="/images/lilisare-logo.png"
-              alt="LiliSare"
-              className="h-11 w-auto object-contain brightness-0 invert"
-            />
-            <p className="text-xs text-slate-400 leading-relaxed">
-              LiliSare combines Mountain Lane and Colorado Home Health to deliver compassionate, technology-enabled caregiving operations across Colorado.
-            </p>
-            <div className="flex items-center gap-2 pt-1">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-emerald-300">CDPHE Licensed</span>
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-white/10 text-[#F2B632]">HIPAA BAA Verified</span>
+      <footer className="bg-[#324925] text-white py-14 px-4 sm:px-8 border-t border-emerald-900/60 relative overflow-hidden">
+        {/* Subtle background ambient watermarks */}
+        <div className="absolute top-0 right-10 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-10 w-96 h-96 bg-[#F2B632]/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto relative z-10 space-y-10">
+          {/* Main 3-Column Section with vertical divider lines */}
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-8 items-start pb-10 border-b border-white/20">
+            {/* Column 1: Proudly serving + Socials */}
+            <div className="md:col-span-3 space-y-4">
+              <p className="text-xs sm:text-sm font-semibold text-emerald-100 leading-snug">
+                Proudly serving communities throughout Colorado
+              </p>
+              <div className="flex items-center gap-2.5 pt-1">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="w-8 h-8 rounded-full bg-white text-[#324925] hover:bg-[#F2B632] hover:text-slate-950 flex items-center justify-center transition-all shadow-sm"
+                >
+                  <Facebook className="w-4 h-4 fill-current" />
+                </a>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="w-8 h-8 rounded-full bg-white text-[#324925] hover:bg-[#F2B632] hover:text-slate-950 flex items-center justify-center transition-all shadow-sm"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+
+            {/* Vertical Divider 1 */}
+            <div className="hidden md:flex justify-center md:col-span-1 self-stretch">
+              <div className="w-px h-full bg-white/25" />
+            </div>
+
+            {/* Column 2: Headquarters, Email, Phone */}
+            <div className="md:col-span-4 space-y-5 text-xs text-emerald-100">
+              <div>
+                <h4 className="font-extrabold text-white text-sm">Headquarters</h4>
+                <p className="mt-0.5 text-slate-200">3750 Dacoro Lane, Suite 130</p>
+                <p className="text-slate-200">Castle Rock, CO 80109</p>
+              </div>
+
+              <div>
+                <h4 className="font-extrabold text-white text-sm">Send Us an Email:</h4>
+                <p className="mt-0.5">
+                  Email: <a href="mailto:Info@LiliSare.com" className="text-white hover:text-[#F2B632] underline font-medium">Info@LiliSare.com</a>
+                </p>
+              </div>
+
+              <div>
+                <h4 className="font-extrabold text-white text-sm">Call or Text Now!</h4>
+                <p className="mt-0.5">
+                  Phone: <a href="tel:3035780181" className="text-white hover:text-[#F2B632] font-black underline">303-578-0181</a>
+                </p>
+              </div>
+            </div>
+
+            {/* Vertical Divider 2 */}
+            <div className="hidden md:flex justify-center md:col-span-1 self-stretch">
+              <div className="w-px h-full bg-white/25" />
+            </div>
+
+            {/* Column 3: 2 Sub-Columns Navigation */}
+            <div className="md:col-span-3 grid grid-cols-2 gap-4 text-xs font-bold text-white">
+              <div className="space-y-3">
+                <p><a href="#home" className="hover:text-[#F2B632] transition-colors">Home</a></p>
+                <p><a href="#about-us" className="hover:text-[#F2B632] transition-colors">About Us</a></p>
+                <p><a href="#services" className="hover:text-[#F2B632] transition-colors">Services</a></p>
+                <p><a href="#resources" className="hover:text-[#F2B632] transition-colors">Resources</a></p>
+              </div>
+              <div className="space-y-3">
+                <p><a href="#faq" className="hover:text-[#F2B632] transition-colors">FAQ</a></p>
+                <p><a href="#community" className="hover:text-[#F2B632] transition-colors">Community</a></p>
+                <p><a href="#contact" className="hover:text-[#F2B632] transition-colors">Contact Us</a></p>
+              </div>
             </div>
           </div>
 
-          <div className="space-y-2 text-xs">
-            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Navigation Menus</h4>
-            <ul className="space-y-2 text-slate-400">
-              <li><a href="#home" className="hover:text-white">Home</a></li>
-              <li><a href="#about-us" className="hover:text-white">About Us</a></li>
-              <li><a href="#services" className="hover:text-white">Services</a></li>
-              <li><a href="#resources" className="hover:text-white">Resources</a></li>
-              <li><a href="#faq" className="hover:text-white">FAQ</a></li>
-              <li><a href="#community" className="hover:text-white">Community</a></li>
-              <li><a href="#contact" className="hover:text-white">Contact Us</a></li>
-            </ul>
-          </div>
+          {/* Bottom Bar: Logo on left, Copyright on right */}
+          <div className="pt-2 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <img
+                src="/images/lilisare-logo.png"
+                alt="LiliSare because we care"
+                className="h-12 w-auto object-contain brightness-0 invert"
+              />
+            </div>
 
-          <div className="space-y-2 text-xs">
-            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Medicaid Programs</h4>
-            <ul className="space-y-2 text-slate-400">
-              <li>In-Home Support Services (IHSS)</li>
-              <li>Certified Nurse Aide (CNA) Care</li>
-              <li>Health Maintenance Activities (HMA)</li>
-              <li>Community First Choice (CFC)</li>
-              <li>Pediatric Respite & Supports</li>
-            </ul>
-          </div>
-
-          <div className="space-y-2 text-xs">
-            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Headquarters & Hotline</h4>
-            <p className="text-slate-300">7100 E Belleview Ave, Ste 310</p>
-            <p className="text-slate-300">Greenwood Village, CO 80111</p>
-            <p className="pt-2 text-slate-400">Call / Text: <a href="tel:3035780181" className="text-[#F2B632] font-bold">303-578-0181</a></p>
-            <p className="text-slate-400">Email: <a href="mailto:info@lilisare.com" className="text-slate-200">info@lilisare.com</a></p>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto pt-10 mt-10 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
-          <p>© {new Date().getFullYear()} LiliSare LLC. All rights reserved. &ldquo;because we care&rdquo;</p>
-          <div className="flex items-center gap-4 text-[11px]">
-            <a href="#" className="hover:text-slate-300">Privacy Policy</a>
-            <span>•</span>
-            <a href="#" className="hover:text-slate-300">Client Rights</a>
-            <span>•</span>
-            <a href="#" className="hover:text-slate-300">Emergency Protocol</a>
+            <div className="text-center md:text-right text-[11px] text-emerald-200/90 space-y-1">
+              <p className="flex flex-wrap items-center justify-center md:justify-end gap-2 text-slate-200">
+                <span>&copy; Copyright {new Date().getFullYear()}</span>
+                <span>|</span>
+                <a href="#" className="hover:text-white underline">Privacy Notice</a>
+                <span>|</span>
+                <a href="#" className="hover:text-white underline">Non-Discrimination Policy</a>
+                <span>|</span>
+                <span>Designed by Proweaver</span>
+              </p>
+              <p className="text-center md:text-right">
+                <a href="#" className="hover:text-white text-[10px] text-emerald-200/70 hover:underline">
+                  Do Not Sell/Share My Personal Information
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </footer>
