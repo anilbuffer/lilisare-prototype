@@ -581,19 +581,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  <span>Apply Now</span>
+                  <span>Become a Family Caregiver</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
                 >
-                  Read More
+                  More Info
                 </button>
               </div>
             </div>
@@ -628,19 +628,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  <span>Apply Now</span>
+                  <span>Become a Family Caregiver</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
                 >
-                  Read More
+                  More Info
                 </button>
               </div>
             </div>
@@ -675,19 +675,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  <span>Apply Now</span>
+                  <span>Become a Family Caregiver</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
                 >
-                  Read More
+                  More Info
                 </button>
               </div>
             </div>
@@ -722,19 +722,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  <span>Apply Now</span>
+                  <span>Become a Family Caregiver</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
                 >
-                  Read More
+                  More Info
                 </button>
               </div>
             </div>
@@ -769,19 +769,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  <span>Apply Now</span>
+                  <span>Become a Family Caregiver</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
                 >
-                  Read More
+                  More Info
                 </button>
               </div>
             </div>
@@ -823,19 +823,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-2.5">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
+                  className="w-full sm:flex-1 py-3 px-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  <span>Apply Now</span>
+                  <span>Become a Family Caregiver</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
+                  className="w-full sm:w-auto px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center whitespace-nowrap"
                 >
-                  Check Waiver
+                  More Info
                 </button>
               </div>
             </div>
