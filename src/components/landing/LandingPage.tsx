@@ -289,53 +289,56 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
     );
   };
 
-  // Services List: concise, short, scannable
+  // Services List: concise, short, scannable (Styled in AxisCare Reference Format)
   const servicesList = [
     {
       id: 'ihss',
-      pill: 'IHSS Attendant',
+      pill: 'Home Care (IHSS)',
       badge: 'Parent & Family Care',
-      title: 'In-Home Support Services (IHSS)',
-      desc: 'Parents, spouses, and relatives can be hired as legal attendants to assist with daily living, mobility, meals, and hygiene.',
+      title: 'In-Home Support Services',
+      desc: 'Parents, spouses, and relatives are legally hired and paid competitive hourly rates to assist loved ones with daily living, mobility, meals, and hygiene under Colorado Medicaid.',
       image: '/images/service-ihss-father-son.jpg',
       imageAlt: 'Father embracing son in wheelchair at home in Colorado',
       features: [
-        { icon: Heart, title: 'No Medical License Required', desc: 'Family members qualify without prior healthcare experience.' },
-        { icon: DollarSign, title: '$28.50+ / Hour with ADP Direct Deposit', desc: 'W-2 employment, overtime eligibility, and bi-weekly direct deposit.' },
-        { icon: Smartphone, title: '1-Tap Mobile Visit Verification', desc: 'Simple GPS-verified shift clock-in without paper timesheets.' },
-        { icon: Stethoscope, title: 'Dedicated Registered Nurse Oversight', desc: 'Ongoing clinical coaching, care planning, and peace of mind.' },
+        { icon: DollarSign, title: 'W-2 Hourly Pay ($28.50+ / hr)', desc: 'Bi-weekly ADP direct deposit & overtime eligibility' },
+        { icon: Smartphone, title: 'Caregiver Mobile App', desc: '1-tap GPS Colorado EVV shift verification' },
+        { icon: Heart, title: 'No Medical License Needed', desc: 'Family members qualify without healthcare experience' },
+        { icon: Stethoscope, title: 'Dedicated Registered Nurse Oversight', desc: 'In-home clinical visits & care planning' },
+        { icon: ShieldCheck, title: '100% Colorado Medicaid Funded', desc: 'Zero out-of-pocket family cost' },
       ],
       tagline: '100% Colorado Medicaid Funded • 15 to 40+ Hours / Week'
     },
     {
       id: 'cna',
-      pill: 'Become a CNA',
+      pill: 'Skilled Care (CNA)',
       badge: 'Skilled Medical Care',
-      title: 'Colorado Certified Nurse Aide (CNA)',
-      desc: 'For loved ones with complex medical needs. We sponsor and pay for your Colorado CNA training and state licensing.',
+      title: 'Certified Nurse Aide Program',
+      desc: 'For loved ones with complex medical requirements. LiliSare sponsors and pays 100% of your Colorado CNA training, clinical skills labs, and state board licensing fees.',
       image: '/images/service-cna-mother-son.jpg',
       imageAlt: 'Mother holding her young son closely while receiving certified in-home care',
       features: [
-        { icon: Award, title: 'Sponsored Tuition & State Testing', desc: 'We cover the full cost of your approved Colorado CNA course.' },
-        { icon: DollarSign, title: 'Earn Up to $32.50 / Hour', desc: 'Elevated hourly pay recognizing certified clinical care.' },
-        { icon: Stethoscope, title: 'Supervised by Registered Nurses', desc: 'Regular in-home visits and clinical support.' },
-        { icon: ShieldCheck, title: 'State-Licensed Class A Agency', desc: 'Full CDPHE compliance protecting your family.' },
+        { icon: Award, title: 'Sponsored CNA Tuition & Testing', desc: 'Full funding for your state-approved course' },
+        { icon: DollarSign, title: 'Elevated Pay Up to $32.50 / hr', desc: 'Premium wage recognizing certified clinical care' },
+        { icon: Stethoscope, title: 'Supervised by Registered Nurses', desc: 'Continuous clinical coaching and check-ins' },
+        { icon: ShieldCheck, title: 'State-Licensed Class A Agency', desc: 'Full CDPHE compliance and peace of mind' },
+        { icon: FileCheck, title: 'Zero Student Loan Debt', desc: 'Direct agency sponsorship from day one' },
       ],
       tagline: 'Tuition Sponsored by LiliSare • Up to $32.50 / Hour'
     },
     {
       id: 'cfc',
-      pill: 'CFC Benefit',
+      pill: 'Community First Choice',
       badge: 'State Plan Entitlement',
       title: 'Community First Choice (CFC)',
-      desc: 'A Colorado Medicaid entitlement providing self-directed personal attendant care without multi-year waiver waiting lists.',
+      desc: 'A Colorado Medicaid entitlement providing self-directed personal attendant care without multi-year waiver waiting lists or lottery restrictions.',
       image: '/images/service-cfc-sisters.jpg',
       imageAlt: 'Two sisters smiling outdoors in Colorado',
       features: [
-        { icon: ShieldCheck, title: 'Zero Waiting List Entitlement', desc: 'Available to all eligible Colorado Medicaid recipients.' },
-        { icon: Users, title: 'You Choose Your Caregiver', desc: 'Direct your care and select trusted family members.' },
-        { icon: HomeIcon, title: 'In-Home Independence', desc: 'Personal attendant care tailored to your daily routine.' },
-        { icon: FileCheck, title: 'State-Backed Coverage', desc: 'Comprehensive funding that supports dignified home living.' },
+        { icon: ShieldCheck, title: 'Zero Waiting List Entitlement', desc: 'Immediate access for eligible Medicaid recipients' },
+        { icon: Users, title: 'You Choose Your Caregiver', desc: 'Direct your care and select trusted relatives' },
+        { icon: HomeIcon, title: 'In-Home Independence', desc: 'Attendant care tailored to your daily household' },
+        { icon: FileCheck, title: 'State-Backed Coverage', desc: 'Comprehensive funding for dignified home living' },
+        { icon: Clock, title: 'Immediate Enrollment', desc: 'Fast-tracked intake with your county coordinator' },
       ],
       tagline: 'Colorado Medicaid Entitlement • Immediate Access'
     },
@@ -343,15 +346,16 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       id: 'hcbs',
       pill: 'HCBS Waivers',
       badge: 'Children & Adults',
-      title: 'Home & Community-Based Services (HCBS)',
-      desc: 'Comprehensive funding for children with special healthcare needs and adults with disabilities to live safely at home.',
+      title: 'Home & Community Waivers',
+      desc: 'Comprehensive funding for children with special healthcare needs and adults with disabilities to live safely, independently, and comfortably at home.',
       image: '/images/service-hcbs-mother-daughter.jpg',
       imageAlt: 'Mother holding her daughter outdoors in Colorado park',
       features: [
-        { icon: Baby, title: 'Children’s Waivers: CES, CHRP & CHCBS', desc: 'Support for high-medical and behavioral conditions.' },
-        { icon: Users, title: 'Adult Waivers: SLS, DD, EBD & CIH', desc: 'Supported living, developmental disability, and elder care.' },
-        { icon: BadgeCheck, title: 'Case Management Agency Synced', desc: 'Authorized through RMHS, Developmental Pathways, Imagine! & TRE.' },
-        { icon: Clock, title: 'Flexible Care Scheduling', desc: 'Day, evening, and weekend coverage tailored to your household.' },
+        { icon: Baby, title: 'Children’s Waivers: CES & CHRP', desc: 'Intensive medical, physical, and behavioral support' },
+        { icon: Users, title: 'Adult Waivers: SLS, DD & EBD', desc: 'Supported living, developmental disability, and elder care' },
+        { icon: BadgeCheck, title: 'Case Management Agency Synced', desc: 'Direct links with RMHS, DP, Imagine!, and TRE' },
+        { icon: Clock, title: 'Flexible Care Scheduling', desc: 'Day, evening, and weekend shift coverage' },
+        { icon: ShieldCheck, title: '$0 Family Cost Guarantee', desc: '100% funded through Colorado Medicaid' },
       ],
       tagline: '100% Covered by Colorado Medicaid • $0 Out-of-Pocket'
     },
@@ -359,15 +363,16 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       id: 'irss',
       pill: 'Host Homes & IRSS',
       badge: 'Residential Living',
-      title: 'Individual Residential Services (IRSS)',
-      desc: 'Supportive living arrangements and family caregiver models for adults with intellectual and developmental disabilities.',
+      title: 'Individual Residential Services',
+      desc: 'Supportive living arrangements and family caregiver models for adults with intellectual and developmental disabilities to thrive within caring households.',
       image: '/images/service-irss-mother-son-laptop.jpg',
       imageAlt: 'Mother and adult son reviewing tablet activities together at home',
       features: [
-        { icon: HomeIcon, title: 'Family Caregiver Living Model', desc: 'Adult clients live with family caregivers with monthly funding.' },
-        { icon: Smile, title: 'Vetted Colorado Host Homes', desc: 'Warm, supportive community homes with dedicated providers.' },
-        { icon: Activity, title: 'Life Skills & Social Flourishing', desc: 'Cooking, budgeting, community outings, and peer connection.' },
-        { icon: ShieldCheck, title: '24/7 Agency Safety Oversight', desc: 'Ongoing respite, nurse check-ins, and emergency support.' },
+        { icon: HomeIcon, title: 'Family Caregiver Living Model', desc: 'Adult clients live at home with monthly agency stipends' },
+        { icon: Smile, title: 'Vetted Colorado Host Homes', desc: 'Warm, supportive community homes with dedicated providers' },
+        { icon: Activity, title: 'Life Skills & Community Outings', desc: 'Cooking, budgeting, recreation, and social connection' },
+        { icon: ShieldCheck, title: '24/7 Agency Safety Oversight', desc: 'Respite, nurse check-ins, and emergency support' },
+        { icon: Users, title: 'Caregiver Peer Support', desc: 'Regular gatherings through LiliSare WeGo events' },
       ],
       tagline: 'Colorado Adult IDD Residential • Dignified Community Living'
     },
@@ -375,15 +380,16 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       id: 'waivers',
       pill: 'All Accepted Waivers',
       badge: 'Statewide Coverage',
-      title: 'Accepted Colorado Medicaid Waivers',
-      desc: 'We are certified to coordinate and manage care under all major Colorado Medicaid waivers. We handle verification for you.',
+      title: 'Accepted Colorado Waivers',
+      desc: 'We are licensed to coordinate and deliver care under all major Colorado Medicaid waivers. Our intake specialists verify eligibility and coordinate with your county agency.',
       image: '/images/service-waivers-family-lake.jpg',
       imageAlt: 'Colorado family standing together happily at mountain resort',
       features: [
-        { icon: FileCheck, title: 'Children’s Waivers: CES & CHRP', desc: 'For children with intense behavioral, medical, or physical needs.' },
-        { icon: Heart, title: 'Adult Waivers: SLS, DD & EBD', desc: 'Independent living, residential support, and senior care.' },
-        { icon: Award, title: 'Community First Choice (CFC)', desc: 'State plan Medicaid personal attendant coverage.' },
-        { icon: Phone, title: 'Free 15-Minute Benefits Check', desc: 'Call us at 303-578-0181 to verify your family’s coverage.' },
+        { icon: FileCheck, title: 'Children’s Coverage: CES & CHRP', desc: 'Support for high-medical and behavioral conditions' },
+        { icon: Heart, title: 'Adult Waivers: SLS, DD & EBD', desc: 'Independent living, residential support, and senior care' },
+        { icon: Award, title: 'Community First Choice (CFC)', desc: 'State plan Medicaid personal attendant coverage' },
+        { icon: Phone, title: 'Free 15-Minute Benefits Check', desc: 'Call 303-578-0181 to verify your family coverage' },
+        { icon: ShieldCheck, title: 'Full County Coordination', desc: 'We coordinate paperwork with case managers directly' },
       ],
       tagline: 'CES • CHRP • SLS • DD • EBD • CHCBS • CIH • CFC'
     }
@@ -928,30 +934,33 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 8. SERVICES & WAIVERS (Short, Scannable Tabs)                             */}
+      {/* 8. SERVICES & WAIVERS (Modeled on AxisCare Clean Premium Layout)          */}
       {/* ========================================================================= */}
-      <section id="services" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
+      <section id="services" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#f4f7f5] border-b border-slate-200/60">
         <div className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Programs</span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Services &amp; Waivers
+          {/* Eyebrow & Title */}
+          <div className="text-center max-w-xl mx-auto space-y-2">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2d551e] uppercase">
+              What You Get
+            </span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#11230e] tracking-tight">
+              LiliSare Program Features
             </h2>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-              Colorado Medicaid programs designed for children and adults with healthcare needs.
+            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+              Colorado Medicaid care programs designed for families and individuals.
             </p>
           </div>
 
-          {/* Horizontal Pills */}
-          <div className="flex items-center justify-start md:justify-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {/* Horizontal Pills (AxisCare Style) */}
+          <div className="flex items-center justify-start md:justify-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
             {servicesList.map((service, idx) => (
               <button
                 key={service.id}
                 onClick={() => setActiveServiceTab(idx)}
-                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
+                className={`px-6 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   activeServiceTab === idx
                     ? 'bg-[#2d551e] text-white shadow-md'
-                    : 'bg-white text-slate-700 border border-slate-200 hover:border-slate-300'
+                    : 'bg-white text-slate-600 border border-slate-200/90 shadow-2xs hover:border-slate-300 hover:text-slate-900'
                 }`}
               >
                 {service.pill}
@@ -959,67 +968,78 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             ))}
           </div>
 
-          {/* 2-Card Showcase */}
+          {/* 2-Card Showcase Container */}
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
-            {/* Left Card */}
-            <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-6 sm:p-8 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full inline-block border border-emerald-100">
-                  {servicesList[activeServiceTab].badge}
-                </span>
+            {/* Left Card: Main Editorial Split Card (Content on Left, Photo on Right) */}
+            <div className="lg:col-span-8 bg-white rounded-3xl sm:rounded-[28px] border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] overflow-hidden grid grid-cols-1 md:grid-cols-12 items-stretch">
+              {/* Content Left */}
+              <div className="md:col-span-6 p-7 sm:p-9 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full inline-block border border-emerald-100">
+                    {servicesList[activeServiceTab].badge}
+                  </span>
 
-                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug">
-                  {servicesList[activeServiceTab].title}
-                </h3>
+                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+                    {servicesList[activeServiceTab].title}
+                  </h3>
 
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  {servicesList[activeServiceTab].desc}
-                </p>
+                  <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                    {servicesList[activeServiceTab].desc}
+                  </p>
+                </div>
 
-                {/* Photo inside card */}
-                <div className="rounded-2xl overflow-hidden aspect-[16/9] shadow-sm border border-slate-100 mt-2">
-                  <img
-                    src={servicesList[activeServiceTab].image}
-                    alt={servicesList[activeServiceTab].imageAlt}
-                    className="w-full h-full object-cover"
-                  />
+                <div className="space-y-4 pt-2">
+                  <div>
+                    <button
+                      onClick={onStartOnboarding}
+                      className="inline-flex items-center gap-1.5 text-sm font-bold text-[#2d551e] hover:text-[#1b3614] hover:gap-2.5 transition-all cursor-pointer group"
+                    >
+                      <span>Learn More</span>
+                      <ChevronRight className="w-4 h-4 text-[#2d551e] group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  </div>
+
+                  <div>
+                    <button
+                      onClick={onStartOnboarding}
+                      className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-[0_2px_8px_rgba(45,85,30,0.25)] hover:shadow-[0_4px_16px_rgba(45,85,30,0.35)] transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
+                    >
+                      <span>Get Started</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 pt-2">
-                <button
-                  onClick={onStartOnboarding}
-                  className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-xs transition-all active:scale-[0.98] inline-flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span>Get Started</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
-                <button
-                  onClick={onStartOnboarding}
-                  className="border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition-all cursor-pointer"
-                >
-                  Check Eligibility
-                </button>
+              {/* Photo Right: Editorial photo filling right side */}
+              <div className="md:col-span-6 relative min-h-[260px] md:min-h-[380px] bg-slate-100">
+                <img
+                  src={servicesList[activeServiceTab].image}
+                  alt={servicesList[activeServiceTab].imageAlt}
+                  className="w-full h-full object-cover absolute inset-0"
+                />
               </div>
             </div>
 
-            {/* Right Card: Features */}
-            <div className="lg:col-span-5 bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-6 sm:p-8 flex flex-col justify-between space-y-6">
-              <div className="space-y-4">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100">
-                  Key Benefits
+            {/* Right Card: Key Features */}
+            <div className="lg:col-span-4 bg-white rounded-3xl sm:rounded-[28px] border border-slate-200/80 shadow-[0_20px_50px_rgba(0,0,0,0.06)] p-7 sm:p-9 flex flex-col justify-between space-y-6">
+              <div className="space-y-5">
+                <h4 className="text-lg font-extrabold text-slate-900 tracking-tight">
+                  Key Features
                 </h4>
+
                 <div className="space-y-4">
                   {servicesList[activeServiceTab].features.map((feature, idx) => {
                     const IconComp = feature.icon;
                     return (
-                      <div key={idx} className="flex items-start gap-3.5">
-                        <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#2d551e] flex items-center justify-center shrink-0 shadow-xs">
-                          <IconComp className="w-4 h-4" />
+                      <div key={idx} className="flex items-center gap-3.5 group">
+                        <div className="w-9 h-9 rounded-xl border border-slate-200/90 bg-slate-50/80 text-[#2d551e] flex items-center justify-center shrink-0 shadow-2xs group-hover:border-emerald-300 group-hover:bg-emerald-50 transition-colors">
+                          <IconComp className="w-4 h-4 text-[#2d551e]" />
                         </div>
-                        <div className="space-y-0.5">
-                          <p className="text-xs font-bold text-slate-900 leading-snug">{feature.title}</p>
-                          <p className="text-[11px] text-slate-500 leading-snug">{feature.desc}</p>
+                        <div>
+                          <p className="text-sm font-bold text-slate-800 leading-snug group-hover:text-slate-950 transition-colors">
+                            {feature.title}
+                          </p>
                         </div>
                       </div>
                     );
@@ -1027,11 +1047,23 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-100 text-[11px] text-emerald-900 flex items-center gap-2 font-medium">
-                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>{servicesList[activeServiceTab].tagline}</span>
+              <div className="pt-3 border-t border-slate-100">
+                <span className="text-[11px] font-semibold text-slate-500 block">
+                  {servicesList[activeServiceTab].tagline}
+                </span>
               </div>
             </div>
+          </div>
+
+          {/* Centered Pill Button (AxisCare Style) */}
+          <div className="text-center pt-2">
+            <button
+              onClick={onStartOnboarding}
+              className="inline-flex items-center gap-2 px-7 py-3 rounded-full bg-white border border-slate-200/90 text-slate-800 font-bold text-xs sm:text-sm shadow-sm hover:shadow-md hover:border-slate-300 transition-all cursor-pointer active:scale-[0.98]"
+            >
+              <span>Explore All Features</span>
+              <ChevronRight className="w-4 h-4 text-[#2d551e]" />
+            </button>
           </div>
         </div>
       </section>
