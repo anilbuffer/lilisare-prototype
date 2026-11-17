@@ -619,8 +619,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             <div className="relative w-full max-w-[500px] flex items-center justify-center">
               <HeroHeartVisual className="w-full" />
 
-              {/* Floating Badges */}
-              <div className="absolute top-2 -left-2 sm:left-0 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25)] border border-white/70 flex items-center gap-3 z-20 hover:-translate-y-0.5 transition-transform">
+              {/* Floating Badges (Positioned cleanly to not obstruct family faces) */}
+              <div className="absolute top-4 -left-3 sm:-left-6 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25)] border border-white/70 flex items-center gap-3 z-20 hover:-translate-y-0.5 transition-transform">
                 <div className="w-9 h-9 rounded-xl bg-emerald-100 text-[#1b3614] flex items-center justify-center font-bold shadow-xs">
                   <DollarSign className="w-4 h-4 text-emerald-800" />
                 </div>
@@ -630,7 +630,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="absolute bottom-2 -left-2 sm:left-2 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25)] border border-white/70 flex items-center gap-3 z-20 hover:-translate-y-0.5 transition-transform">
+              <div className="absolute bottom-4 -left-3 sm:-left-4 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25)] border border-white/70 flex items-center gap-3 z-20 hover:-translate-y-0.5 transition-transform">
                 <div className="w-9 h-9 rounded-xl bg-emerald-100 text-[#1b3614] flex items-center justify-center font-bold shadow-xs">
                   <Smartphone className="w-4 h-4 text-emerald-800" />
                 </div>

@@ -5,11 +5,19 @@ import React from 'react';
 interface HeroHeartVisualProps {
   className?: string;
   imageSrc?: string;
+  imageX?: number;
+  imageY?: number;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 export function HeroHeartVisual({
   className = '',
   imageSrc = '/images/mother-child-art.jpg',
+  imageX = -590,
+  imageY = 25,
+  imageWidth = 1280,
+  imageHeight = 650,
 }: HeroHeartVisualProps) {
   return (
     <div className={`relative flex items-center justify-center ${className}`}>
@@ -59,15 +67,15 @@ export function HeroHeartVisual({
           </g>
         </defs>
 
-        {/* 1. Independent Inner Image fitted cleanly into heart clip */}
+        {/* 1. Independent Inner Image fitted cleanly into heart clip with faces centered */}
         <g clipPath="url(#heroHeartClip)">
           <image
             href={imageSrc}
-            x="-30"
-            y="15"
-            width="720"
-            height="580"
-            preserveAspectRatio="xMidYMid slice"
+            x={imageX}
+            y={imageY}
+            width={imageWidth}
+            height={imageHeight}
+            preserveAspectRatio="none"
           />
         </g>
 
