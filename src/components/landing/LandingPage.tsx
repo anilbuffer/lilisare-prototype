@@ -50,6 +50,147 @@ import {
 } from 'lucide-react';
 import { usePortal } from '@/lib/store/portal-context';
 
+/* ========================================================================= */
+/* LANGUAGE SELECTOR & REAL FLAG SVGs (Matching Authentic User Reference)    */
+/* Flags: US, Arabic, Chinese (Simplified), Dutch, French, Spanish, etc.     */
+/* ========================================================================= */
+interface LanguageOption {
+  code: string;
+  label: string;
+  short: string;
+}
+
+const LANGUAGES: LanguageOption[] = [
+  { code: 'en', label: 'English', short: 'EN' },
+  { code: 'ar', label: 'Arabic', short: 'AR' },
+  { code: 'zh', label: 'Chinese (Simplified)', short: 'ZH' },
+  { code: 'nl', label: 'Dutch', short: 'NL' },
+  { code: 'fr', label: 'French', short: 'FR' },
+  { code: 'es', label: 'Spanish', short: 'ES' },
+  { code: 'vi', label: 'Vietnamese', short: 'VI' },
+  { code: 'ru', label: 'Russian', short: 'RU' },
+  { code: 'de', label: 'German', short: 'DE' },
+  { code: 'so', label: 'Somali', short: 'SO' },
+];
+
+const FlagUS = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#bd3d44" d="M0 0h640v480H0z" />
+    <path stroke="#fff" strokeWidth="37" d="M0 55.5h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640" />
+    <path fill="#192f5d" d="M0 0h260v259H0z" />
+    <g fill="#fff">
+      {[25, 75, 125, 175, 225].map((cy) =>
+        [25, 65, 105, 145, 185, 225].map((cx) => (
+          <circle key={`s1-${cx}-${cy}`} cx={cx} cy={cy} r="6" />
+        ))
+      )}
+      {[50, 100, 150, 200].map((cy) =>
+        [45, 85, 125, 165, 205].map((cx) => (
+          <circle key={`s2-${cx}-${cy}`} cx={cx} cy={cy} r="6" />
+        ))
+      )}
+    </g>
+  </svg>
+);
+
+const FlagArabic = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#056839" d="M0 0h640v480H0z" />
+    <circle cx="320" cy="240" r="115" fill="none" stroke="#fff" strokeWidth="12" />
+    <circle cx="320" cy="240" r="95" fill="none" stroke="#f6c23e" strokeWidth="8" />
+    <circle cx="320" cy="240" r="75" fill="#04562f" />
+    <path fill="#f6c23e" d="M320 175l14 38h40l-32 24 12 39-34-24-34 24 12-39-32-24h40z" />
+    <path d="M250 250c25 50 115 50 140 0" fill="none" stroke="#fff" strokeWidth="8" strokeLinecap="round" />
+  </svg>
+);
+
+const FlagChinese = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#de2910" d="M0 0h640v480H0z" />
+    <polygon fill="#ffde00" points="110,40 123,80 165,80 131,105 144,145 110,120 76,145 89,105 55,80 97,80" />
+    <polygon fill="#ffde00" points="185,25 189,37 201,37 191,44 195,56 185,49 175,56 179,44 169,37 181,37" />
+    <polygon fill="#ffde00" points="220,60 224,72 236,72 226,79 230,91 220,84 210,91 214,79 204,72 216,72" />
+    <polygon fill="#ffde00" points="220,115 224,127 236,127 226,134 230,146 220,139 210,146 214,134 204,127 216,127" />
+    <polygon fill="#ffde00" points="185,155 189,167 201,167 191,174 195,186 185,179 175,186 179,174 169,167 181,167" />
+  </svg>
+);
+
+const FlagDutch = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#ae1c28" d="M0 0h640v160H0z" />
+    <path fill="#ffffff" d="M0 160h640v160H0z" />
+    <path fill="#21468b" d="M0 320h640v160H0z" />
+  </svg>
+);
+
+const FlagFrench = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#002654" d="M0 0h213.3v480H0z" />
+    <path fill="#ffffff" d="M213.3 0h213.4v480H213.3z" />
+    <path fill="#ed2939" d="M426.7 0H640v480H426.7z" />
+  </svg>
+);
+
+const FlagSpanish = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#aa151b" d="M0 0h640v120H0z" />
+    <path fill="#f1bf00" d="M0 120h640v240H0z" />
+    <path fill="#aa151b" d="M0 360h640v120H0z" />
+    <g transform="translate(140, 180) scale(0.6)">
+      <rect x="0" y="30" width="70" height="90" rx="10" fill="#aa151b" />
+      <rect x="10" y="40" width="50" height="70" rx="6" fill="#f1bf00" />
+      <path d="M0 20 L35 0 L70 20 Z" fill="#aa151b" />
+      <circle cx="35" cy="15" r="8" fill="#f1bf00" />
+    </g>
+  </svg>
+);
+
+const FlagVietnamese = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#da251d" d="M0 0h640v480H0z" />
+    <polygon fill="#ffde00" points="320,100 358,220 485,220 382,295 422,415 320,340 218,415 258,295 155,220 282,220" />
+  </svg>
+);
+
+const FlagRussian = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#ffffff" d="M0 0h640v160H0z" />
+    <path fill="#0039a6" d="M0 160h640v160H0z" />
+    <path fill="#d52b1e" d="M0 320h640v160H0z" />
+  </svg>
+);
+
+const FlagGerman = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#000000" d="M0 0h640v160H0z" />
+    <path fill="#dd0000" d="M0 160h640v160H0z" />
+    <path fill="#ffce00" d="M0 320h640v160H0z" />
+  </svg>
+);
+
+const FlagSomali = () => (
+  <svg className="w-6 h-4 rounded-[3px] shadow-xs shrink-0 overflow-hidden border border-black/15" viewBox="0 0 640 480">
+    <path fill="#4189dd" d="M0 0h640v480H0z" />
+    <polygon fill="#ffffff" points="320,120 352,225 460,225 373,290 405,395 320,330 235,395 267,290 180,225 288,225" />
+  </svg>
+);
+
+const FlagIcon = ({ code }: { code: string }) => {
+  switch (code) {
+    case 'en': return <FlagUS />;
+    case 'ar': return <FlagArabic />;
+    case 'zh': return <FlagChinese />;
+    case 'nl': return <FlagDutch />;
+    case 'fr': return <FlagFrench />;
+    case 'es': return <FlagSpanish />;
+    case 'vi': return <FlagVietnamese />;
+    case 'ru': return <FlagRussian />;
+    case 'de': return <FlagGerman />;
+    case 'so': return <FlagSomali />;
+    default: return <FlagUS />;
+  }
+};
+
 interface LandingPageProps {
   onStartOnboarding: () => void;
   onExplorePortal: () => void;
@@ -57,6 +198,11 @@ interface LandingPageProps {
 
 export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageProps) {
   const { notify } = usePortal();
+
+  // Language Dropdown State (Matching Authentic Reference)
+  const [selectedLang, setSelectedLang] = useState<string>('en');
+  const [isLangOpen, setIsLangOpen] = useState<boolean>(false);
+  const currentLang = LANGUAGES.find((l) => l.code === selectedLang) || LANGUAGES[0];
 
   // Interactive Pay Calculator State
   const [hoursPerWeek, setHoursPerWeek] = useState<number>(28);
@@ -270,16 +416,99 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
           </div>
 
-          <div className="flex items-center gap-3 text-[11px]">
+          <div className="flex items-center gap-2.5 text-[11px] relative">
             <button
-              onClick={() => alert('Para asistencia en español, llámenos directamente al 303-578-0181.')}
-              className="bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-slate-950 font-black px-2.5 py-0.5 rounded-full hover:brightness-105 transition-all shadow-xs"
+              onClick={() => {
+                setSelectedLang('es');
+                notify(
+                  'Asistencia en Español',
+                  'Para asistencia inmediata en español con un coordinador bilingüe de LiliSare, llámenos al 303-578-0181.',
+                  'info'
+                );
+              }}
+              className="bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-slate-950 font-black px-2.5 py-1 rounded-full hover:brightness-105 transition-all shadow-xs flex items-center gap-1 cursor-pointer"
             >
-              📞 Se Habla Español
+              <span>📞 Se Habla Español</span>
             </button>
-            <div className="flex items-center gap-1 text-slate-300">
-              <Globe className="w-3.5 h-3.5 text-[#F2B632]" />
-              <span className="font-bold">EN / ES</span>
+
+            {/* Language Selector Dropdown (Matching Authentic Attached Reference) */}
+            <div className="relative">
+              {/* Invisible full-screen backdrop to dismiss on click outside */}
+              {isLangOpen && (
+                <div
+                  className="fixed inset-0 z-40 bg-transparent cursor-default"
+                  onClick={() => setIsLangOpen(false)}
+                />
+              )}
+
+              {/* Trigger Button: White rounded pill with flag, code & chevron */}
+              <button
+                type="button"
+                onClick={() => setIsLangOpen(!isLangOpen)}
+                className={`bg-white text-slate-800 text-xs font-bold px-3 py-1 flex items-center gap-1.5 shadow-sm hover:shadow transition-all border border-slate-200/90 cursor-pointer select-none relative z-50 ${
+                  isLangOpen
+                    ? 'rounded-t-xl rounded-b-none border-b-transparent shadow-md'
+                    : 'rounded-full hover:bg-slate-50'
+                }`}
+                aria-expanded={isLangOpen}
+                aria-haspopup="listbox"
+                title="Select language"
+              >
+                <FlagIcon code={currentLang.code} />
+                <span className="font-extrabold text-slate-900 tracking-wide">{currentLang.short}</span>
+                <ChevronDown
+                  className={`w-3.5 h-3.5 text-slate-500 transition-transform duration-200 ${
+                    isLangOpen ? 'rotate-180 text-primary-700' : ''
+                  }`}
+                />
+              </button>
+
+              {/* Open Dropdown Menu attached below matching reference layout */}
+              {isLangOpen && (
+                <div
+                  className="absolute right-0 top-full w-32 sm:w-36 bg-white rounded-b-xl rounded-tl-xl border border-slate-200/90 shadow-2xl z-50 overflow-hidden"
+                  style={{ marginTop: '-1px' }}
+                  role="listbox"
+                >
+                  <div
+                    className="max-h-60 overflow-y-auto divide-y divide-slate-100"
+                    style={{ scrollbarWidth: 'thin' }}
+                  >
+                    {LANGUAGES.map((lang) => {
+                      const isSelected = selectedLang === lang.code;
+                      return (
+                        <button
+                          key={lang.code}
+                          type="button"
+                          onClick={() => {
+                            setSelectedLang(lang.code);
+                            setIsLangOpen(false);
+                            notify(
+                              'Language Selected',
+                              `Interface language set to ${lang.label}.`,
+                              'info'
+                            );
+                          }}
+                          className={`w-full py-2.5 px-2 flex flex-col items-center justify-center text-center cursor-pointer transition-colors group ${
+                            isSelected
+                              ? 'bg-emerald-50/90 text-primary-950 font-bold'
+                              : 'hover:bg-slate-50 text-slate-700 hover:text-slate-950'
+                          }`}
+                          role="option"
+                          aria-selected={isSelected}
+                        >
+                          <div className="mb-1 transform group-hover:scale-105 transition-transform drop-shadow-xs">
+                            <FlagIcon code={lang.code} />
+                          </div>
+                          <span className={`text-[11px] leading-tight ${isSelected ? 'font-bold text-[#244218]' : 'font-medium'}`}>
+                            {lang.label}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
