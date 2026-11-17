@@ -41,6 +41,30 @@ export function Header() {
         {/* Global Navigation Tabs (Interactive Roadmap & Modules) */}
         <div className="flex items-center gap-1 overflow-x-auto pb-1 md:pb-0 text-xs">
           <button
+            onClick={() => setActiveView('landing')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap ${
+              activeView === 'landing'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
+            <span>Task 1: Landing Page</span>
+          </button>
+
+          <button
+            onClick={() => setActiveView('wizard')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap ${
+              activeView === 'wizard'
+                ? 'bg-primary text-white shadow-sm'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+            }`}
+          >
+            <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
+            <span>Task 2: Onboarding Wizard</span>
+          </button>
+
+          <button
             onClick={() => setActiveView('portal')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap ${
               activeView === 'portal'
@@ -49,7 +73,7 @@ export function Header() {
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" />
-            <span>Role Portals</span>
+            <span>Staff Portals</span>
           </button>
 
           <button

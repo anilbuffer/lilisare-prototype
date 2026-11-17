@@ -29,6 +29,11 @@ interface NavItem {
 export function Sidebar() {
   const { currentRole, switchRole, activeView, setActiveView } = usePortal();
 
+  // Hide sidebar on the full-width marketing landing page
+  if (activeView === 'landing') {
+    return null;
+  }
+
   const navigationItems: { role: UserRole; title: string; subtitle: string; icon: React.ReactNode }[] = [
     {
       role: 'onboarding',

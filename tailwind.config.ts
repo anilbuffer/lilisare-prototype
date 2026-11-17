@@ -42,6 +42,12 @@ const config: Config = {
           orange: "#ff6900",
           amber: "#fcb900",
         },
+        coral: {
+          DEFAULT: "#ff6b6b",
+          gradient: "linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%)",
+          light: "#ff8a73",
+          dark: "#e85959",
+        },
         brand: {
           "light-cyan": "#7bdcb5",
           "vivid-cyan": "#00d084",

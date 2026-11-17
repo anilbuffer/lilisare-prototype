@@ -2,6 +2,8 @@
 
 import React from 'react';
 import { usePortal } from '@/lib/store/portal-context';
+import { LandingPage } from '@/components/landing/LandingPage';
+import { OnboardingWizard } from '@/components/onboarding-wizard/OnboardingWizard';
 import { OnboardingPortal } from '@/components/portals/OnboardingPortal';
 import { CaregiverPortal } from '@/components/portals/CaregiverPortal';
 import { EnrollmentPortal } from '@/components/portals/EnrollmentPortal';
@@ -15,9 +17,24 @@ import { ColoradoEVVAggregatorView } from '@/components/views/ColoradoEVVAggrega
 import { HistoricalDataMigrationView } from '@/components/views/HistoricalDataMigrationView';
 
 export default function Home() {
-  const { currentRole, activeView } = usePortal();
+  const { currentRole, activeView, setActiveView } = usePortal();
 
-  // If a specific interactive workflow or integration hub is selected
+  // Task 1: Marketing Landing Page
+  if (activeView === 'landing') {
+    return (
+      <LandingPage
+        onStartOnboarding={() => setActiveView('wizard')}
+        onExplorePortal={() => setActiveView('portal')}
+      />
+    );
+  }
+
+  // Task 2: Patient & Caregiver Onboarding Wizard (Rules 1-5)
+  if (activeView === 'wizard') {
+    return <OnboardingWizard onComplete={() => setActiveView('portal')} />;
+  }
+
+  // Process Flow Visualizers
   if (activeView === 'caregiver-flow') {
     return <CaregiverOnboardingFlow />;
   }
@@ -26,6 +43,7 @@ export default function Home() {
     return <PatientOnboardingFlow />;
   }
 
+  // Integrations & Vault
   if (activeView === 'evv-aggregator') {
     return <ColoradoEVVAggregatorView />;
   }
@@ -34,7 +52,7 @@ export default function Home() {
     return <HistoricalDataMigrationView />;
   }
 
-  // Otherwise render the role-scoped portal
+  // Role-Scoped Operations Portals
   return (
     <div className="w-full">
       {currentRole === 'onboarding' && <OnboardingPortal />}

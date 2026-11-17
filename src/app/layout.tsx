@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { PortalProvider } from '@/lib/store/portal-context';
 import { Header } from '@/components/layout/Header';
-import { Sidebar } from '@/components/layout/Sidebar';
+import { AppContentWrapper } from '@/components/layout/AppContentWrapper';
 import { ToastContainer } from '@/components/ui/ToastContainer';
 
 export const metadata: Metadata = {
-  title: 'LiliSphere — LiliSare Unified Healthcare & Caregiver Operations Platform',
-  description: 'Ultra-Premium Unified EHR, EVV, Onboarding, and Compliance Portal for Mountain Lane and Colorado Home Health.',
+  title: 'LiliSare — Get Paid to Care for Your Loved Ones at Home',
+  description: 'Colorado Family Caregiver Program (IHSS, CNA, HMA, Personal Care). Because the Best Care starts with Family!',
 };
 
 export default function RootLayout({
@@ -20,14 +20,9 @@ export default function RootLayout({
       <body className="min-h-screen bg-slate-50 flex flex-col antialiased">
         <PortalProvider>
           <Header />
-          <div className="flex-1 flex overflow-hidden">
-            <Sidebar />
-            <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-              <div className="max-w-7xl mx-auto">
-                {children}
-              </div>
-            </main>
-          </div>
+          <AppContentWrapper>
+            {children}
+          </AppContentWrapper>
           <ToastContainer />
         </PortalProvider>
       </body>

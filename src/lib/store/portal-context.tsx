@@ -29,7 +29,14 @@ interface NotificationToast {
   timestamp: string;
 }
 
-export type ActiveAppView = 'portal' | 'caregiver-flow' | 'patient-flow' | 'evv-aggregator' | 'data-migration';
+export type ActiveAppView =
+  | 'landing'
+  | 'wizard'
+  | 'portal'
+  | 'caregiver-flow'
+  | 'patient-flow'
+  | 'evv-aggregator'
+  | 'data-migration';
 
 interface PortalContextType {
   activeView: ActiveAppView;
@@ -77,7 +84,7 @@ interface PortalContextType {
 const PortalContext = createContext<PortalContextType | undefined>(undefined);
 
 export function PortalProvider({ children }: { children: ReactNode }) {
-  const [activeView, setActiveView] = useState<ActiveAppView>('portal');
+  const [activeView, setActiveView] = useState<ActiveAppView>('landing');
   const [currentRole, setCurrentRole] = useState<UserRole>('onboarding');
   const [leads, setLeads] = useState<Lead[]>(MOCK_LEADS);
   const [caregivers, setCaregivers] = useState<Caregiver[]>(MOCK_CAREGIVERS);
