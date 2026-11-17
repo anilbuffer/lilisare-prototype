@@ -566,7 +566,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <span>Colorado Medicaid IHSS &amp; CNA</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12] text-white">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.12] text-white">
               Care for Family.{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F9DC72] via-[#ffe58f] to-[#F2B632] underline decoration-[#ff7e5f]/70 decoration-2 underline-offset-8">
                 Get Paid at Home.
@@ -1508,11 +1508,10 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             {faqItems.map((item, idx) => (
               <div
                 key={idx}
-                className={`rounded-2xl sm:rounded-3xl border transition-all duration-300 overflow-hidden bg-white ${
-                  openFaq === idx
+                className={`rounded-2xl sm:rounded-3xl border transition-all duration-300 overflow-hidden bg-white ${openFaq === idx
                     ? 'border-[#2e541c]/40 shadow-[0_20px_50px_rgba(0,0,0,0.08)] -translate-y-0.5'
                     : 'border-slate-200/70 shadow-[0_15px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-0.5'
-                }`}
+                  }`}
               >
                 <button
                   type="button"
@@ -1521,9 +1520,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 >
                   <span className="leading-snug">{item.q}</span>
                   <div
-                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${
-                      openFaq === idx ? 'bg-[#eef7ea] text-[#2e541c]' : 'bg-slate-100 text-slate-500'
-                    }`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 transition-colors ${openFaq === idx ? 'bg-[#eef7ea] text-[#2e541c]' : 'bg-slate-100 text-slate-500'
+                      }`}
                   >
                     {openFaq === idx ? (
                       <ChevronUp className="w-4 h-4 text-[#2e541c]" />
@@ -1883,31 +1881,139 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 16. FOOTER (Clean, Premium, Minimal)                                      */}
+      {/* 16. FOOTER (Bright Green Brand Gradients & Rich Column Architecture)       */}
       {/* ========================================================================= */}
-      <footer className="bg-[#1b3614] text-white py-12 px-4 sm:px-8 border-t border-emerald-950">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pb-6 border-b border-white/15">
-            <img
-              src="/images/lilisare-logo.png"
-              alt="LiliSare"
-              className="h-9 w-auto object-contain brightness-0 invert"
-            />
-            <div className="flex items-center gap-6 text-xs text-slate-300 font-medium">
-              <a href="#home" className="hover:text-white transition-colors">Home</a>
-              <a href="#services" className="hover:text-white transition-colors">Services</a>
-              <a href="#steps" className="hover:text-white transition-colors">Steps</a>
-              <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+      <footer className="relative bg-gradient-to-b from-[#345f1e] via-[#467c2a] to-[#2e541c] text-white py-16 sm:py-20 px-4 sm:px-8 border-t border-[#467c2a]/40 overflow-hidden">
+        {/* Ambient Radial Lighting Overlays */}
+        <div className="absolute top-0 right-1/4 w-[450px] h-[450px] bg-[#68b040]/25 rounded-full blur-[130px] pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-[450px] h-[450px] bg-[#F2B632]/20 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto space-y-12 relative z-10">
+          {/* Main Footer Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
+            {/* Column 1: Brand & Tagline */}
+            <div className="lg:col-span-4 space-y-4">
+              <img
+                src="/images/lilisare-logo.png"
+                alt="LiliSare"
+                className="h-10 sm:h-12 w-auto object-contain brightness-0 invert"
+              />
+              <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal max-w-sm">
+                Empowering Colorado families to provide compassionate, dignified in-home care for loved ones with competitive Medicaid compensation and continuous clinical nurse support.
+              </p>
+              <div className="flex items-center gap-3 pt-2">
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 flex items-center justify-center text-white transition-colors"
+                  aria-label="LiliSare Facebook"
+                >
+                  <Facebook className="w-4 h-4 fill-current" />
+                </a>
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 flex items-center justify-center text-white transition-colors"
+                  aria-label="LiliSare Instagram"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a
+                  href="tel:3035780181"
+                  className="w-9 h-9 rounded-full bg-white/15 hover:bg-white/25 border border-white/25 flex items-center justify-center text-[#F9DC72] transition-colors"
+                  aria-label="Call LiliSare"
+                >
+                  <Phone className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+
+            {/* Column 2: Headquarters */}
+            <div className="lg:col-span-3 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#F9DC72] block">
+                Headquarters
+              </span>
+              <div className="text-xs sm:text-sm text-emerald-100/90 space-y-1.5 leading-relaxed font-normal">
+                <p className="font-semibold text-white">Denver Metro Office:</p>
+                <p>7100 E Belleview Ave, Ste 310</p>
+                <p>Greenwood Village, CO 80111</p>
+                <p className="font-semibold text-white pt-2">South Regional Office:</p>
+                <p>3750 Dacoro Ln, Ste 130</p>
+                <p>Castle Rock, CO 80109</p>
+              </div>
+            </div>
+
+            {/* Column 3: Contact & Hours */}
+            <div className="lg:col-span-3 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#F9DC72] block">
+                Direct Contact
+              </span>
+              <div className="text-xs sm:text-sm text-emerald-100/90 space-y-2 leading-relaxed font-normal">
+                <div>
+                  <span className="text-[11px] text-emerald-200/80 block font-medium">Call or Text:</span>
+                  <a href="tel:3035780181" className="text-sm font-bold text-white hover:text-[#F9DC72] transition-colors">
+                    303-578-0181
+                  </a>
+                </div>
+                <div>
+                  <span className="text-[11px] text-emerald-200/80 block font-medium">Email Coordinators:</span>
+                  <a href="mailto:info@lilisare.com" className="text-xs sm:text-sm font-semibold text-white hover:underline">
+                    info@lilisare.com
+                  </a>
+                </div>
+                <div className="pt-1">
+                  <span className="text-[11px] text-emerald-200/80 block font-medium">Operating Hours:</span>
+                  <p className="text-xs text-white">Mon–Fri: 8am–5pm MT</p>
+                  <p className="text-[11px] text-[#F9DC72] font-semibold">24/7 RN On-Call for Families</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Column 4: Quick Navigation */}
+            <div className="lg:col-span-2 space-y-3">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#F9DC72] block">
+                Navigation
+              </span>
+              <ul className="text-xs sm:text-sm space-y-2 text-emerald-100/90 font-medium">
+                <li>
+                  <a href="#home" className="hover:text-white transition-colors">Home</a>
+                </li>
+                <li>
+                  <a href="#services" className="hover:text-white transition-colors">Services</a>
+                </li>
+                <li>
+                  <a href="#steps" className="hover:text-white transition-colors">How It Works</a>
+                </li>
+                <li>
+                  <a href="#community" className="hover:text-white transition-colors">Community</a>
+                </li>
+                <li>
+                  <a href="#faq" className="hover:text-white transition-colors">FAQ</a>
+                </li>
+                <li>
+                  <a href="#resources" className="hover:text-white transition-colors">Resources</a>
+                </li>
+                <li>
+                  <a href="#contact" className="hover:text-white transition-colors">Contact</a>
+                </li>
+              </ul>
             </div>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-400">
-            <p>&copy; {new Date().getFullYear()} LiliSare Home Health &amp; Mountain Lane. Colorado CDPHE Licensed Class A &amp; B Agency.</p>
-            <p className="flex items-center gap-2">
-              <a href="#" className="hover:underline">Privacy Notice</a>
-              <span>•</span>
-              <a href="#" className="hover:underline">Non-Discrimination Policy</a>
+          {/* Bottom Bar: Copyright & Compliance */}
+          <div className="pt-8 border-t border-white/20 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-emerald-200/80">
+            <p className="text-center sm:text-left">
+              &copy; {new Date().getFullYear()} LiliSare Home Health &amp; Mountain Lane. Colorado CDPHE Licensed Class A &amp; B Agency. All rights reserved.
             </p>
+            <div className="flex items-center gap-4 text-xs">
+              <a href="#" className="hover:text-white hover:underline transition-colors">Privacy Notice</a>
+              <span>•</span>
+              <a href="#" className="hover:text-white hover:underline transition-colors">Non-Discrimination</a>
+              <span>•</span>
+              <a href="#" className="hover:text-white hover:underline transition-colors">HIPAA Policy</a>
+            </div>
           </div>
         </div>
       </footer>
