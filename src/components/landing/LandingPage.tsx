@@ -516,59 +516,60 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
 
       {/* ========================================================================= */}
       {/* 2. MAIN HEADER NAVIGATION WITH SIGNATURE LILISARE CORAL CAPSULE MENU       */}
-      {/* Menus: [Home], [About Us], [Services], [Resources], [Contact Us]           */}
-      {/* + direct anchor shortcuts to [FAQ] & [Community]                           */}
+      {/* Exact Match to Authentic Reference Screenshot (Simple, Clean, Airy)        */}
       {/* ========================================================================= */}
-      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200/80 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
+      <header className="bg-white sticky top-0 z-40 border-b border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.04)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 sm:h-[68px] flex items-center justify-between gap-4">
+          {/* Left: LiliSare Lotus Logo */}
           <div
-            className="flex items-center gap-3 cursor-pointer group shrink-0"
+            className="flex items-center cursor-pointer group shrink-0"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <img
               src="/images/lilisare-logo.png"
               alt="LiliSare - because we care"
-              className="h-10 sm:h-12 w-auto object-contain transition-transform group-hover:scale-[1.02]"
+              className="h-9 sm:h-11 w-auto object-contain transition-transform group-hover:scale-[1.02]"
             />
           </div>
 
-          {/* Signature Coral Capsule Menu as in Original Design */}
-          <nav className="hidden lg:flex items-center bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-white rounded-full px-5 py-2 shadow-md space-x-6 text-xs font-bold">
-            <a href="#home" className="hover:text-amber-100 transition-colors">Home</a>
-            <a href="#about-us" className="hover:text-amber-100 transition-colors">About Us</a>
-            <a href="#services" className="hover:text-amber-100 transition-colors">Services</a>
-            <a href="#resources" className="hover:text-amber-100 transition-colors">Resources</a>
-            <a href="#faq" className="hover:text-amber-100 transition-colors">FAQ</a>
-            <a href="#community" className="hover:text-amber-100 transition-colors">Community</a>
-            <a href="#contact" className="hover:text-amber-100 transition-colors">Contact Us</a>
+          {/* Center: Signature Coral Capsule Menu (Centered, Simple & Clean) */}
+          <nav className="hidden lg:flex items-center bg-gradient-to-r from-[#ff6b4a] via-[#ff7e5f] to-[#ff9e6c] text-white rounded-full px-7 py-2.5 shadow-[0_4px_14px_rgba(255,110,64,0.28)] gap-6 text-[13px] font-bold tracking-normal select-none">
+            <a href="#home" className="hover:opacity-90 transition-opacity">Home</a>
+            <a href="#about-us" className="hover:opacity-90 transition-opacity">About Us</a>
+            <a href="#services" className="hover:opacity-90 transition-opacity">Services</a>
+            <a href="#resources" className="hover:opacity-90 transition-opacity">Resources</a>
+            <a href="#faq" className="hover:opacity-90 transition-opacity">FAQ</a>
+            <a href="#community" className="hover:opacity-90 transition-opacity">Community</a>
+            <a href="#contact" className="hover:opacity-90 transition-opacity">Contact Us</a>
           </nav>
 
-          <div className="flex items-center gap-2.5">
+          {/* Right: Clean Staff Portal Text Link + Forest Green "Get Started ->" Button */}
+          <div className="flex items-center gap-4 sm:gap-5 shrink-0">
             <button
               onClick={onExplorePortal}
-              className="text-xs font-bold text-slate-700 hover:text-primary px-3 py-2 rounded-xl hover:bg-slate-100 transition-colors hidden sm:block"
+              className="text-[13px] sm:text-sm font-bold text-slate-800 hover:text-[#2d5220] transition-colors hidden sm:block cursor-pointer"
             >
               Staff Portal
             </button>
             <button
               onClick={onStartOnboarding}
-              className="bg-primary hover:bg-primary-800 text-white font-black px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-1.5"
+              className="bg-[#335e25] hover:bg-[#26481b] text-white font-bold px-5 sm:px-6 py-2.5 rounded-xl sm:rounded-2xl text-[13px] sm:text-sm shadow-sm hover:shadow-md transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-1.5 cursor-pointer"
             >
               <span>Get Started</span>
-              <ArrowRight className="w-4 h-4" />
+              <ArrowRight className="w-4 h-4 stroke-[2.5]" />
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation Row */}
-        <div className="flex lg:hidden overflow-x-auto py-2 px-4 bg-slate-100 text-xs font-bold text-slate-700 gap-4 border-t border-slate-200">
-          <a href="#home" className="whitespace-nowrap hover:text-primary">Home</a>
-          <a href="#about-us" className="whitespace-nowrap hover:text-primary">About Us</a>
-          <a href="#services" className="whitespace-nowrap hover:text-primary">Services</a>
-          <a href="#resources" className="whitespace-nowrap hover:text-primary">Resources</a>
-          <a href="#faq" className="whitespace-nowrap hover:text-primary">FAQ</a>
-          <a href="#community" className="whitespace-nowrap hover:text-primary">Community</a>
-          <a href="#contact" className="whitespace-nowrap hover:text-primary">Contact Us</a>
+        {/* Mobile Navigation Row (Clean white border-t with smooth horizontal scroll) */}
+        <div className="flex lg:hidden overflow-x-auto py-2.5 px-4 bg-white text-xs font-bold text-slate-700 gap-5 border-t border-slate-100 scrollbar-none">
+          <a href="#home" className="whitespace-nowrap hover:text-[#335e25]">Home</a>
+          <a href="#about-us" className="whitespace-nowrap hover:text-[#335e25]">About Us</a>
+          <a href="#services" className="whitespace-nowrap hover:text-[#335e25]">Services</a>
+          <a href="#resources" className="whitespace-nowrap hover:text-[#335e25]">Resources</a>
+          <a href="#faq" className="whitespace-nowrap hover:text-[#335e25]">FAQ</a>
+          <a href="#community" className="whitespace-nowrap hover:text-[#335e25]">Community</a>
+          <a href="#contact" className="whitespace-nowrap hover:text-[#335e25]">Contact Us</a>
         </div>
       </header>
 
