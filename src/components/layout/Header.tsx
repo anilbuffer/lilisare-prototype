@@ -58,15 +58,27 @@ export function Header() {
           </button>
 
           <button
-            onClick={() => setActiveView('wizard')}
+            onClick={() => setActiveView('patient-flow')}
             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'wizard'
+              activeView === 'patient-flow' || activeView === 'wizard'
+                ? 'bg-primary text-white shadow-xs'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
+            }`}
+          >
+            <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+            <span>Patient Register (8 Steps)</span>
+          </button>
+
+          <button
+            onClick={() => setActiveView('caregiver-flow')}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
+              activeView === 'caregiver-flow'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
             <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
-            <span>Dual Onboarding Hub</span>
+            <span>Caregiver Register (10 Steps)</span>
           </button>
 
           <button
@@ -78,31 +90,7 @@ export function Header() {
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-amber-500" />
-            <span>Operations Portals</span>
-          </button>
-
-          <button
-            onClick={() => setActiveView('caregiver-flow')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'caregiver-flow'
-                ? 'bg-primary text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
-          >
-            <Compass className="w-3.5 h-3.5 text-teal-500" />
-            <span>Caregiver Flow (10 Steps)</span>
-          </button>
-
-          <button
-            onClick={() => setActiveView('patient-flow')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'patient-flow'
-                ? 'bg-primary text-white shadow-xs'
-                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
-          >
-            <Heart className="w-3.5 h-3.5 text-rose-500" />
-            <span>Patient Flow (8 Steps)</span>
+            <span>Staff Operations</span>
           </button>
 
           <button

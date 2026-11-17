@@ -123,54 +123,40 @@ export function Sidebar() {
         {/* Core Journey Flow Maps */}
         <div>
           <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3">
-            Onboarding Journeys
+            Registration Wizards
           </span>
           <nav className="mt-2 space-y-1">
             <button
-              onClick={() => setActiveView('wizard')}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${activeView === 'wizard'
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50'
-                }`}
-            >
-              <span className="flex items-center gap-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
-                Dual Onboarding Hub
-              </span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeView === 'wizard' ? 'bg-primary-800 text-white' : 'bg-emerald-100 text-primary font-bold'}`}>
-                Dual
-              </span>
-            </button>
-
-            <button
               onClick={() => setActiveView('patient-flow')}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${activeView === 'patient-flow'
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50'
-                }`}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                activeView === 'patient-flow' || activeView === 'wizard'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
             >
               <span className="flex items-center gap-2">
                 <HeartHandshake className="w-3.5 h-3.5 text-rose-500" />
-                Patient Flow (8 Steps)
+                Patient Register (8 Steps)
               </span>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeView === 'patient-flow' ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                8
+              <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeView === 'patient-flow' || activeView === 'wizard' ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-600'}`}>
+                8 Steps
               </span>
             </button>
 
             <button
               onClick={() => setActiveView('caregiver-flow')}
-              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${activeView === 'caregiver-flow'
-                ? 'bg-primary text-white shadow-sm'
-                : 'text-slate-600 hover:bg-slate-50'
-                }`}
+              className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold transition-all ${
+                activeView === 'caregiver-flow'
+                  ? 'bg-primary text-white shadow-sm'
+                  : 'text-slate-600 hover:bg-slate-50'
+              }`}
             >
               <span className="flex items-center gap-2">
                 <UserCheck className="w-3.5 h-3.5 text-emerald-600" />
-                Caregiver Flow (10 Steps)
+                Caregiver Register (10 Steps)
               </span>
               <span className={`text-[10px] px-1.5 py-0.5 rounded ${activeView === 'caregiver-flow' ? 'bg-primary-800 text-white' : 'bg-slate-100 text-slate-600'}`}>
-                10
+                10 Steps
               </span>
             </button>
           </nav>

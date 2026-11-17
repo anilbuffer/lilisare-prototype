@@ -8,8 +8,13 @@ import { Sidebar } from './Sidebar';
 export function AppContentWrapper({ children }: { children: ReactNode }) {
   const { activeView } = usePortal();
 
-  // On consumer marketing landing page or initial wizard, keep full-width specialized shell
-  if (activeView === 'landing' || activeView === 'wizard') {
+  // On consumer marketing landing page, patient registration wizard, or caregiver registration wizard, keep full-width specialized shell
+  if (
+    activeView === 'landing' ||
+    activeView === 'wizard' ||
+    activeView === 'patient-flow' ||
+    activeView === 'caregiver-flow'
+  ) {
     return (
       <main className="flex-1 overflow-y-auto w-full">
         {children}

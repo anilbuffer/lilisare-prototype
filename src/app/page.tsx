@@ -3,7 +3,6 @@
 import React from 'react';
 import { usePortal } from '@/lib/store/portal-context';
 import { LandingPage } from '@/components/landing/LandingPage';
-import { OnboardingWizard } from '@/components/onboarding-wizard/OnboardingWizard';
 import { OnboardingPortal } from '@/components/portals/OnboardingPortal';
 import { CaregiverPortal } from '@/components/portals/CaregiverPortal';
 import { EnrollmentPortal } from '@/components/portals/EnrollmentPortal';
@@ -19,28 +18,36 @@ import { HistoricalDataMigrationView } from '@/components/views/HistoricalDataMi
 export default function Home() {
   const { currentRole, activeView, setActiveView } = usePortal();
 
-  // Task 1: Marketing Landing Page
+  // Marketing Landing Page:
+  // - "Get Started" opens Patient Register form steps wizard
+  // - "Staff Portal" opens Caregiver Register form steps wizard
   if (activeView === 'landing') {
     return (
       <LandingPage
-        onStartOnboarding={() => setActiveView('wizard')}
-        onExplorePortal={() => setActiveView('portal')}
+        onStartOnboarding={() => setActiveView('patient-flow')}
+        onExplorePortal={() => setActiveView('caregiver-flow')}
       />
     );
   }
 
-  // Task 2: Patient & Caregiver Onboarding Wizard (Rules 1-5)
-  if (activeView === 'wizard') {
-    return <OnboardingWizard onComplete={() => setActiveView('landing')} />;
+  // Patient Register Form Steps Wizard (8 Steps) - Triggered by "Get Started"
+  if (activeView === 'patient-flow' || activeView === 'wizard') {
+    return (
+      <PatientOnboardingFlow
+        onBackToHome={() => setActiveView('landing')}
+        onSwitchToCaregiver={() => setActiveView('caregiver-flow')}
+      />
+    );
   }
 
-  // Process Flow Visualizers
+  // Caregiver Register Form Steps Wizard (10 Steps) - Triggered by "Staff Portal"
   if (activeView === 'caregiver-flow') {
-    return <CaregiverOnboardingFlow />;
-  }
-
-  if (activeView === 'patient-flow') {
-    return <PatientOnboardingFlow />;
+    return (
+      <CaregiverOnboardingFlow
+        onBackToHome={() => setActiveView('landing')}
+        onSwitchToPatient={() => setActiveView('patient-flow')}
+      />
+    );
   }
 
   // Integrations & Vault
