@@ -413,33 +413,19 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
           </div>
 
-          {/* Right Column: Hero Heart Photo Frame with Floating Badges */}
+          {/* Right Column: Authentic Heart Frame Hero Image matching user reference */}
           <div className="lg:col-span-6 relative flex items-center justify-center">
-            <div className="relative w-full max-w-md sm:max-w-lg aspect-square flex items-center justify-center">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#F2B632]/25 to-emerald-400/20 blur-2xl transform scale-90 animate-pulse pointer-events-none" />
+            <div className="relative w-full max-w-lg aspect-square flex items-center justify-center">
+              {/* Subtle ambient lighting behind */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#F2B632]/25 to-emerald-400/20 blur-3xl transform scale-95 pointer-events-none" />
 
-              <div className="relative w-[340px] sm:w-[420px] h-[340px] sm:h-[420px] p-3 rounded-[3.5rem] bg-gradient-to-b from-[#fef08a] via-[#fde047] to-[#F2B632] shadow-2xl flex items-center justify-center overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
-                <div className="relative w-full h-full rounded-[3rem] overflow-hidden bg-slate-900">
-                  <img
-                    src="/images/family-bubbles-wheelchair.jpg"
-                    alt="Colorado family with child in wheelchair playing with bubbles outdoors"
-                    className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/10" />
-
-                  <div className="absolute bottom-5 left-5 right-5 text-white">
-                    <p className="text-xs font-black tracking-wide uppercase text-[#F2B632]">Real Colorado Family</p>
-                    <p className="text-sm sm:text-base font-extrabold leading-snug">Elena, Mateo &amp; Sophia • Denver, Colorado</p>
-                    <p className="text-[11px] text-emerald-200 mt-0.5">Paid 28.5 hrs/week under IHSS Program</p>
-                  </div>
-                </div>
-
-                <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-[#fde047] text-amber-950 flex items-center justify-center shadow-lg">
-                  <Heart className="w-4 h-4 fill-amber-900" />
-                </div>
-                <div className="absolute bottom-12 right-2 w-6 h-6 rounded-full bg-[#fde047] text-amber-950 flex items-center justify-center shadow-md">
-                  <Heart className="w-3 h-3 fill-amber-900" />
-                </div>
+              {/* Main Authentic Heart Image matching user's exact uploaded reference */}
+              <div className="relative w-full max-w-[440px] aspect-square rounded-[3rem] overflow-hidden shadow-2xl transition-transform duration-500 hover:scale-[1.02] flex items-center justify-center">
+                <img
+                  src="/images/hero-caregiver-heart.jpg"
+                  alt="Young caregiver supporting senior loved one with walker in Colorado garden"
+                  className="w-full h-full object-contain"
+                />
               </div>
 
               {/* Floating Glass Badges */}
