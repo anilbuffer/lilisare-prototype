@@ -493,71 +493,105 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               </div>
             </div>
           </div>
+
+          {/* Emotional Caregiver Connection Card with Real Photo */}
+          <div className="bg-gradient-to-r from-emerald-50 via-white to-amber-50/60 rounded-3xl border border-emerald-200/80 p-6 sm:p-7 flex flex-col md:flex-row items-center gap-6 shadow-sm">
+            <div className="relative w-24 h-24 sm:w-28 sm:h-28 shrink-0 rounded-2xl overflow-hidden border-2 border-emerald-400 shadow-md">
+              <img
+                src="/images/girl-globe.jpg"
+                alt="Smiling Colorado girl with special needs holding globe"
+                className="w-full h-full object-cover object-top"
+              />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#F2B632] flex items-center justify-center shadow-xs">
+                <Heart className="w-3.5 h-3.5 fill-amber-900 text-amber-900" />
+              </div>
+            </div>
+            <div className="space-y-1.5 text-center md:text-left">
+              <span className="text-[10px] font-black uppercase tracking-wider text-emerald-900 bg-emerald-100 px-2.5 py-0.5 rounded-full inline-block">
+                Colorado Medicaid IHSS &amp; CNA Programs
+              </span>
+              <h4 className="text-sm sm:text-base font-black text-slate-900">
+                &ldquo;Because every child deserves loving care at home from the people who love them most.&rdquo;
+              </h4>
+              <p className="text-xs text-slate-600 leading-relaxed max-w-2xl font-medium">
+                Colorado&apos;s Medicaid waivers allow parents, family members, and trusted friends to be hired as certified caregivers. You earn financial security while providing the dignified care your loved one deserves.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. SECTION: [SERVICES] — Our Available Services (Exact User Reference)   */}
+      {/* 6. SECTION: [SERVICES] — Our Available Services (Light, Premium SaaS Cards) */}
       {/* ========================================================================= */}
-      <section id="services" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#324925] text-white relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#F2B632]/10 rounded-full blur-3xl pointer-events-none" />
+      <section id="services" className="py-20 sm:py-28 px-4 sm:px-8 bg-gradient-to-b from-[#f8faf7] via-white to-[#f4f7f2] text-slate-900 border-t border-slate-200/80 relative overflow-hidden">
+        <div className="absolute top-0 right-10 w-96 h-96 bg-emerald-100/40 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 left-10 w-96 h-96 bg-[#F2B632]/15 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto space-y-12 relative z-10">
+        <div className="max-w-7xl mx-auto space-y-14 relative z-10">
           <div className="text-center max-w-2xl mx-auto space-y-3">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-white/15 text-[#F2B632] text-xs font-black uppercase tracking-wider shadow-sm">
-              <Heart className="w-3.5 h-3.5 fill-[#F2B632]" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-[#2d4722] text-xs font-black uppercase tracking-wider shadow-xs">
+              <Heart className="w-3.5 h-3.5 fill-[#3e6b2b] text-[#3e6b2b]" />
               <span>Compassionate Care Programs</span>
             </div>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
               Our Available Services
             </h2>
-            <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed max-w-xl mx-auto">
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
               We specialize in Colorado Medicaid waivers supporting children with special healthcare needs and adults with disabilities in their own homes.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 sm:gap-8">
             {/* CARD 1: Become a CNA for your Loved One */}
-            <div className="bg-[#fef9ee] text-slate-900 p-6 sm:p-7 rounded-[2rem] border-2 border-[#fde68a] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="relative w-40 h-40 mx-auto">
-                  <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-[#F2B632] shadow-md bg-white">
-                    <img
-                      src="/images/service-cna-mother-son.jpg"
-                      alt="Become a CNA for your Loved One"
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+              <div className="space-y-5">
+                {/* Photo Container */}
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="/images/service-cna-mother-son.jpg"
+                    alt="Become a CNA for your Loved One"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#F2B632] text-amber-950 flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-amber-950" />
+                  <div className="absolute bottom-3 left-4">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-emerald-900 shadow-sm backdrop-blur-md">
+                      Skilled Nursing &amp; Certified Aide
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 inline-block">
-                    Skilled Nursing &amp; Certified Aide
-                  </span>
+                <div className="p-6 sm:p-7 pt-1 space-y-3">
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
                     Become a CNA for your Loved One
                   </h3>
-                  <div className="text-xs text-slate-600 leading-relaxed space-y-1 pt-1 font-medium">
-                    <p className="font-semibold text-slate-800">Certified Nurse Aide services (CNA)</p>
-                    <p className="font-semibold text-slate-800">Private Duty Nursing services (PDN)</p>
+                  <div className="text-xs text-slate-600 leading-relaxed space-y-1.5 font-medium">
+                    <p className="font-semibold text-slate-800 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Certified Nurse Aide services (CNA)</span>
+                    </p>
+                    <p className="font-semibold text-slate-800 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      <span>Private Duty Nursing services (PDN)</span>
+                    </p>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#fbe2a6] flex items-center justify-between gap-2.5">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  Apply Now
+                  <span>Apply Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-white hover:border-primary transition-colors text-center"
+                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
                 >
                   Read More
                 </button>
@@ -565,25 +599,26 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* CARD 2: Community First Choice (CFC) */}
-            <div className="bg-[#fef9ee] text-slate-900 p-6 sm:p-7 rounded-[2rem] border-2 border-[#fde68a] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="relative w-40 h-40 mx-auto">
-                  <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-[#F2B632] shadow-md bg-white">
-                    <img
-                      src="/images/service-cfc-sisters.jpg"
-                      alt="Community First Choice (CFC)"
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+              <div className="space-y-5">
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="/images/service-cfc-sisters.jpg"
+                    alt="Community First Choice (CFC)"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#F2B632] text-amber-950 flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-amber-950" />
+                  <div className="absolute bottom-3 left-4">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-blue-900 shadow-sm backdrop-blur-md">
+                      Medicaid Community Benefit
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-900 inline-block">
-                    Medicaid Community Benefit
-                  </span>
+                <div className="p-6 sm:p-7 pt-1 space-y-3">
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
                     Community First Choice (CFC)
                   </h3>
@@ -593,16 +628,17 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#fbe2a6] flex items-center justify-between gap-2.5">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  Apply Now
+                  <span>Apply Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-white hover:border-primary transition-colors text-center"
+                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
                 >
                   Read More
                 </button>
@@ -610,25 +646,26 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* CARD 3: In-Home Support Services (IHSS) */}
-            <div className="bg-[#fef9ee] text-slate-900 p-6 sm:p-7 rounded-[2rem] border-2 border-[#fde68a] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="relative w-40 h-40 mx-auto">
-                  <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-[#F2B632] shadow-md bg-white">
-                    <img
-                      src="/images/service-ihss-father-son.jpg"
-                      alt="In-Home Support Services (IHSS)"
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+              <div className="space-y-5">
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="/images/service-ihss-father-son.jpg"
+                    alt="In-Home Support Services (IHSS)"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#F2B632] text-amber-950 flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-amber-950" />
+                  <div className="absolute bottom-3 left-4">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-amber-900 shadow-sm backdrop-blur-md">
+                      Parent as Paid Attendant
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 inline-block">
-                    Parent as Paid Attendant
-                  </span>
+                <div className="p-6 sm:p-7 pt-1 space-y-3">
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
                     In-Home Support Services (IHSS)
                   </h3>
@@ -638,16 +675,17 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#fbe2a6] flex items-center justify-between gap-2.5">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  Apply Now
+                  <span>Apply Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-white hover:border-primary transition-colors text-center"
+                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
                 >
                   Read More
                 </button>
@@ -655,25 +693,26 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* CARD 4: Home and Community Based Services (HCBS Waivers) */}
-            <div className="bg-[#fef9ee] text-slate-900 p-6 sm:p-7 rounded-[2rem] border-2 border-[#fde68a] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="relative w-40 h-40 mx-auto">
-                  <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-[#F2B632] shadow-md bg-white">
-                    <img
-                      src="/images/service-hcbs-mother-daughter.jpg"
-                      alt="Home and Community Based Services (HCBS Waivers)"
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+              <div className="space-y-5">
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="/images/service-hcbs-mother-daughter.jpg"
+                    alt="Home and Community Based Services (HCBS Waivers)"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#F2B632] text-amber-950 flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-amber-950" />
+                  <div className="absolute bottom-3 left-4">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-rose-900 shadow-sm backdrop-blur-md">
+                      Home &amp; Community Care
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-900 inline-block">
-                    Home &amp; Community Care
-                  </span>
+                <div className="p-6 sm:p-7 pt-1 space-y-3">
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
                     Home and Community Based Services (HCBS Waivers)
                   </h3>
@@ -683,16 +722,17 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#fbe2a6] flex items-center justify-between gap-2.5">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  Apply Now
+                  <span>Apply Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-white hover:border-primary transition-colors text-center"
+                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
                 >
                   Read More
                 </button>
@@ -700,44 +740,46 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* CARD 5: Individual Residential Services and Supports (IRSS) */}
-            <div className="bg-[#fef9ee] text-slate-900 p-6 sm:p-7 rounded-[2rem] border-2 border-[#fde68a] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="relative w-40 h-40 mx-auto">
-                  <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-[#F2B632] shadow-md bg-white">
-                    <img
-                      src="/images/service-irss-mother-son-laptop.jpg"
-                      alt="Individual Residential Services and Supports (IRSS)"
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+              <div className="space-y-5">
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="/images/service-irss-mother-son-laptop.jpg"
+                    alt="Individual Residential Services and Supports (IRSS)"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#F2B632] text-amber-950 flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-amber-950" />
+                  <div className="absolute bottom-3 left-4">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-purple-900 shadow-sm backdrop-blur-md">
+                      Host Homes &amp; Family Caregiver
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900 inline-block">
-                    Host Homes &amp; Family Caregiver
-                  </span>
+                <div className="p-6 sm:p-7 pt-1 space-y-3">
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
                     Individual Residential Services and Supports (IRSS)
                   </h3>
-                  <p className="text-xs text-slate-600 leading-relaxed font-bold text-slate-800">
+                  <p className="text-xs text-slate-700 font-bold leading-relaxed">
                     Family Caregiver, Host Homes
                   </p>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#fbe2a6] flex items-center justify-between gap-2.5">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  Apply Now
+                  <span>Apply Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-white hover:border-primary transition-colors text-center"
+                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
                 >
                   Read More
                 </button>
@@ -745,56 +787,155 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* CARD 6: We Accept Medicaid and the Following Medicaid Waivers */}
-            <div className="bg-[#fef9ee] text-slate-900 p-6 sm:p-7 rounded-[2rem] border-2 border-[#fde68a] shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-6 group">
-              <div className="space-y-4">
-                <div className="relative w-40 h-40 mx-auto">
-                  <div className="w-full h-full rounded-[2.2rem] overflow-hidden border-4 border-[#F2B632] shadow-md bg-white">
-                    <img
-                      src="/images/service-waivers-family-lake.jpg"
-                      alt="We Accept Medicaid and Waivers"
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
+            <div className="bg-white rounded-3xl border border-slate-200/90 shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between overflow-hidden group">
+              <div className="space-y-5">
+                <div className="relative h-52 w-full overflow-hidden bg-slate-100">
+                  <img
+                    src="/images/service-waivers-family-lake.jpg"
+                    alt="We Accept Medicaid and Waivers"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+                  <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-white/95 backdrop-blur-md text-[#3e6b2b] flex items-center justify-center shadow-md">
+                    <Heart className="w-4 h-4 fill-[#3e6b2b]" />
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-[#F2B632] text-amber-950 flex items-center justify-center shadow-md">
-                    <Heart className="w-4 h-4 fill-amber-950" />
+                  <div className="absolute bottom-3 left-4">
+                    <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full bg-white/95 text-emerald-900 shadow-sm backdrop-blur-md">
+                      100% Colorado Medicaid Covered
+                    </span>
                   </div>
                 </div>
 
-                <div className="text-center space-y-2">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900 inline-block">
-                    100% Colorado Medicaid Covered
-                  </span>
+                <div className="p-6 sm:p-7 pt-1 space-y-3">
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 group-hover:text-primary transition-colors leading-snug">
                     We Accept Medicaid and the Following Medicaid Waivers:
                   </h3>
-                  <div className="grid grid-cols-4 gap-1.5 pt-2 text-[11px] font-extrabold text-slate-800">
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">CES</span>
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">CHRP</span>
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">SLS</span>
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">DD</span>
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">EBD</span>
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">CHCBS</span>
-                    <span className="p-1 rounded-md bg-white border border-[#fde68a] shadow-2xs">CIH</span>
-                    <span className="p-1 rounded-md bg-[#fef3c7] text-[#92400e] border border-amber-300 font-black">CFC</span>
+                  <div className="grid grid-cols-4 gap-2 pt-1 text-[11px] font-extrabold text-slate-800 text-center">
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CES</span>
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CHRP</span>
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">SLS</span>
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">DD</span>
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">EBD</span>
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CHCBS</span>
+                    <span className="p-1.5 rounded-lg bg-slate-50 border border-slate-200 shadow-2xs">CIH</span>
+                    <span className="p-1.5 rounded-lg bg-amber-50 text-amber-900 border border-amber-300 font-black shadow-2xs">CFC</span>
                   </div>
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-[#fbe2a6] flex items-center justify-between gap-2.5">
+              <div className="p-6 sm:p-7 pt-0 border-t border-slate-100 flex items-center justify-between gap-3">
                 <button
                   onClick={onStartOnboarding}
-                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center"
+                  className="flex-1 py-3 rounded-xl bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs shadow-md hover:shadow-lg transition-all text-center flex items-center justify-center gap-1.5"
                 >
-                  Apply Now
+                  <span>Apply Now</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-white hover:border-primary transition-colors text-center"
+                  className="px-4 py-3 rounded-xl border border-slate-300 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-primary transition-colors text-center"
                 >
                   Check Waiver
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 6.5 SECTION: WELCOME STEPS (Simple 4-Step Family Caregiver Journey)       */}
+      {/* ========================================================================= */}
+      <section className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-t border-slate-200/80 relative overflow-hidden">
+        <div className="max-w-6xl mx-auto space-y-12 relative z-10">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-emerald-100 text-[#2d4722] text-xs font-black uppercase tracking-wider">
+              <Smile className="w-3.5 h-3.5 text-[#3e6b2b]" />
+              <span>Simple 4-Step Process</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 tracking-tight">
+              Welcome Steps
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
+              How simple it is to get started as a paid family caregiver with LiliSare in Colorado.
+            </p>
+          </div>
+
+          {/* 4 Connected Step Cards matching original reference with modern SaaS execution */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Step 1 */}
+            <div className="p-6 rounded-3xl bg-gradient-to-b from-[#fff6ed] to-[#fffaf5] border border-[#ffcfb5] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all text-center space-y-4 group">
+              <div className="relative inline-flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                  <Heart className="w-7 h-7 fill-white" />
+                </div>
+                <span className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider">
+                  Step 01
+                </span>
+              </div>
+              <h3 className="text-base font-black text-slate-900 pt-1">Get Started</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                Call our friendly team or complete our 5-minute online intake. We will guide you through every step of enrollment.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="p-6 rounded-3xl bg-gradient-to-b from-[#fff6ed] to-[#fffaf5] border border-[#ffcfb5] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all text-center space-y-4 group">
+              <div className="relative inline-flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                  <Users className="w-7 h-7 text-white" />
+                </div>
+                <span className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider">
+                  Step 02
+                </span>
+              </div>
+              <h3 className="text-base font-black text-slate-900 pt-1">Care Manager Consultation</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                We help connect you with your local county case management agency to assess care needs and authorize weekly hours.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="p-6 rounded-3xl bg-gradient-to-b from-[#fff6ed] to-[#fffaf5] border border-[#ffcfb5] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all text-center space-y-4 group">
+              <div className="relative inline-flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                  <Smartphone className="w-7 h-7 text-white" />
+                </div>
+                <span className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider">
+                  Step 03
+                </span>
+              </div>
+              <h3 className="text-base font-black text-slate-900 pt-1">Start of Services</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                Complete quick caregiver onboarding, download our easy 1-tap mobile app, and begin caring for your loved one at home.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="p-6 rounded-3xl bg-gradient-to-b from-[#fff6ed] to-[#fffaf5] border border-[#ffcfb5] shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all text-center space-y-4 group">
+              <div className="relative inline-flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-white flex items-center justify-center shadow-md group-hover:scale-110 transition-transform">
+                  <ShieldCheck className="w-7 h-7 text-white" />
+                </div>
+                <span className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-wider">
+                  Step 04
+                </span>
+              </div>
+              <h3 className="text-base font-black text-slate-900 pt-1">Ongoing Support</h3>
+              <p className="text-xs text-slate-600 leading-relaxed font-medium">
+                Receive reliable bi-weekly direct deposit pay, ongoing RN nurse support, and 24/7 care coordination whenever you need it.
+              </p>
+            </div>
+          </div>
+
+          <div className="text-center pt-2">
+            <button
+              onClick={onStartOnboarding}
+              className="bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs sm:text-sm px-8 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95 inline-flex items-center gap-2"
+            >
+              <span>Start Here +</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </section>
