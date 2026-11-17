@@ -60,7 +60,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "Inter", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+        sans: ["var(--font-roboto)", "'Roboto'", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
+        roboto: ["var(--font-roboto)", "'Roboto'", "sans-serif"],
       },
       boxShadow: {
         subtle: "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)",
