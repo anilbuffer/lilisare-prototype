@@ -1122,32 +1122,49 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 10. APPROACH: CLEAN 2-COLUMN WITH MOTHER & CHILD                          */}
+      {/* 10. APPROACH (Modeled on AxisCare Reference Layout)                       */}
       {/* ========================================================================= */}
-      <section className="w-full bg-[#fbfdfa] border-b border-slate-100 overflow-hidden py-20 sm:py-24 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-6 space-y-5">
-            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Our Approach</span>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug">
-              Human Care, Quiet Technology
+      <section className="w-full bg-white border-b border-slate-200/60 overflow-hidden py-16 sm:py-20 lg:py-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Left Text Column */}
+          <div className="lg:col-span-6 space-y-5 max-w-xl">
+            <span className="text-xs sm:text-sm font-bold tracking-widest text-[#2d551e] uppercase">
+              Our Approach
+            </span>
+
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#11230e] tracking-tight leading-[1.18]">
+              Our Family-First Approach &amp; Quiet Technology Empower Colorado Caregivers
             </h2>
-            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
-              Traditional home health agencies burden families with paper clipboards and rigid policies. LiliSare handles compliance quietly in the background, giving you simple tools so you can focus entirely on the person you love.
+
+            <p className="text-sm sm:text-base text-slate-800 font-semibold leading-snug">
+              Licensed CDPHE Agency Backed by In-Home Registered Nurse Support
             </p>
-            <div className="pt-2 flex flex-wrap gap-2.5 text-xs text-slate-700">
-              <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 font-semibold shadow-xs">100% Family Focus</span>
-              <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 font-semibold shadow-xs">1-Tap Colorado EVV</span>
-              <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 font-semibold shadow-xs">Dedicated RN Nurses</span>
+
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+              LiliSare helps Colorado families care for loved ones at home with greater confidence, dignity, and direct Medicaid compensation. From 1-tap mobile visit tracking to bi-weekly direct deposit, our platform and clinical team handle compliance quietly in the background so you can focus entirely on the person you love.
+            </p>
+
+            <div className="pt-2">
+              <button
+                onClick={onStartOnboarding}
+                className="inline-flex items-center gap-2 px-6 py-2.5 rounded-full border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-bold text-xs sm:text-sm shadow-xs hover:border-[#2d551e] hover:text-[#2d551e] transition-all cursor-pointer"
+              >
+                <span>Learn More</span>
+                <ChevronRight className="w-4 h-4 text-[#2d551e]" />
+              </button>
             </div>
           </div>
 
-          <div className="lg:col-span-6">
-            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border border-slate-200/80 bg-slate-100 group">
+          {/* Right Visual: Photo with soft bleed fade */}
+          <div className="lg:col-span-6 relative">
+            <div className="relative w-full h-[320px] sm:h-[400px] lg:h-[440px] overflow-hidden rounded-2xl lg:rounded-none">
               <img
-                src="/images/mother-child-art.jpg"
-                alt="Mother embracing son with special needs"
-                className="w-full h-full object-cover object-[82%_center] group-hover:scale-105 transition-transform duration-500"
+                src="/images/approach-reference.jpg"
+                alt="Registered Nurse reviewing digital care plan with senior loved one"
+                className="w-[185%] max-w-none h-full object-cover object-right absolute right-0 top-0 select-none"
               />
+              {/* Soft fade into white on the left */}
+              <div className="hidden lg:block absolute inset-y-0 left-0 w-28 sm:w-40 bg-gradient-to-r from-white via-white/80 to-transparent pointer-events-none" />
             </div>
           </div>
         </div>
