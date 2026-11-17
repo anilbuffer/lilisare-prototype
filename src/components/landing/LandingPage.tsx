@@ -1367,29 +1367,70 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-[#244218] via-[#324925] to-[#1b3114] text-white rounded-3xl p-6 sm:p-12 shadow-2xl relative overflow-hidden">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
-              <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
-                <div className="relative w-40 h-40 rounded-3xl overflow-hidden border-4 border-white/20 shadow-2xl">
+          <div className="bg-gradient-to-br from-[#244218] via-[#2f4f20] to-[#1b3114] text-white rounded-3xl p-6 sm:p-10 lg:p-12 shadow-2xl relative overflow-hidden border border-emerald-900/50">
+            {/* Ambient decorative lighting */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#F2B632]/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute bottom-0 left-0 w-80 h-80 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+              {/* Left Column: Authentic Team & Community Photo */}
+              <div className="lg:col-span-6 flex flex-col items-center lg:items-start text-center lg:text-left">
+                <div className="relative w-full max-w-md aspect-[5/4] rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 bg-slate-900 group">
                   <img
-                    src="https://images.unsplash.com/photo-1576765608866-5b51046452be?w=600&auto=format&fit=crop&q=80"
-                    alt="Founders of LiliSare"
-                    className="w-full h-full object-cover"
+                    src="/images/about-lilisare-team.jpg"
+                    alt="LiliSare founders, caregivers, and individuals with disabilities in Colorado park"
+                    className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+
+                  {/* Floating Glass Pill on the image */}
+                  <div className="absolute bottom-3 left-3 right-3 flex items-center justify-between gap-2">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md text-[#F2B632] text-xs font-black shadow-lg">
+                      <Heart className="w-3.5 h-3.5 fill-[#ff7e5f] text-[#ff7e5f]" />
+                      Real LiliSare Community &amp; Caregivers
+                    </span>
+                    <span className="hidden sm:inline-flex text-[11px] text-white/80 font-medium px-2 py-0.5 rounded-md bg-white/10 backdrop-blur-xs">
+                      Colorado Family
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-xl font-black text-white">Founded by Two Mothers</h3>
-                  <p className="text-xs text-[#F2B632] font-semibold mt-0.5">Of children with special healthcare needs</p>
+
+                <div className="mt-4">
+                  <h3 className="text-xl sm:text-2xl font-black text-white">Founded by Two Mothers</h3>
+                  <p className="text-xs sm:text-sm text-[#F2B632] font-bold mt-1">
+                    Of children with special healthcare needs • Colorado Family Owned
+                  </p>
                 </div>
               </div>
 
-              <div className="lg:col-span-7 space-y-4 text-xs sm:text-sm text-slate-100 leading-relaxed border-t lg:border-t-0 lg:border-l border-white/15 pt-6 lg:pt-0 lg:pl-8">
+              {/* Right Column: Authentic Story & Values */}
+              <div className="lg:col-span-6 space-y-5 text-xs sm:text-sm text-slate-100 leading-relaxed border-t lg:border-t-0 lg:border-l border-white/15 pt-6 lg:pt-0 lg:pl-8">
                 <p className="font-semibold text-emerald-100 text-sm sm:text-base leading-relaxed">
                   LiliSare was founded by two mothers of children with special needs who understand both the challenges and rewards of caregiving. We created this company to share our experience, knowledge, and support with others navigating similar journeys.
                 </p>
                 <p className="text-slate-200 leading-relaxed">
                   <strong className="text-white font-bold">You’re why we do what we do.</strong> At LiliSare, we lead with the heart, understanding the love, strength, and dedication it takes to care for someone close to you—whether you&apos;re a family member or a family friend providing care. We’re here for you. Our team offers compassion, guidance, and real connection—treating you like family every step of the way.
                 </p>
+
+                {/* Micro trust indicators */}
+                <div className="pt-2 grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
+                    <CheckCircle2 className="w-4 h-4 text-[#F2B632] shrink-0" />
+                    <span className="text-xs font-bold text-white">Heart-Led Compassion</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
+                    <CheckCircle2 className="w-4 h-4 text-[#F2B632] shrink-0" />
+                    <span className="text-xs font-bold text-white">Real Peer Connection</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
+                    <CheckCircle2 className="w-4 h-4 text-[#F2B632] shrink-0" />
+                    <span className="text-xs font-bold text-white">Dedicated RN Guidance</span>
+                  </div>
+                  <div className="flex items-center gap-2 p-2.5 rounded-xl bg-white/10 backdrop-blur-xs border border-white/10">
+                    <CheckCircle2 className="w-4 h-4 text-[#F2B632] shrink-0" />
+                    <span className="text-xs font-bold text-white">100% Colorado Focused</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
