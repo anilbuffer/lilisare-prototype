@@ -13,7 +13,8 @@ import {
   Clock,
   Users,
   Award,
-  ChevronRight,
+  ChevronDown,
+  ChevronUp,
   Stethoscope,
   Smile,
   Home as HomeIcon,
@@ -38,7 +39,11 @@ import {
   BadgeCheck,
   Layers,
   Baby,
-  UserCheck
+  UserCheck,
+  Download,
+  BookOpen,
+  Send,
+  MessageSquare
 } from 'lucide-react';
 import { usePortal } from '@/lib/store/portal-context';
 
@@ -62,32 +67,85 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
   // Interactive EVV Phone Simulation State
   const [isClockedIn, setIsClockedIn] = useState<boolean>(true);
 
+  // FAQ Accordion State (first open by default)
+  const [openFaq, setOpenFaq] = useState<number | null>(0);
+
   // Quick Lead Capture State
   const [leadContact, setLeadContact] = useState<string>('');
-  const [leadSubmitted, setLeadSubmitted] = useState<boolean>(false);
 
-  const handleLeadSubmit = (e: React.FormEvent) => {
+  // Contact Us Form State
+  const [contactName, setContactName] = useState<string>('');
+  const [contactPhone, setContactPhone] = useState<string>('');
+  const [contactEmail, setContactEmail] = useState<string>('');
+  const [contactMessage, setContactMessage] = useState<string>('');
+  const [contactSubmitted, setContactSubmitted] = useState<boolean>(false);
+
+  const handleHeroSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!leadContact.trim()) return;
-    setLeadSubmitted(true);
     notify(
       'Eligibility Inquiry Received',
       `Thank you! A LiliSare Care Coordinator will contact ${leadContact} within 24 hours.`,
       'success'
     );
+    setLeadContact('');
   };
 
-  return (
-    <div className="w-full bg-[#fbfdfa] text-slate-800 antialiased overflow-x-hidden selection:bg-[#3e6b2b] selection:text-white">
-      {/* SVG Clip Path for Heart Photo Cutouts */}
-      <svg className="absolute w-0 h-0 pointer-events-none" aria-hidden="true">
-        <defs>
-          <clipPath id="heart-clip" clipPathUnits="objectBoundingBox">
-            <path d="M0.5,0.85 C0.3,0.7 0.05,0.5 0.05,0.3 C0.05,0.12 0.2,0.02 0.35,0.02 C0.43,0.02 0.48,0.08 0.5,0.14 C0.52,0.08 0.57,0.02 0.65,0.02 C0.8,0.02 0.95,0.12 0.95,0.3 C0.95,0.5 0.7,0.7 0.5,0.85 Z" />
-          </clipPath>
-        </defs>
-      </svg>
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contactName.trim() || (!contactPhone.trim() && !contactEmail.trim())) {
+      notify('Missing Information', 'Please provide your name and phone number or email.', 'warning');
+      return;
+    }
+    setContactSubmitted(true);
+    notify(
+      'Message Sent Successfully',
+      `Thank you ${contactName}! We will reach out shortly regarding Colorado caregiver support.`,
+      'success'
+    );
+    setContactName('');
+    setContactPhone('');
+    setContactEmail('');
+    setContactMessage('');
+  };
 
+  const handleResourceDownload = (resourceTitle: string) => {
+    notify(
+      'Resource Download Initiated',
+      `"${resourceTitle}" is downloading. Check your downloads folder!`,
+      'info'
+    );
+  };
+
+  const faqItems = [
+    {
+      q: 'Can I really get paid as a parent or family member to care for my loved one in Colorado?',
+      a: 'Yes! Under Colorado Medicaid’s In-Home Support Services (IHSS) and Certified Nurse Aide (CNA) programs, parents of minor children, spouses, adult children, and family friends can be hired and receive competitive hourly pay as legal caregivers.'
+    },
+    {
+      q: 'Does this cost our family anything or take away from my loved one’s Medicaid benefits?',
+      a: 'No. There is $0 out-of-pocket cost to your family. These programs are 100% funded through Colorado Medicaid HCBS waivers (such as CES, CHRP, SLS, and EBD). Receiving pay as a caregiver does not reduce your loved one’s other medical or therapy coverage.'
+    },
+    {
+      q: 'How many hours per week can I be authorized for?',
+      a: 'Authorized hours are determined by your Colorado Case Management Agency (such as RMHS, Developmental Pathways, or Imagine!) based on an assessment of your loved one’s daily care needs. Families are typically approved for 15 to 40+ hours per week, with overtime available for eligible shifts.'
+    },
+    {
+      q: 'How do I clock in and get paid?',
+      a: 'Caregivers use our mobile app for Colorado Electronic Visit Verification (EVV) to clock in and out with 1 tap at home. Hours are automatically verified and paid bi-weekly via direct deposit right into your bank account through ADP.'
+    },
+    {
+      q: 'What if we do not have Medicaid yet or do not know which waiver we have?',
+      a: 'That is completely normal! Contact our team at 303-578-0181 or start our online intake. Our Care Coordinators will help you determine eligibility, connect with your local county case management agency, and guide you through waiver enrollment step-by-step.'
+    },
+    {
+      q: 'What is the difference between IHSS, CNA, and HMA services?',
+      a: 'IHSS covers personal care and homemaking with no medical license required. CNA requires a Colorado nurse aide license (which we can help you obtain) for skilled medical care at elevated wages. HMA covers nurse-delegated clinical tasks overseen by a LiliSare Registered Nurse.'
+    }
+  ];
+
+  return (
+    <div id="home" className="w-full bg-[#fbfdfa] text-slate-800 antialiased overflow-x-hidden selection:bg-[#3e6b2b] selection:text-white">
       {/* ========================================================================= */}
       {/* 1. TOP GREEN UTILITY BAR (Clean, High-Trust Colorado Header)               */}
       {/* ========================================================================= */}
@@ -100,14 +158,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </span>
             <span className="text-white/30 hidden sm:inline">•</span>
             <div className="flex items-center gap-1.5">
-              <span className="text-slate-200">Have Questions? Call or Text:</span>
+              <span className="text-slate-200">Have Questions? Call or Text Today!</span>
               <a href="tel:3035780181" className="font-extrabold text-[#F2B632] hover:underline">
                 303-578-0181
               </a>
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-[11px]">
+          <div className="flex items-center gap-3 text-[11px]">
             <button
               onClick={() => alert('Para asistencia en español, llámenos directamente al 303-578-0181.')}
               className="bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-slate-950 font-black px-2.5 py-0.5 rounded-full hover:brightness-105 transition-all shadow-xs"
@@ -123,12 +181,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. MAIN HEADER NAVIGATION (Crisp LiliSare Brand, Sticky & Accessible)       */}
+      {/* 2. MAIN HEADER NAVIGATION WITH SIGNATURE LILISARE CORAL CAPSULE MENU       */}
+      {/* Menus: [Home], [About Us], [Services], [Resources], [Contact Us]           */}
+      {/* + direct anchor shortcuts to [FAQ] & [Community]                           */}
       {/* ========================================================================= */}
       <header className="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-200/80 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
           <div
-            className="flex items-center gap-3 cursor-pointer group"
+            className="flex items-center gap-3 cursor-pointer group shrink-0"
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           >
             <img
@@ -138,17 +198,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             />
           </div>
 
-          <nav className="hidden lg:flex items-center space-x-7 text-xs font-bold text-slate-700">
-            <a href="#services" className="hover:text-primary transition-colors">Care Services</a>
-            <a href="#calculator" className="hover:text-primary transition-colors flex items-center gap-1">
-              <span>Pay Calculator</span>
-              <span className="px-1.5 py-0.5 rounded-full bg-[#fef3c7] text-[#92400e] text-[9px] font-black uppercase">Live</span>
-            </a>
-            <a href="#how-it-works" className="hover:text-primary transition-colors">How It Works</a>
-            <a href="#platform" className="hover:text-primary transition-colors">Software Features</a>
-            <a href="#about-us" className="hover:text-primary transition-colors">Who We Are</a>
-            <a href="#stories" className="hover:text-primary transition-colors">Family Stories</a>
-            <a href="#community" className="hover:text-primary transition-colors">Community</a>
+          {/* Signature Coral Capsule Menu as in Original Design */}
+          <nav className="hidden lg:flex items-center bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-white rounded-full px-5 py-2 shadow-md space-x-6 text-xs font-bold">
+            <a href="#home" className="hover:text-amber-100 transition-colors">Home</a>
+            <a href="#about-us" className="hover:text-amber-100 transition-colors">About Us</a>
+            <a href="#services" className="hover:text-amber-100 transition-colors">Services</a>
+            <a href="#resources" className="hover:text-amber-100 transition-colors">Resources</a>
+            <a href="#faq" className="hover:text-amber-100 transition-colors">FAQ</a>
+            <a href="#community" className="hover:text-amber-100 transition-colors">Community</a>
+            <a href="#contact" className="hover:text-amber-100 transition-colors">Contact Us</a>
           </nav>
 
           <div className="flex items-center gap-2.5">
@@ -160,25 +218,35 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </button>
             <button
               onClick={onStartOnboarding}
-              className="bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-1.5"
+              className="bg-primary hover:bg-primary-800 text-white font-black px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center gap-1.5"
             >
               <span>Get Started</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
         </div>
+
+        {/* Mobile Navigation Row */}
+        <div className="flex lg:hidden overflow-x-auto py-2 px-4 bg-slate-100 text-xs font-bold text-slate-700 gap-4 border-t border-slate-200">
+          <a href="#home" className="whitespace-nowrap hover:text-primary">Home</a>
+          <a href="#about-us" className="whitespace-nowrap hover:text-primary">About Us</a>
+          <a href="#services" className="whitespace-nowrap hover:text-primary">Services</a>
+          <a href="#resources" className="whitespace-nowrap hover:text-primary">Resources</a>
+          <a href="#faq" className="whitespace-nowrap hover:text-primary">FAQ</a>
+          <a href="#community" className="whitespace-nowrap hover:text-primary">Community</a>
+          <a href="#contact" className="whitespace-nowrap hover:text-primary">Contact Us</a>
+        </div>
       </header>
 
       {/* ========================================================================= */}
-      {/* 3. HERO SECTION (Full-Width, Emotional Heart Imagery + High-Converting CTA) */}
+      {/* 3. HERO SECTION (Full-Width, Heart Photo Frame + High-Converting Action)   */}
       {/* ========================================================================= */}
       <section className="relative bg-gradient-to-b from-[#1b3114] via-[#2a4a1f] to-[#3e6b2b] text-white pt-12 pb-20 sm:pt-16 sm:pb-28 px-4 sm:px-8 overflow-hidden">
-        {/* Soft Background Glow Effects */}
         <div className="absolute top-10 left-1/4 w-96 h-96 bg-emerald-400/10 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute -bottom-10 right-10 w-96 h-96 bg-[#F2B632]/10 rounded-full blur-3xl pointer-events-none" />
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10">
-          {/* Left Column: High-Impact Typography & Fast Action */}
+          {/* Left Column: Heading & Lead Capture */}
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-bold text-[#F2B632]">
               <Sparkles className="w-3.5 h-3.5" />
@@ -199,7 +267,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
 
             {/* Quick Hero Lead Form */}
             <div className="bg-white/10 backdrop-blur-md p-2 sm:p-2.5 rounded-2xl border border-white/25 max-w-lg mx-auto lg:mx-0 shadow-xl">
-              <form onSubmit={handleLeadSubmit} className="flex flex-col sm:flex-row items-center gap-2">
+              <form onSubmit={handleHeroSubmit} className="flex flex-col sm:flex-row items-center gap-2">
                 <input
                   type="text"
                   placeholder="Enter phone number or email..."
@@ -217,7 +285,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               </form>
             </div>
 
-            {/* Trust Metrics & Badges */}
+            {/* Trust Metrics */}
             <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 text-xs text-emerald-100 font-medium">
               <div className="flex items-center gap-1.5">
                 <div className="flex text-[#F2B632]">
@@ -231,7 +299,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="w-4 h-4 text-[#00d084]" />
-                <span><strong>$0</strong> Family Out-of-Pocket</span>
+                <span><strong>$0</strong> Out-of-Pocket Cost</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <CheckCircle2 className="w-4 h-4 text-[#00d084]" />
@@ -240,14 +308,11 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
           </div>
 
-          {/* Right Column: Hero Heart Frame + Floating Interactive Badges */}
+          {/* Right Column: Hero Heart Photo Frame with Floating Badges */}
           <div className="lg:col-span-6 relative flex items-center justify-center">
-            {/* Outer Decorative Heart Container */}
             <div className="relative w-full max-w-md sm:max-w-lg aspect-square flex items-center justify-center">
-              {/* Glowing Warm Backdrop Ring */}
               <div className="absolute inset-0 rounded-full bg-gradient-to-tr from-[#F2B632]/25 to-emerald-400/20 blur-2xl transform scale-90 animate-pulse pointer-events-none" />
 
-              {/* Heart Shape Photo Frame with Authentic Styling */}
               <div className="relative w-[340px] sm:w-[420px] h-[340px] sm:h-[420px] p-3 rounded-[3.5rem] bg-gradient-to-b from-[#fef08a] via-[#fde047] to-[#F2B632] shadow-2xl flex items-center justify-center overflow-hidden transform hover:scale-[1.01] transition-transform duration-500">
                 <div className="relative w-full h-full rounded-[3rem] overflow-hidden bg-slate-900">
                   <img
@@ -255,29 +320,24 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                     alt="Mother joyfully caring for her happy child at home"
                     className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   />
-                  {/* Subtle Gradient Overlay */}
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-black/10" />
 
-                  {/* Inner Photo Caption */}
                   <div className="absolute bottom-5 left-5 right-5 text-white">
                     <p className="text-xs font-black tracking-wide uppercase text-[#F2B632]">Real Colorado Family</p>
-                    <p className="text-sm sm:text-base font-extrabold leading-snug">
-                      Elena & Mateo • Denver, Colorado
-                    </p>
+                    <p className="text-sm sm:text-base font-extrabold leading-snug">Elena & Mateo • Denver, Colorado</p>
                     <p className="text-[11px] text-emerald-200 mt-0.5">Paid 28.5 hrs/week under IHSS Program</p>
                   </div>
                 </div>
 
-                {/* Decorative Mini Heart Accents along Frame Border */}
-                <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-[#fde047] text-amber-900 flex items-center justify-center shadow-lg">
+                <div className="absolute top-6 right-6 w-8 h-8 rounded-full bg-[#fde047] text-amber-950 flex items-center justify-center shadow-lg">
                   <Heart className="w-4 h-4 fill-amber-900" />
                 </div>
-                <div className="absolute bottom-12 right-2 w-6 h-6 rounded-full bg-[#fde047] text-amber-900 flex items-center justify-center shadow-md">
+                <div className="absolute bottom-12 right-2 w-6 h-6 rounded-full bg-[#fde047] text-amber-950 flex items-center justify-center shadow-md">
                   <Heart className="w-3 h-3 fill-amber-900" />
                 </div>
               </div>
 
-              {/* Floating Glass Badge 1: Top Left (Compensation) */}
+              {/* Floating Glass Badges */}
               <div className="absolute -top-3 left-0 sm:-left-4 bg-white/95 backdrop-blur-md text-slate-900 p-3 sm:p-3.5 rounded-2xl shadow-2xl border border-white/60 flex items-center gap-3 transform -rotate-1 hover:rotate-0 transition-transform">
                 <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold">
                   <DollarSign className="w-5 h-5" />
@@ -288,7 +348,6 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              {/* Floating Glass Badge 2: Bottom Left (Mobile EVV) */}
               <div className="absolute -bottom-4 left-2 sm:-left-4 bg-white/95 backdrop-blur-md text-slate-900 p-3 sm:p-3.5 rounded-2xl shadow-2xl border border-white/60 flex items-center gap-3 transform rotate-1 hover:rotate-0 transition-transform">
                 <div className="w-10 h-10 rounded-xl bg-primary-100 text-primary-800 flex items-center justify-center font-bold">
                   <Smartphone className="w-5 h-5" />
@@ -298,21 +357,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   <span className="text-xs sm:text-sm font-black text-slate-900">1-Tap GPS Mobile Clock-In</span>
                 </div>
               </div>
-
-              {/* Floating Glass Badge 3: Bottom Right (90% Family) */}
-              <div className="absolute -bottom-2 right-0 sm:-right-4 bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-slate-950 p-2.5 sm:p-3 rounded-2xl shadow-2xl flex items-center gap-2 transform -rotate-2 hover:rotate-0 transition-transform">
-                <Users className="w-4 h-4 fill-slate-950" />
-                <span className="text-xs font-black">90% Family Caregivers</span>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ========================================================================= */}
-      {/* 4. TRUSTED PARTNERS / COLORADO CASE MANAGEMENT AGENCIES                     */}
+      {/* 4. PARTNER AGENCIES BAR                                                   */}
       {/* ========================================================================= */}
-      <section className="py-8 bg-white border-b border-slate-200/80 px-4 sm:px-8">
+      <div className="py-8 bg-white border-b border-slate-200/80 px-4 sm:px-8">
         <div className="max-w-7xl mx-auto">
           <p className="text-center text-xs font-black uppercase tracking-wider text-slate-400 mb-6">
             Authorized & Coordinated with Colorado Medicaid Case Management Agencies
@@ -340,17 +393,17 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </span>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* ========================================================================= */}
-      {/* 5. INTERACTIVE COLORADO PAY CALCULATOR (High-Converting SaaS Tool)         */}
+      {/* 5. INTERACTIVE COLORADO PAY CALCULATOR                                    */}
       {/* ========================================================================= */}
-      <section id="calculator" className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#f4f7f2] to-white relative">
+      <section className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#f4f7f2] to-white">
         <div className="max-w-5xl mx-auto space-y-10">
           <div className="text-center max-w-2xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-black uppercase tracking-wider">
               <DollarSign className="w-3.5 h-3.5" />
-              <span>Colorado Compensation Estimator</span>
+              <span>Compensation Estimator</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Calculate Your Family Caregiver Monthly Earnings
@@ -360,9 +413,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </p>
           </div>
 
-          {/* Calculator Card */}
           <div className="bg-white rounded-3xl border-2 border-emerald-200/80 p-6 sm:p-10 shadow-xl grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* Slider Controls */}
             <div className="lg:col-span-7 space-y-6">
               <div>
                 <div className="flex items-center justify-between mb-2">
@@ -389,7 +440,6 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              {/* Breakdown Highlights */}
               <div className="grid grid-cols-2 gap-3 text-xs">
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
                   <span className="text-slate-500 font-semibold block text-[11px]">Colorado State Hourly Base</span>
@@ -399,7 +449,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 <div className="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80">
                   <span className="text-slate-500 font-semibold block text-[11px]">Payroll Schedule</span>
                   <span className="text-base font-black text-slate-900">Bi-Weekly</span>
-                  <span className="text-[10px] text-slate-500 block font-medium">Direct Deposit to your bank</span>
+                  <span className="text-[10px] text-slate-500 block font-medium">Direct Deposit to bank</span>
                 </div>
               </div>
 
@@ -411,7 +461,6 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               </div>
             </div>
 
-            {/* Results & Immediate Action */}
             <div className="lg:col-span-5 bg-gradient-to-br from-[#1b3114] to-[#3e6b2b] text-white p-6 sm:p-8 rounded-3xl shadow-lg flex flex-col justify-between space-y-6 text-center">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-[#F2B632]">Estimated Monthly Pay</span>
@@ -445,7 +494,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. "OUR AVAILABLE SERVICES" (Heart Photos & Buttercup Cards like LiliSare) */}
+      {/* 6. SECTION: [SERVICES] — 6 Core Programs with Heart Photo Cutout Cards     */}
       {/* ========================================================================= */}
       <section id="services" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#324925] text-white">
         <div className="max-w-7xl mx-auto space-y-12">
@@ -455,19 +504,17 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <span>Compassionate Programs</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-              Our Available Care Services
+              Our Available Services
             </h2>
             <p className="text-xs sm:text-sm text-emerald-100 leading-relaxed">
               We specialize in Colorado Medicaid waivers supporting children with special healthcare needs and adults with disabilities in their own homes.
             </p>
           </div>
 
-          {/* 6 Warm Buttercup Service Cards with Heart-Shaped Photo Cutouts */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {/* Service 1: IHSS */}
             <div className="bg-[#fef9ee] text-slate-900 p-6 rounded-3xl border border-[#fbe2a6] shadow-md hover:shadow-2xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-5">
               <div className="space-y-4">
-                {/* Heart Cutout Frame */}
                 <div className="relative w-36 h-36 mx-auto">
                   <div className="w-full h-full rounded-[2rem] overflow-hidden border-4 border-[#F2B632] shadow-md">
                     <img
@@ -483,7 +530,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
 
                 <div className="text-center space-y-1.5">
                   <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 inline-block">
-                    Most Popular • Parent as Paid Caregiver
+                    Parent as Paid Caregiver
                   </span>
                   <h3 className="text-lg font-black text-slate-900">In-Home Support Services (IHSS)</h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -569,7 +616,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
 
                 <div className="text-center space-y-1.5">
                   <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900 inline-block">
-                    Nurse-Delegated Care
+                    Nurse-Delegated Tasks
                   </span>
                   <h3 className="text-lg font-black text-slate-900">Health Maintenance (HMA)</h3>
                   <p className="text-xs text-slate-600 leading-relaxed">
@@ -727,324 +774,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. HOW IT WORKS: 4 SIMPLE WELCOME STEPS (From LiliSare Original Site)      */}
-      {/* ========================================================================= */}
-      <section id="how-it-works" className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
-        <div className="max-w-6xl mx-auto space-y-12">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-extrabold uppercase tracking-wider text-primary">Simple & Stress-Free</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              4 Welcome Steps to Getting Paid
-            </h2>
-            <p className="text-xs text-slate-500">
-              We handle the complicated state bureaucracy so your family can focus on what matters most.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 relative">
-            {/* Step 1 */}
-            <div className="p-6 rounded-3xl bg-[#fef9ee] border border-[#fbe2a6] text-center space-y-4 hover:shadow-lg transition-shadow relative">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-slate-950 flex items-center justify-center font-black text-lg shadow-md">
-                1
-              </div>
-              <h3 className="text-base font-black text-slate-900">Get Started Online</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Fill out our quick 5-minute intake. We verify your Medicaid waiver and start your care circle.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="p-6 rounded-3xl bg-[#fef9ee] border border-[#fbe2a6] text-center space-y-4 hover:shadow-lg transition-shadow relative">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-slate-950 flex items-center justify-center font-black text-lg shadow-md">
-                2
-              </div>
-              <h3 className="text-base font-black text-slate-900">Case Manager Link</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                We coordinate directly with your state case worker and physician for prior authorizations.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="p-6 rounded-3xl bg-[#fef9ee] border border-[#fbe2a6] text-center space-y-4 hover:shadow-lg transition-shadow relative">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-slate-950 flex items-center justify-center font-black text-lg shadow-md">
-                3
-              </div>
-              <h3 className="text-base font-black text-slate-900">Start of Services</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Download the caregiver mobile app, complete digital signing, and begin clocking hours at home.
-              </p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="p-6 rounded-3xl bg-[#fef9ee] border border-[#fbe2a6] text-center space-y-4 hover:shadow-lg transition-shadow relative">
-              <div className="w-14 h-14 mx-auto rounded-2xl bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-slate-950 flex items-center justify-center font-black text-lg shadow-md">
-                4
-              </div>
-              <h3 className="text-base font-black text-slate-900">Ongoing Paid Support</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Receive on-time bi-weekly direct deposit pay, CPR refresher training, and ongoing nurse check-ins.
-              </p>
-            </div>
-          </div>
-
-          <div className="text-center pt-4">
-            <button
-              onClick={onStartOnboarding}
-              className="bg-primary hover:bg-primary-800 text-white font-black px-8 py-3.5 rounded-xl text-xs sm:text-sm shadow-md hover:shadow-lg transition-all inline-flex items-center gap-2"
-            >
-              <span>Begin Step 1: Start Free Intake</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 8. SAAS PLATFORM SHOWCASE (AxisCare Style Interactive Tabs & App Mockup)  */}
-      {/* ========================================================================= */}
-      <section id="platform" className="py-16 sm:py-24 px-4 sm:px-8 bg-slate-50 border-y border-slate-200/80">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-primary">Purpose-Built Technology</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
-              Modern Software for Families & Agency Staff
-            </h2>
-            <p className="text-xs text-slate-500">
-              Explore how LiliSphere automates state EVV requirements, clinical nurse oversight, and Medicaid claim routing.
-            </p>
-          </div>
-
-          {/* Interactive Tab Selectors */}
-          <div className="flex items-center justify-center gap-2 overflow-x-auto pb-2 text-xs">
-            {[
-              { id: 'mobile', label: '1. Caregiver Mobile EVV App' },
-              { id: 'intake', label: '2. Auto-Document Intake' },
-              { id: 'clinical', label: '3. RN Supervisory Visits' },
-              { id: 'billing', label: '4. Dual-NPI Medicaid Billing' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as any)}
-                className={`px-5 py-2.5 rounded-xl font-black transition-all whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? 'bg-primary text-white shadow-md'
-                    : 'bg-white text-slate-700 hover:bg-slate-200 border border-slate-200'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Interactive Tab Display Card */}
-          <div className="bg-white rounded-3xl p-6 sm:p-10 border border-slate-200/90 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-            {/* TAB 1: CAREGIVER MOBILE EVV */}
-            {activeTab === 'mobile' && (
-              <>
-                <div className="lg:col-span-6 space-y-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-900">
-                    Family-First Mobile Experience
-                  </span>
-                  <h3 className="text-xl sm:text-3xl font-black text-slate-900">
-                    Colorado EVV Clock-In & Self-Service Correction
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Colorado requires Electronic Visit Verification for Medicaid home care. LiliSare makes this effortless with 1-tap mobile clock-in and our signature feature: self-service missed clock-out adjustments.
-                  </p>
-                  <div className="space-y-2.5 text-xs text-slate-700">
-                    <p className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>GPS Geofence automatically matches client residence.</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>AI voice-to-text notes make daily charting fast and compliant.</span>
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                      <span>Never lose pay: easy self-service corrections without calling the office.</span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Interactive Phone Simulation Widget */}
-                <div className="lg:col-span-6 flex justify-center">
-                  <div className="w-full max-w-xs bg-slate-900 rounded-[2.5rem] p-3.5 shadow-2xl border-4 border-slate-800 text-white space-y-3 font-sans">
-                    <div className="flex items-center justify-between text-[11px] text-slate-400 px-2 pt-1">
-                      <span>9:41 AM</span>
-                      <div className="flex items-center gap-1">
-                        <span>5G</span>
-                        <div className="w-4 h-2 rounded-sm bg-emerald-500" />
-                      </div>
-                    </div>
-
-                    <div className="p-4 rounded-2xl bg-slate-800/90 border border-slate-700/80 space-y-3">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-400">
-                          Live Colorado EVV Shift
-                        </span>
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
-                      </div>
-
-                      <div>
-                        <p className="text-sm font-black text-white">Mateo Morales (IHSS)</p>
-                        <p className="text-[11px] text-slate-300">Caregiver: Elena Morales (Mother)</p>
-                        <p className="text-[10px] text-emerald-300 font-mono mt-0.5">
-                          Geofence: Inside Home Residence (100% Match)
-                        </p>
-                      </div>
-
-                      <div className="p-2.5 rounded-xl bg-slate-900 text-center space-y-1">
-                        <span className="text-[10px] text-slate-400">Shift Elapsed Today:</span>
-                        <p className="text-xl font-black text-[#F2B632]">03h 45m 12s</p>
-                      </div>
-
-                      <button
-                        onClick={() => {
-                          setIsClockedIn(!isClockedIn);
-                          notify(
-                            isClockedIn ? 'Clocked Out' : 'Clocked In',
-                            isClockedIn ? 'Shift recorded and synced with Sandata Colorado EVV.' : 'Shift active with live GPS validation.',
-                            'info'
-                          );
-                        }}
-                        className={`w-full py-2.5 rounded-xl font-black text-xs transition-all ${
-                          isClockedIn
-                            ? 'bg-rose-600 hover:bg-rose-700 text-white'
-                            : 'bg-emerald-600 hover:bg-emerald-700 text-white'
-                        }`}
-                      >
-                        {isClockedIn ? 'Simulate Clock Out' : 'Simulate Clock In'}
-                      </button>
-                    </div>
-
-                    <div className="p-3 rounded-xl bg-slate-800/50 border border-slate-800 text-[10px] text-slate-400">
-                      ⚡ Synced live to Sandata Colorado Aggregator Hub
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* TAB 2: INTAKE */}
-            {activeTab === 'intake' && (
-              <>
-                <div className="lg:col-span-6 space-y-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-primary-100 text-primary-900">
-                    Automated Document Engine
-                  </span>
-                  <h3 className="text-xl sm:text-3xl font-black text-slate-900">
-                    Rule-Driven 15–20 Document Compilation
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Staff never waste hours guessing forms. Selecting the service program (IHSS vs CNA vs HMA) and employment classification (W-2 vs 1099) auto-generates the exact document packet.
-                  </p>
-                  <div className="space-y-2 text-xs text-slate-700">
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> W-4 Federal withholding & Direct Deposit for family employees</p>
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Automatic CBI fingerprint check and OIG exclusion triggers</p>
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Independent patient & caregiver progress tracking (Rule 5)</p>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-mono space-y-2">
-                  <div className="p-3 bg-white rounded-xl border border-slate-200 flex justify-between">
-                    <span>CBI Fingerprint Background Check:</span>
-                    <strong className="text-emerald-700">Auto-Required</strong>
-                  </div>
-                  <div className="p-3 bg-white rounded-xl border border-slate-200 flex justify-between">
-                    <span>Family Attestation & Consent:</span>
-                    <strong className="text-emerald-700">Auto-Required</strong>
-                  </div>
-                  <div className="p-3 bg-white rounded-xl border border-slate-200 flex justify-between">
-                    <span>State PAR (Prior Authorization):</span>
-                    <strong className="text-primary font-bold">RMHS Linked</strong>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* TAB 3: CLINICAL RN */}
-            {activeTab === 'clinical' && (
-              <>
-                <div className="lg:col-span-6 space-y-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-900">
-                    Clinical Excellence
-                  </span>
-                  <h3 className="text-xl sm:text-3xl font-black text-slate-900">
-                    Registered Nurse Oversight & 60-Day Visits
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    State regulations require 60-day supervisory home visits for CNAs and quarterly reviews for HMA. Our platform automates scheduling and logs digital signatures.
-                  </p>
-                  <div className="space-y-2 text-xs text-slate-700">
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> On-site RN supervisory visits logged digitally</p>
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Medication delegation & clinical competency evaluations</p>
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Real-time compliance alerts for CPR and TB renewals</p>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs space-y-2">
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <span className="font-bold text-slate-900 block">60-Day CNA Onsite Supervisory Visit</span>
-                    <span className="text-slate-500">Supervising RN: Rebecca Stern, RN • Next due: in 14 days</span>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-slate-200">
-                    <span className="font-bold text-slate-900 block">HMA Quarterly Nurse Delegation</span>
-                    <span className="text-emerald-700 font-semibold">Completed & Certified</span>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {/* TAB 4: BILLING */}
-            {activeTab === 'billing' && (
-              <>
-                <div className="lg:col-span-6 space-y-4">
-                  <span className="text-[10px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-900">
-                    Revenue Cycle & Payroll
-                  </span>
-                  <h3 className="text-xl sm:text-3xl font-black text-slate-900">
-                    Dual-NPI Routing & Zero-Error Claims
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                    Automatically splits claims under Mountain Lane vs. Colorado Home Health, handles commercial denial attachments, and pushes verified EVV hours directly to ADP Run.
-                  </p>
-                  <div className="space-y-2 text-xs text-slate-700">
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Automated 837P electronic claim generation for Colorado MMIS</p>
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> Prerequisite commercial denial letter tracking</p>
-                    <p className="flex items-center gap-2"><CheckCircle2 className="w-4 h-4 text-emerald-600" /> 100% clean audit trail preserved for 7 years</p>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-6 p-4 rounded-2xl bg-slate-50 border border-slate-200 text-xs font-mono space-y-2">
-                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex justify-between">
-                    <span>Mountain Lane NPI:</span>
-                    <strong className="text-emerald-700 font-bold">1942289410</strong>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex justify-between">
-                    <span>Colorado Home Health NPI:</span>
-                    <strong className="text-emerald-700 font-bold">1487621190</strong>
-                  </div>
-                  <div className="p-3 rounded-xl bg-white border border-slate-200 flex justify-between">
-                    <span>ADP Payroll Batch:</span>
-                    <strong className="text-slate-800">Ready for Direct Deposit</strong>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 9. WHO WE ARE: FOUNDED BY TWO MOTHERS (Heart & Soul Brand Story)           */}
+      {/* 7. SECTION: [ABOUT US] — Founders' Story, Mission & Vision Statements       */}
       {/* ========================================================================= */}
       <section id="about-us" className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
         <div className="max-w-6xl mx-auto space-y-12">
           <div className="text-center max-w-3xl mx-auto space-y-3">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary-100 text-primary-900 text-xs font-black uppercase tracking-wider">
               <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
-              <span>Who We Are — LiliSare</span>
+              <span>About Us — LiliSare</span>
             </div>
             <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
               Live-In Caregivers, Family Caregivers, and Family Friends
@@ -1054,7 +791,6 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </p>
           </div>
 
-          {/* Founders Story Spotlight Box */}
           <div className="bg-gradient-to-br from-[#244218] via-[#324925] to-[#1b3114] text-white rounded-3xl p-6 sm:p-12 shadow-2xl relative overflow-hidden">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
               <div className="lg:col-span-5 flex flex-col items-center lg:items-start text-center lg:text-left space-y-4">
@@ -1082,7 +818,6 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
           </div>
 
-          {/* Mission & Vision Statements */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-7 rounded-3xl bg-[#fef9ee] border border-[#fbe2a6] shadow-sm space-y-3">
               <div className="flex items-center gap-2">
@@ -1114,96 +849,165 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 10. REAL STORIES FROM COLORADO FAMILIES                                    */}
+      {/* 8. SECTION: [RESOURCES] — Guides, Checklists & Colorado Medicaid Tools      */}
       {/* ========================================================================= */}
-      <section id="stories" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#1b3114] text-white">
-        <div className="max-w-5xl mx-auto space-y-10 text-center">
-          <div className="space-y-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#F2B632]">Voices from Colorado</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-              Hear From Our Caregivers & Families
+      <section id="resources" className="py-16 sm:py-24 px-4 sm:px-8 bg-slate-50 border-y border-slate-200/80">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-900 text-xs font-black uppercase tracking-wider">
+              <BookOpen className="w-3.5 h-3.5 text-primary" />
+              <span>Helpful Knowledge Base</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Resources for Colorado Families & Caregivers
             </h2>
-          </div>
-
-          <div className="bg-slate-900/70 rounded-3xl border border-white/20 p-6 sm:p-10 backdrop-blur-md grid grid-cols-1 md:grid-cols-12 gap-8 items-center text-left">
-            <div className="md:col-span-5 relative aspect-video bg-black/40 rounded-2xl overflow-hidden border border-white/20 flex items-center justify-center group cursor-pointer shadow-xl">
-              <img
-                src="https://images.unsplash.com/photo-1544717305-2782549b5136?w=600&auto=format&fit=crop&q=80"
-                alt="Elena and Mateo family story"
-                className="w-full h-full object-cover opacity-70 group-hover:opacity-90 transition-opacity"
-              />
-              <div className="w-14 h-14 rounded-full bg-gradient-to-tr from-[#ff7e5f] to-[#feb47b] text-slate-950 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
-                <Play className="w-6 h-6 fill-current ml-1" />
-              </div>
-            </div>
-
-            <div className="md:col-span-7 space-y-4">
-              <p className="text-xs sm:text-sm text-emerald-100 italic leading-relaxed">
-                &ldquo;Before LiliSare, I was trying to balance a job outside our home while managing my 10-year-old son’s autism and therapy appointments. Now, through the IHSS program, I am paid as his full-time attendant. The clock-in app is effortless, and having dedicated RN nurse support makes us feel truly protected.&rdquo;
-              </p>
-              <div className="pt-2 border-t border-white/15">
-                <h4 className="text-sm font-black text-white">Elena Morales</h4>
-                <p className="text-xs text-[#F2B632]">Denver, Colorado • Family Caregiver for Mateo</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 11. WEGO COMMUNITY OUTINGS (Warm Community Events Gallery)                */}
-      {/* ========================================================================= */}
-      <section id="community" className="py-16 px-4 sm:px-8 bg-[#244218] text-white text-center">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-4xl font-black text-white">Explore our WeGo Community Events</h2>
-            <p className="text-xs sm:text-sm text-emerald-100">Connecting Colorado caregiving families through accessible community outings, sensory days, and peer support.</p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 transform hover:scale-105 transition-transform">
-              <img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=400&auto=format&fit=crop&q=80" alt="Outing" className="w-full h-full object-cover" />
-            </div>
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 transform hover:scale-105 transition-transform">
-              <img src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=80" alt="Therapy pony" className="w-full h-full object-cover" />
-            </div>
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 transform hover:scale-105 transition-transform">
-              <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&auto=format&fit=crop&q=80" alt="Kids event" className="w-full h-full object-cover" />
-            </div>
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 transform hover:scale-105 transition-transform">
-              <img src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&auto=format&fit=crop&q=80" alt="Caregivers" className="w-full h-full object-cover" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ========================================================================= */}
-      {/* 12. HIGH-CONVERTING BOTTOM CTA / LEAD CAPTURE                             */}
-      {/* ========================================================================= */}
-      <section className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-[#244218] via-[#324925] to-[#1b3114] text-white rounded-3xl p-8 sm:p-14 shadow-2xl text-center space-y-6 relative overflow-hidden">
-          <div className="space-y-3 relative z-10">
-            <span className="text-xs font-black uppercase tracking-wider text-[#F2B632]">Ready to Begin?</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
-              Start Your Family Onboarding in 5 Minutes
-            </h2>
-            <p className="text-xs sm:text-sm text-emerald-100 max-w-xl mx-auto leading-relaxed">
-              Join hundreds of Colorado families getting paid to care for their loved ones. Our onboarding wizard walks you through every step with zero paperwork confusion.
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Download free guides, explore Colorado Medicaid waiver breakdowns, and access step-by-step checklists to make family caregiving simple.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
-            <button
-              onClick={onStartOnboarding}
-              className="w-full sm:w-auto bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs sm:text-sm px-8 py-4 rounded-xl shadow-xl hover:shadow-2xl transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center gap-2"
-            >
-              <span>Launch Onboarding Wizard</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Resource 1 */}
+            <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between space-y-4 group">
+              <div className="space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <FileText className="w-6 h-6" />
+                </div>
+                <h3 className="text-sm font-black text-slate-900">Colorado Medicaid Waiver Guide</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Complete breakdown of CES, CHRP, SLS, and EBD waivers with eligibility requirements.
+                </p>
+              </div>
+              <button
+                onClick={() => handleResourceDownload('Colorado Medicaid Waiver Guide')}
+                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-primary hover:text-white text-slate-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download PDF Guide</span>
+              </button>
+            </div>
+
+            {/* Resource 2 */}
+            <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between space-y-4 group">
+              <div className="space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <CheckCheck className="w-6 h-6" />
+                </div>
+                <h3 className="text-sm font-black text-slate-900">IHSS Caregiver Checklist</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Everything you need for onboarding: CBI fingerprinting, I-9 verification, and tax forms.
+                </p>
+              </div>
+              <button
+                onClick={() => handleResourceDownload('IHSS Caregiver Checklist')}
+                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-primary hover:text-white text-slate-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Checklist</span>
+              </button>
+            </div>
+
+            {/* Resource 3 */}
+            <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between space-y-4 group">
+              <div className="space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-teal-100 text-teal-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Smartphone className="w-6 h-6" />
+                </div>
+                <h3 className="text-sm font-black text-slate-900">EVV Mobile App User Manual</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Simple photo tutorial on clocking in, GPS geofencing, and self-service time adjustments.
+                </p>
+              </div>
+              <button
+                onClick={() => handleResourceDownload('EVV Mobile App Manual')}
+                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-primary hover:text-white text-slate-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Manual</span>
+              </button>
+            </div>
+
+            {/* Resource 4 */}
+            <div className="p-6 rounded-3xl bg-white border border-slate-200/90 shadow-sm hover:shadow-xl transition-all flex flex-col justify-between space-y-4 group">
+              <div className="space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-purple-100 text-purple-800 flex items-center justify-center group-hover:scale-110 transition-transform">
+                  <Users className="w-6 h-6" />
+                </div>
+                <h3 className="text-sm font-black text-slate-900">Case Manager Agency Directory</h3>
+                <p className="text-xs text-slate-600 leading-relaxed">
+                  Direct phone numbers and intake contacts for RMHS, Developmental Pathways, and TRE.
+                </p>
+              </div>
+              <button
+                onClick={() => handleResourceDownload('Case Manager Directory')}
+                className="w-full py-2.5 rounded-xl bg-slate-100 hover:bg-primary hover:text-white text-slate-800 font-bold text-xs transition-colors flex items-center justify-center gap-1.5"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download Directory</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 9. SECTION: [FAQ] — Frequently Asked Questions Accordion                   */}
+      {/* ========================================================================= */}
+      <section id="faq" className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
+        <div className="max-w-4xl mx-auto space-y-10">
+          <div className="text-center space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-black uppercase tracking-wider">
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Questions & Answers</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Frequently Asked Questions (FAQ)
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-xl mx-auto">
+              Everything Colorado families need to know about getting paid as a caregiver, Medicaid waiver qualifications, and state EVV requirements.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            {faqItems.map((item, idx) => (
+              <div
+                key={idx}
+                className="rounded-2xl border border-slate-200/90 overflow-hidden bg-slate-50 transition-colors"
+              >
+                <button
+                  type="button"
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full p-4 sm:p-5 text-left font-black text-slate-900 text-xs sm:text-sm flex items-center justify-between gap-4 hover:bg-slate-100 transition-colors"
+                >
+                  <span className="flex items-center gap-2">
+                    <span className="w-6 h-6 rounded-full bg-primary-100 text-primary flex items-center justify-center text-xs font-black shrink-0">
+                      {idx + 1}
+                    </span>
+                    <span>{item.q}</span>
+                  </span>
+                  {openFaq === idx ? (
+                    <ChevronUp className="w-4 h-4 text-primary shrink-0" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-slate-400 shrink-0" />
+                  )}
+                </button>
+                {openFaq === idx && (
+                  <div className="p-4 sm:p-5 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-200/60 bg-white">
+                    {item.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="p-6 rounded-3xl bg-[#fef9ee] border border-[#fbe2a6] text-center space-y-3">
+            <h4 className="text-sm font-black text-slate-900">Have a question not listed here?</h4>
+            <p className="text-xs text-slate-600">Our family care team is available by call or text to walk you through your exact situation.</p>
             <a
               href="tel:3035780181"
-              className="w-full sm:w-auto px-6 py-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/25 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2"
+              className="inline-flex items-center gap-2 text-xs font-black text-primary hover:underline"
             >
-              <Phone className="w-4 h-4 text-[#F2B632]" />
+              <Phone className="w-3.5 h-3.5" />
               <span>Call / Text: 303-578-0181</span>
             </a>
           </div>
@@ -1211,7 +1015,235 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 13. ENTERPRISE FOOTER                                                     */}
+      {/* 10. SECTION: [COMMUNITY] — WeGo Community Outings & Events Gallery         */}
+      {/* ========================================================================= */}
+      <section id="community" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#244218] text-white text-center">
+        <div className="max-w-6xl mx-auto space-y-10">
+          <div className="space-y-3 max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-[#F2B632] text-xs font-black uppercase tracking-wider">
+              <Users className="w-3.5 h-3.5 fill-[#F2B632]" />
+              <span>Stronger Together</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-white">Explore our WeGo Community Events</h2>
+            <p className="text-xs sm:text-sm text-emerald-100">
+              Connecting Colorado caregiving families through accessible community outings, sensory-friendly days, and peer support networks.
+            </p>
+          </div>
+
+          {/* Photo Gallery with Hover Zoom */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+              <img
+                src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=400&auto=format&fit=crop&q=80"
+                alt="Accessible Zoo Day"
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
+                <p className="text-[11px] font-bold text-white">Denver Zoo Accessible Outing</p>
+              </div>
+            </div>
+
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+              <img
+                src="https://images.unsplash.com/photo-1534447677768-be436bb09401?w=400&auto=format&fit=crop&q=80"
+                alt="Therapy Pony Day"
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
+                <p className="text-[11px] font-bold text-white">Therapeutic Equine & Pony Experience</p>
+              </div>
+            </div>
+
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+              <img
+                src="https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400&auto=format&fit=crop&q=80"
+                alt="Sensory Kids Gathering"
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
+                <p className="text-[11px] font-bold text-white">Sensory Play & Kids Mornings</p>
+              </div>
+            </div>
+
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+              <img
+                src="https://images.unsplash.com/photo-1511895426328-dc8714191300?w=400&auto=format&fit=crop&q=80"
+                alt="Caregiver Meetup"
+                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
+                <p className="text-[11px] font-bold text-white">Parent & Caregiver Coffee Circle</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
+            <a
+              href="https://facebook.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all flex items-center gap-2"
+            >
+              <span>Follow on Facebook</span>
+              <ExternalLink className="w-3 h-3 text-[#F2B632]" />
+            </a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all flex items-center gap-2"
+            >
+              <span>Follow on Instagram</span>
+              <ExternalLink className="w-3 h-3 text-[#F2B632]" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 11. SECTION: [CONTACT US] — Headquarters, Direct Phone, Form & Inquiries   */}
+      {/* ========================================================================= */}
+      <section id="contact" className="py-16 sm:py-24 px-4 sm:px-8 bg-white">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-100 text-primary-900 text-xs font-black uppercase tracking-wider">
+              <Mail className="w-3.5 h-3.5 text-primary" />
+              <span>Get in Touch</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
+              Contact Us — We&apos;re Here for Your Family
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              Whether you need to check waiver eligibility, have questions about IHSS hourly wages, or want to start service, our local Colorado team is ready to help.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            {/* Contact Details Card */}
+            <div className="lg:col-span-5 bg-gradient-to-br from-[#244218] via-[#324925] to-[#1b3114] text-white p-7 sm:p-10 rounded-3xl shadow-xl space-y-6">
+              <div>
+                <h3 className="text-xl font-black text-white">LiliSare Colorado Headquarters</h3>
+                <p className="text-xs text-emerald-200 mt-1">Mountain Lane & Colorado Home Health</p>
+              </div>
+
+              <div className="space-y-4 text-xs text-slate-200">
+                <div className="flex items-start gap-3">
+                  <MapPin className="w-4 h-4 text-[#F2B632] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold">Office Address:</strong>
+                    <p>7100 E Belleview Ave, Ste 310</p>
+                    <p>Greenwood Village, CO 80111</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Phone className="w-4 h-4 text-[#F2B632] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold">Direct Phone / Text:</strong>
+                    <a href="tel:3035780181" className="text-emerald-100 hover:text-white font-extrabold text-sm underline">
+                      303-578-0181
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <Mail className="w-4 h-4 text-[#F2B632] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold">General Inquiries:</strong>
+                    <a href="mailto:info@lilisare.com" className="text-emerald-100 hover:text-white underline">
+                      info@lilisare.com
+                    </a>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3">
+                  <ShieldCheck className="w-4 h-4 text-[#00d084] shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-white block font-bold">Licensing:</strong>
+                    <p>State of Colorado CDPHE Licensed Class A & B Home Care</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-white/15">
+                <button
+                  onClick={onStartOnboarding}
+                  className="w-full bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] text-slate-950 font-black text-xs py-3 rounded-xl shadow-md hover:brightness-105 transition-all"
+                >
+                  Start Patient & Caregiver Onboarding
+                </button>
+              </div>
+            </div>
+
+            {/* Direct Inquiry Form */}
+            <div className="lg:col-span-7 bg-slate-50 border border-slate-200/90 p-7 sm:p-10 rounded-3xl shadow-sm space-y-5">
+              <h3 className="text-lg font-black text-slate-900">Send Us a Direct Message</h3>
+              <p className="text-xs text-slate-500">We typically respond within 2 to 4 business hours.</p>
+
+              <form onSubmit={handleContactSubmit} className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">Your Full Name *</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Maria Gonzalez"
+                    value={contactName}
+                    onChange={(e) => setContactName(e.target.value)}
+                    className="w-full text-xs px-4 py-3 rounded-xl bg-white border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-700">Phone Number *</label>
+                    <input
+                      type="tel"
+                      required
+                      placeholder="(303) 555-0123"
+                      value={contactPhone}
+                      onChange={(e) => setContactPhone(e.target.value)}
+                      className="w-full text-xs px-4 py-3 rounded-xl bg-white border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-slate-700">Email Address</label>
+                    <input
+                      type="email"
+                      placeholder="maria@example.com"
+                      value={contactEmail}
+                      onChange={(e) => setContactEmail(e.target.value)}
+                      className="w-full text-xs px-4 py-3 rounded-xl bg-white border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-slate-700">How can we help your family?</label>
+                  <textarea
+                    rows={4}
+                    placeholder="Tell us about the loved one you care for, your current Medicaid waiver, or questions about hours and hourly pay..."
+                    value={contactMessage}
+                    onChange={(e) => setContactMessage(e.target.value)}
+                    className="w-full text-xs px-4 py-3 rounded-xl bg-white border border-slate-300 focus:ring-2 focus:ring-primary focus:outline-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-800 text-white font-black text-xs sm:text-sm shadow-md transition-all flex items-center justify-center gap-2"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>Send Message to Care Coordinator</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
+      {/* 12. ENTERPRISE FOOTER WITH MATCHING MENUS                                 */}
       {/* ========================================================================= */}
       <footer className="bg-[#14210e] text-slate-300 py-16 px-4 sm:px-8 border-t border-primary-950">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10">
@@ -1231,20 +1263,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           </div>
 
           <div className="space-y-2 text-xs">
-            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Headquarters & Contact</h4>
-            <p className="text-slate-300">7100 E Belleview Ave, Ste 310</p>
-            <p className="text-slate-300">Greenwood Village, CO 80111</p>
-            <p className="pt-2 text-slate-400">Call / Text: <a href="tel:3035780181" className="text-[#F2B632] font-bold">303-578-0181</a></p>
-            <p className="text-slate-400">Email: <a href="mailto:info@lilisare.com" className="text-slate-200">info@lilisare.com</a></p>
-          </div>
-
-          <div className="space-y-2 text-xs">
-            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Software & Portals</h4>
+            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Navigation Menus</h4>
             <ul className="space-y-2 text-slate-400">
-              <li><button onClick={onStartOnboarding} className="hover:text-white">Patient & Caregiver Onboarding</button></li>
-              <li><button onClick={onExplorePortal} className="hover:text-white">Staff Operations Portal</button></li>
-              <li><button onClick={onExplorePortal} className="hover:text-white">Family Caregiver Mobile Portal</button></li>
-              <li><button onClick={onExplorePortal} className="hover:text-white">Colorado EVV Aggregator Hub</button></li>
+              <li><a href="#home" className="hover:text-white">Home</a></li>
+              <li><a href="#about-us" className="hover:text-white">About Us</a></li>
+              <li><a href="#services" className="hover:text-white">Services</a></li>
+              <li><a href="#resources" className="hover:text-white">Resources</a></li>
+              <li><a href="#faq" className="hover:text-white">FAQ</a></li>
+              <li><a href="#community" className="hover:text-white">Community</a></li>
+              <li><a href="#contact" className="hover:text-white">Contact Us</a></li>
             </ul>
           </div>
 
@@ -1255,8 +1282,16 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <li>Certified Nurse Aide (CNA) Care</li>
               <li>Health Maintenance Activities (HMA)</li>
               <li>Community First Choice (CFC)</li>
-              <li>HCBS Waiver Respite & Supports</li>
+              <li>Pediatric Respite & Supports</li>
             </ul>
+          </div>
+
+          <div className="space-y-2 text-xs">
+            <h4 className="font-bold uppercase tracking-wider text-white text-[11px] mb-3">Headquarters & Hotline</h4>
+            <p className="text-slate-300">7100 E Belleview Ave, Ste 310</p>
+            <p className="text-slate-300">Greenwood Village, CO 80111</p>
+            <p className="pt-2 text-slate-400">Call / Text: <a href="tel:3035780181" className="text-[#F2B632] font-bold">303-578-0181</a></p>
+            <p className="text-slate-400">Email: <a href="mailto:info@lilisare.com" className="text-slate-200">info@lilisare.com</a></p>
           </div>
         </div>
 
