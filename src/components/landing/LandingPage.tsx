@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import {
   Heart,
   Phone,
@@ -524,10 +525,16 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           </nav>
 
           {/* Right Action Buttons */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            <Link
+              href="/login"
+              className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#3e6b2b] transition-colors cursor-pointer px-3 py-2 rounded-xl hover:bg-slate-100/80"
+            >
+              Sign In
+            </Link>
             <button
               onClick={onExplorePortal}
-              className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#2e541c] transition-colors hidden sm:block cursor-pointer px-3.5 py-2 rounded-xl hover:bg-slate-100/80"
+              className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#3e6b2b] transition-colors hidden sm:block cursor-pointer px-3.5 py-2 rounded-xl hover:bg-slate-100/80"
             >
               Staff Portal
             </button>

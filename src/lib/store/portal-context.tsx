@@ -30,6 +30,7 @@ interface NotificationToast {
 }
 
 export type ActiveAppView =
+  | 'login'
   | 'landing'
   | 'wizard'
   | 'portal'
@@ -84,8 +85,8 @@ interface PortalContextType {
 const PortalContext = createContext<PortalContextType | undefined>(undefined);
 
 export function PortalProvider({ children }: { children: ReactNode }) {
-  const [activeView, setActiveView] = useState<ActiveAppView>('landing');
-  const [currentRole, setCurrentRole] = useState<UserRole>('onboarding');
+  const [activeView, setActiveView] = useState<ActiveAppView>('login');
+  const [currentRole, setCurrentRole] = useState<UserRole>('admin');
   const [leads, setLeads] = useState<Lead[]>(MOCK_LEADS);
   const [caregivers, setCaregivers] = useState<Caregiver[]>(MOCK_CAREGIVERS);
   const [clients, setClients] = useState<Client[]>(MOCK_CLIENTS);

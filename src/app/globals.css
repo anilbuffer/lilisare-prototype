@@ -17,14 +17,18 @@
 
 body {
   font-family: var(--font-roboto), 'Roboto', sans-serif;
-  color: #1e293b;
+  color: #0f172a;
   background-color: #f8fafc;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 *, button, input, select, textarea, h1, h2, h3, h4, h5, h6, p, span, a {
-  font-family: var(--font-roboto), 'Roboto', sans-serif !important;
+  font-family: var(--font-roboto), 'Roboto', sans-serif;
+}
+
+code, kbd, samp, pre, .font-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
 }
 
 /* Custom scrollbars for clean healthcare UI */

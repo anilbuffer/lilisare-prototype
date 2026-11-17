@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { CaregiverClassification } from '@/lib/types';
 import {
@@ -16,7 +18,8 @@ import {
   CreditCard,
   Video,
   X,
-  Briefcase
+  Briefcase,
+  Sparkles,
 } from 'lucide-react';
 
 interface CaregiverRegisterWizardProps {
@@ -25,6 +28,7 @@ interface CaregiverRegisterWizardProps {
 }
 
 export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: CaregiverRegisterWizardProps) {
+  const router = useRouter();
   const { notify, setActiveView } = usePortal();
   const [step, setStep] = useState<number>(1);
 
@@ -125,44 +129,121 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
   ];
 
   return (
-    <div className="min-h-screen bg-[#fafbfa] text-slate-900 antialiased flex flex-col justify-between">
-      {/* Sleek Minimalist Top Navigation */}
-      <header className="bg-white border-b border-slate-200/80 sticky top-0 z-30 px-6 py-4">
-        <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={exitWizard}>
-            <img src="/images/lilisare-logo.png" alt="LiliSare" className="h-8 w-auto object-contain" />
-            <span className="text-xs font-semibold text-slate-400 hidden sm:inline">|</span>
-            <span className="text-xs font-semibold text-slate-600 hidden sm:inline">Caregiver Registration</span>
+    <div className="min-h-screen flex w-full bg-[#f4f7f6] text-slate-900 antialiased select-none">
+      {/* LEFT SIDEBAR: Dark Forest Progress Pane (Matching Reference Screenshot) */}
+      <aside className="w-64 lg:w-72 h-screen sticky top-0 shrink-0 bg-[#06231b] text-white flex flex-col justify-between p-6 border-r border-[#041913] shadow-xl z-20 hidden md:flex">
+        {/* Top Branding & Step Progress */}
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0">
+              <img src="/images/lilisare-logo.png" alt="LiliSare" className="h-full w-auto object-contain" />
+            </div>
+            <div>
+              <p className="text-xs font-bold text-white tracking-tight">LiliSare Colorado</p>
+              <p className="text-[10px] text-emerald-400 font-medium">Caregiver Onboarding</p>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-xs font-medium text-slate-500">
-              Step <span className="font-semibold text-slate-900">{step}</span> of {totalSteps}
-            </span>
+          {/* State Medicaid Badge */}
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse" />
+            Caregiver HR &amp; Credentialing
+          </div>
+
+          {/* Progress Card */}
+          <div className="p-3.5 rounded-xl bg-white/[0.05] border border-white/10 space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-emerald-200/80 font-medium text-[11px]">Progress</span>
+              <span className="font-mono font-bold text-white text-[11px]">{Math.round((step / totalSteps) * 100)}%</span>
+            </div>
+            <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden p-0.5">
+              <div
+                className="h-full bg-gradient-to-r from-[#00d084] to-[#3e6b2b] rounded-full transition-all duration-300"
+                style={{ width: `${(step / totalSteps) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Vertical Step Indicators */}
+          <div className="space-y-1 max-h-[calc(100vh-360px)] overflow-y-auto pr-1">
+            {stepTitles.map((title, idx) => {
+              const stepNum = idx + 1;
+              const isCurrent = step === stepNum;
+              const isCompleted = step > stepNum;
+              return (
+                <div
+                  key={title}
+                  onClick={() => setStep(stepNum)}
+                  className={`p-2.5 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-between ${
+                    isCurrent
+                      ? 'bg-white text-slate-900 font-bold shadow-md'
+                      : isCompleted
+                      ? 'text-emerald-300/90 hover:bg-white/[0.06] font-medium'
+                      : 'text-emerald-100/40 hover:bg-white/[0.04] font-medium'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <span className={`w-5 h-5 rounded-md flex items-center justify-center font-mono text-[10px] font-bold shrink-0 ${
+                      isCurrent
+                        ? 'bg-[#3e6b2b] text-white'
+                        : isCompleted
+                        ? 'bg-emerald-500/20 text-[#00d084]'
+                        : 'bg-white/10 text-emerald-200/60'
+                    }`}>
+                      {isCompleted ? '✓' : stepNum}
+                    </span>
+                    <span className="truncate text-[11px]">{title}</span>
+                  </div>
+                  {isCurrent && <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse" />}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Pinned Bottom: Back to Sign In (Matching Reference Screenshot) */}
+        <div className="pt-4 border-t border-white/10">
+          <Link
+            href="/login"
+            className="w-full py-2.5 px-3 rounded-xl bg-white/10 hover:bg-white/15 text-white border border-white/10 text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer group"
+          >
+            <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform" />
+            <span>Back to Sign In</span>
+          </Link>
+        </div>
+      </aside>
+
+      {/* RIGHT WORKSPACE: Header + Main Form Card */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+        {/* Top Header Row */}
+        <div className="p-6 lg:p-8 pb-0 max-w-4xl mx-auto w-full flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              Caregiver Registration
+            </h1>
+            <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+              Family &amp; CNA Onboarding for Colorado Home Health Program
+            </p>
+          </div>
+
+          {/* Pre-fill Application Data Button (Matching Reference Screenshot) */}
+          <div className="flex items-center gap-2 shrink-0">
             <button
-              onClick={exitWizard}
-              className="text-xs font-semibold text-slate-500 hover:text-slate-800 transition-colors p-1.5 rounded-lg hover:bg-slate-100 cursor-pointer flex items-center gap-1"
+              onClick={() => {
+                notify('Pre-fill Complete', 'Elena Morales caregiver credentials populated for testing.', 'info');
+              }}
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-amber-50/50 border border-amber-300 text-slate-900 text-xs font-bold transition-all shadow-2xs cursor-pointer group active:scale-98"
             >
-              <X className="w-4 h-4" />
-              <span className="hidden sm:inline">Exit</span>
+              <Sparkles className="w-3.5 h-3.5 text-[#F2B632] group-hover:rotate-12 transition-transform" />
+              <span>Pre-fill Application Data</span>
             </button>
           </div>
         </div>
 
-        {/* Clean Linear Progress Indicator */}
-        <div className="max-w-3xl mx-auto mt-3">
-          <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-[#3e6b2b] transition-all duration-300 ease-out"
-              style={{ width: `${(step / totalSteps) * 100}%` }}
-            />
-          </div>
-        </div>
-      </header>
-
-      {/* Main Form Container */}
-      <main className="flex-1 max-w-2xl w-full mx-auto px-6 py-10">
-        <div className="bg-white rounded-3xl border border-slate-200/80 shadow-[0_2px_12px_rgba(0,0,0,0.04)] p-8 sm:p-12">
+        {/* Main Content Area */}
+        <main className="p-6 lg:p-8 max-w-4xl mx-auto w-full">
+          {/* White Card with Outline & Soft Shadow */}
+          <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_2px_12px_rgba(15,23,42,0.03)] p-6 sm:p-8">
 
           {/* STEP 1: Add Caregiver Profile */}
           {step === 1 && (
@@ -574,7 +655,7 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
               <button
                 type="button"
                 onClick={handlePrev}
-                className="px-5 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-1.5 cursor-pointer"
+                className="px-5 py-2.5 rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-all shadow-2xs active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
               >
                 <ArrowLeft className="w-3.5 h-3.5" />
                 <span>Back</span>
@@ -585,7 +666,7 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
               <button
                 type="button"
                 onClick={handleNext}
-                className="px-6 py-2.5 rounded-xl bg-[#3e6b2b] hover:bg-[#325723] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ml-auto"
+                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white text-xs sm:text-sm font-bold transition-all shadow-[0_3px_12px_rgba(255,107,74,0.3)] hover:shadow-[0_4px_18px_rgba(255,107,74,0.4)] active:scale-[0.98] flex items-center gap-2 cursor-pointer ml-auto"
               >
                 <span>Continue</span>
                 <ArrowRight className="w-3.5 h-3.5" />
@@ -594,14 +675,13 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
               <button
                 type="button"
                 onClick={handleComplete}
-                className="px-7 py-2.5 rounded-xl bg-[#3e6b2b] hover:bg-[#325723] text-white text-xs font-bold transition-all shadow-xs flex items-center gap-1.5 cursor-pointer ml-auto"
+                className="px-7 py-2.5 rounded-xl bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white text-xs sm:text-sm font-bold transition-all shadow-[0_3px_12px_rgba(255,107,74,0.3)] hover:shadow-[0_4px_18px_rgba(255,107,74,0.4)] active:scale-[0.98] flex items-center gap-2 cursor-pointer ml-auto"
               >
                 <Check className="w-3.5 h-3.5" />
                 <span>Finish &amp; Activate</span>
               </button>
             )}
           </div>
-
         </div>
       </main>
 
@@ -609,5 +689,6 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
         &copy; {new Date().getFullYear()} LiliSare Home Health • Colorado CDPHE Licensed Agency
       </footer>
     </div>
+  </div>
   );
 }
