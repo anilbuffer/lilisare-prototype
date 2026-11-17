@@ -44,7 +44,9 @@ import {
   Download,
   BookOpen,
   Send,
-  MessageSquare
+  MessageSquare,
+  Facebook,
+  Instagram
 } from 'lucide-react';
 import { usePortal } from '@/lib/store/portal-context';
 
@@ -1098,87 +1100,99 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 10. SECTION: [COMMUNITY] — WeGo Community Outings & Events Gallery         */}
+      {/* 10. SECTION: [COMMUNITY] — Explore our WeGo Community Events              */}
       {/* ========================================================================= */}
-      <section id="community" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#244218] text-white text-center">
-        <div className="max-w-6xl mx-auto space-y-10">
+      <section id="community" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#324925] text-white text-center relative overflow-hidden">
+        {/* Subtle decorative background watermarks */}
+        <div className="absolute -top-12 -left-12 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-12 -right-12 w-64 h-64 bg-[#F2B632]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto space-y-10 relative z-10">
           <div className="space-y-3 max-w-2xl mx-auto">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-[#F2B632] text-xs font-black uppercase tracking-wider">
-              <Users className="w-3.5 h-3.5 fill-[#F2B632]" />
-              <span>Stronger Together</span>
-            </div>
-            <h2 className="text-2xl sm:text-4xl font-black text-white">Explore our WeGo Community Events</h2>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight">
+              Explore our WeGo Community Events
+            </h2>
             <p className="text-xs sm:text-sm text-emerald-100">
               Connecting Colorado caregiving families through accessible community outings, sensory-friendly days, and peer support networks.
             </p>
           </div>
 
-          {/* Photo Gallery with Hover Zoom */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+          {/* 4 Real WeGo Community Photos from LiliSare's Original Site */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 bg-slate-900">
               <img
-                src="/images/family-bubbles-wheelchair.jpg"
-                alt="Accessible Nature & Park Outings"
+                src="/images/wego-park-wheelchair.jpg"
+                alt="Young man in wheelchair with caregiver on outdoor walk"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Accessible Nature &amp; Park Outings</p>
+                <p className="text-[11px] font-bold text-white">Accessible Community Outings</p>
               </div>
             </div>
 
-            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 bg-slate-900">
               <img
-                src="/images/mother-child-art.jpg"
-                alt="Art & Creative Expression Sessions"
+                src="/images/wego-therapy-pony.jpg"
+                alt="Boy in wheelchair petting miniature therapy pony at animal farm"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Art &amp; Creative Expression Sessions</p>
+                <p className="text-[11px] font-bold text-white">Equine Therapy &amp; Farm Visits</p>
               </div>
             </div>
 
-            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 bg-slate-900">
               <img
-                src="/images/girl-globe.jpg"
-                alt="Sensory Play & Kids Discovery Mornings"
+                src="/images/wego-chuckecheese.jpg"
+                alt="Girl in wheelchair joyfully hugging Chuck E. Cheese mascot"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Sensory Play &amp; Discovery Mornings</p>
+                <p className="text-[11px] font-bold text-white">Sensory Play &amp; Fun Days</p>
               </div>
             </div>
 
-            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20">
+            <div className="group relative rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border-2 border-white/20 bg-slate-900">
               <img
-                src="/images/senior-caregiver-garden.jpg"
-                alt="Caregiver & Family Intergenerational Meetups"
+                src="/images/wego-family-friends.jpg"
+                alt="Mother smiling warmly with adult daughter with Down syndrome"
                 className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3 text-left">
-                <p className="text-[11px] font-bold text-white">Family Intergenerational Gatherings</p>
+                <p className="text-[11px] font-bold text-white">Caregiver Peer Connections</p>
               </div>
             </div>
           </div>
 
-          <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="https://facebook.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all flex items-center gap-2"
+          {/* Social Capsule and Community Join Button matching LiliSare Original Design */}
+          <div className="flex flex-col items-center justify-center gap-4 pt-4">
+            <div className="inline-flex items-center justify-center gap-4 bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] p-3 rounded-2xl shadow-md">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LiliSare Facebook"
+                className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center text-white transition-all transform hover:scale-110"
+              >
+                <Facebook className="w-5 h-5 fill-current" />
+              </a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LiliSare Instagram"
+                className="w-10 h-10 rounded-full bg-white/20 hover:bg-white/35 flex items-center justify-center text-white transition-all transform hover:scale-110"
+              >
+                <Instagram className="w-5 h-5" />
+              </a>
+            </div>
+
+            <button
+              onClick={onStartOnboarding}
+              className="bg-gradient-to-r from-[#ff7e5f] to-[#feb47b] hover:from-[#ff6b6b] hover:to-[#ffa07a] text-slate-950 font-black text-xs sm:text-sm px-8 py-3 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 active:scale-95"
             >
-              <span>Follow on Facebook</span>
-              <ExternalLink className="w-3 h-3 text-[#F2B632]" />
-            </a>
-            <a
-              href="https://instagram.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-xs px-5 py-2.5 rounded-full transition-all flex items-center gap-2"
-            >
-              <span>Follow on Instagram</span>
-              <ExternalLink className="w-3 h-3 text-[#F2B632]" />
-            </a>
+              Join our Community +
+            </button>
           </div>
         </div>
       </section>
