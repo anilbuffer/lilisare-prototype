@@ -515,16 +515,12 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             />
           </div>
 
-          {/* Center: Simplified Clean Pill Navigation */}
-          <nav className="hidden lg:flex items-center bg-slate-100/80 backdrop-blur-md rounded-full px-2 py-1 border border-slate-200/60 shadow-xs gap-1 text-xs select-none">
-            <a href="#home" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Home</a>
-            <a href="#story" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Story</a>
-            <a href="#earnings" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Earnings</a>
-            <a href="#services" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Services</a>
-            <a href="#steps" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Steps</a>
-            <a href="#community" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Community</a>
-            <a href="#faq" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">FAQ</a>
-            <a href="#contact" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Contact</a>
+          {/* Center: Simple Independent Navigation Links (No background capsule) */}
+          <nav className="hidden lg:flex items-center gap-8 text-sm font-semibold select-none">
+            <a href="#home" className="text-slate-700 hover:text-[#2d551e] transition-colors">Home</a>
+            <a href="#services" className="text-slate-700 hover:text-[#2d551e] transition-colors">Services</a>
+            <a href="#steps" className="text-slate-700 hover:text-[#2d551e] transition-colors">Steps</a>
+            <a href="#contact" className="text-slate-700 hover:text-[#2d551e] transition-colors">Contact</a>
           </nav>
 
           {/* Right Action Buttons */}
@@ -546,14 +542,10 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
         </div>
 
         {/* Mobile Horizontal Menu */}
-        <div className="flex lg:hidden overflow-x-auto py-2.5 px-4 bg-white text-xs font-medium text-slate-700 gap-4 border-t border-slate-100 scrollbar-none">
+        <div className="flex lg:hidden overflow-x-auto py-3 px-6 bg-white text-xs font-semibold text-slate-700 gap-6 border-t border-slate-100 scrollbar-none">
           <a href="#home" className="whitespace-nowrap hover:text-[#2d551e]">Home</a>
-          <a href="#story" className="whitespace-nowrap hover:text-[#2d551e]">Story</a>
-          <a href="#earnings" className="whitespace-nowrap hover:text-[#2d551e]">Earnings</a>
           <a href="#services" className="whitespace-nowrap hover:text-[#2d551e]">Services</a>
           <a href="#steps" className="whitespace-nowrap hover:text-[#2d551e]">Steps</a>
-          <a href="#community" className="whitespace-nowrap hover:text-[#2d551e]">Community</a>
-          <a href="#faq" className="whitespace-nowrap hover:text-[#2d551e]">FAQ</a>
           <a href="#contact" className="whitespace-nowrap hover:text-[#2d551e]">Contact</a>
         </div>
       </header>
@@ -1482,10 +1474,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               alt="LiliSare"
               className="h-9 w-auto object-contain brightness-0 invert"
             />
-            <div className="flex items-center gap-4 text-xs text-slate-300">
+            <div className="flex items-center gap-6 text-xs text-slate-300 font-medium">
               <a href="#home" className="hover:text-white transition-colors">Home</a>
-              <a href="#story" className="hover:text-white transition-colors">Story</a>
-              <a href="#earnings" className="hover:text-white transition-colors">Earnings</a>
               <a href="#services" className="hover:text-white transition-colors">Services</a>
               <a href="#steps" className="hover:text-white transition-colors">Steps</a>
               <a href="#contact" className="hover:text-white transition-colors">Contact</a>
