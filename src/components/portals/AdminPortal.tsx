@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { usePortal } from '@/lib/store/portal-context';
+import { UserRole } from '@/lib/types';
 import {
   Users,
   Activity,
@@ -16,7 +17,12 @@ import {
 } from 'lucide-react';
 
 export function AdminPortal() {
-  const { switchRole } = usePortal();
+  const { switchRole, setActiveView } = usePortal();
+
+  const handleNavigateToRole = (role: UserRole) => {
+    setActiveView('portal');
+    switchRole(role);
+  };
 
   return (
     <div className="space-y-6">
@@ -84,8 +90,8 @@ export function AdminPortal() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
           <button
-            onClick={() => switchRole('onboarding')}
-            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group"
+            onClick={() => handleNavigateToRole('onboarding')}
+            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group cursor-pointer"
           >
             <h4 className="text-xs font-bold text-slate-900 group-hover:text-primary flex items-center justify-between">
               Caregiver Onboarding Portal
@@ -97,8 +103,8 @@ export function AdminPortal() {
           </button>
 
           <button
-            onClick={() => switchRole('caregiver')}
-            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group"
+            onClick={() => handleNavigateToRole('caregiver')}
+            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group cursor-pointer"
           >
             <h4 className="text-xs font-bold text-slate-900 group-hover:text-primary flex items-center justify-between">
               Family Caregiver Self-Service (Mobile)
@@ -110,11 +116,11 @@ export function AdminPortal() {
           </button>
 
           <button
-            onClick={() => switchRole('enrollment')}
-            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group"
+            onClick={() => handleNavigateToRole('enrollment')}
+            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group cursor-pointer"
           >
             <h4 className="text-xs font-bold text-slate-900 group-hover:text-primary flex items-center justify-between">
-              Intake & State Referral Pipeline
+              Intake &amp; State Referral Pipeline
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-primary" />
             </h4>
             <p className="text-[11px] text-slate-500 mt-1">
@@ -123,11 +129,11 @@ export function AdminPortal() {
           </button>
 
           <button
-            onClick={() => switchRole('clinical')}
-            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group"
+            onClick={() => handleNavigateToRole('clinical')}
+            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group cursor-pointer"
           >
             <h4 className="text-xs font-bold text-slate-900 group-hover:text-primary flex items-center justify-between">
-              RN Clinical Supervision & AI Audit
+              RN Clinical Supervision &amp; AI Audit
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-primary" />
             </h4>
             <p className="text-[11px] text-slate-500 mt-1">
@@ -136,11 +142,11 @@ export function AdminPortal() {
           </button>
 
           <button
-            onClick={() => switchRole('compliance')}
-            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group"
+            onClick={() => handleNavigateToRole('compliance')}
+            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group cursor-pointer"
           >
             <h4 className="text-xs font-bold text-slate-900 group-hover:text-primary flex items-center justify-between">
-              State QA & Expirations Monitor
+              State QA &amp; Expirations Monitor
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-primary" />
             </h4>
             <p className="text-[11px] text-slate-500 mt-1">
@@ -149,15 +155,15 @@ export function AdminPortal() {
           </button>
 
           <button
-            onClick={() => switchRole('billing')}
-            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group"
+            onClick={() => handleNavigateToRole('billing')}
+            className="p-4 rounded-xl border border-slate-200 hover:border-primary hover:bg-primary-50/40 text-left transition-all group cursor-pointer"
           >
             <h4 className="text-xs font-bold text-slate-900 group-hover:text-primary flex items-center justify-between">
-              Medicaid Billing & Dual NPI Claims
+              Medicaid Billing &amp; Dual NPI Claims
               <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-primary" />
             </h4>
             <p className="text-[11px] text-slate-500 mt-1">
-              Claim routing across Mountain Lane & Colorado Home Health, and commercial denial letters.
+              Claim routing across Mountain Lane &amp; Colorado Home Health, and commercial denial letters.
             </p>
           </button>
         </div>

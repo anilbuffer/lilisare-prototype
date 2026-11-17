@@ -325,7 +325,13 @@ export function CaregiverPortal() {
           </p>
           <div className="mt-3 flex items-center justify-between text-xs pt-3 border-t border-slate-100 text-slate-500">
             <span>Average Quiz Score: <strong>98%</strong></span>
-            <span className="text-primary font-semibold">View Certificate</span>
+            <button
+              type="button"
+              onClick={() => notify('Training Certificate', 'Colorado IHSS Compliance Certificate is verified and valid through Nov 2027.', 'info')}
+              className="text-primary hover:underline font-semibold cursor-pointer"
+            >
+              View Certificate
+            </button>
           </div>
         </div>
       </div>
