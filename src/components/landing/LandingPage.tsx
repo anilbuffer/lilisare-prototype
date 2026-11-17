@@ -501,6 +501,121 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </div>
 
       {/* ========================================================================= */}
+      {/* 4.5 SECTION: BUILT TO HELP YOUR FAMILY FLOURISH (Exact AxisCare 3-Card)   */}
+      {/* ========================================================================= */}
+      <section className="relative bg-gradient-to-b from-[#142810] via-[#1d3917] to-[#2b4c22] text-white pt-20 pb-28 px-4 sm:px-8 overflow-hidden">
+        {/* Side Glowing Ambient Blurs matching AxisCare teal/glow edges */}
+        <div className="absolute top-1/4 -left-20 w-80 h-80 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -right-20 w-80 h-80 bg-[#F2B632]/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-6xl mx-auto space-y-16 relative z-10">
+          {/* Centered Top Headline & Editorial Paragraph */}
+          <div className="text-center max-w-3xl mx-auto space-y-4">
+            <h2 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight">
+              Built to Help Your Family &amp; Caregivers Flourish
+            </h2>
+            <p className="text-xs sm:text-sm text-emerald-100/90 leading-relaxed font-normal">
+              Quality care requires more than goodwill; It requires the right support, clinical visibility, and seamless tools to care without unnecessary complexity. Families who partner with LiliSare gain competitive hourly pay ($28.50+/hr), 1-tap mobile visit verification, and dedicated RN clinical guidance, supported by a platform that brings care together and empowers loved ones to thrive at home.
+            </p>
+          </div>
+
+          {/* Subtitle Header bridging into the 3 elevated cards */}
+          <div className="text-center max-w-2xl mx-auto space-y-2 pt-2">
+            <span className="text-xs sm:text-sm font-black uppercase tracking-wider text-[#F2B632]">
+              All-In-One Solution
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              A Complete Family Care &amp; Support Solution
+            </h3>
+            <p className="text-xs text-emerald-200/80">
+              Tailored to solve Colorado Medicaid caregiving and daily operational challenges
+            </p>
+          </div>
+
+          {/* 3 Elevated Cards matching AxisCare reference layout */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 items-stretch">
+            {/* Card 1: Empower Family Caregivers */}
+            <div className="bg-white text-slate-900 rounded-3xl p-8 sm:p-9 shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-8 border border-white/80 group">
+              <div className="space-y-5">
+                <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#2d7337] flex items-center justify-center border border-emerald-100 group-hover:scale-110 transition-transform">
+                  <Users className="w-7 h-7" />
+                </div>
+                <div className="space-y-2.5">
+                  <h4 className="text-xl font-black text-slate-900 leading-snug">
+                    Empower Family Caregivers
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Keep loved ones comfortable at home while earning reliable, state-approved wages ($28.50+/hr) as an authorized attendant or certified nurse aide.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  onClick={onStartOnboarding}
+                  className="w-full bg-[#2d7337] hover:bg-[#235c2b] text-white font-black text-xs sm:text-sm py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-all text-center"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Card 2: Gain Full Control of Operations */}
+            <div className="bg-white text-slate-900 rounded-3xl p-8 sm:p-9 shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-8 border border-white/80 group">
+              <div className="space-y-5">
+                <div className="w-14 h-14 rounded-2xl bg-slate-100 text-[#1c3315] flex items-center justify-center border border-slate-200 group-hover:scale-110 transition-transform">
+                  <LayoutDashboard className="w-7 h-7" />
+                </div>
+                <div className="space-y-2.5">
+                  <h4 className="text-xl font-black text-slate-900 leading-snug">
+                    Gain Full Control with 1-Tap EVV
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Streamline daily shifts with Colorado-approved GPS time-tracking—zero paperwork, automated ADP direct deposit, and real-time authorization tracking.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  onClick={onStartOnboarding}
+                  className="w-full bg-[#1c3315] hover:bg-[#13240e] text-white font-black text-xs sm:text-sm py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-all text-center"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+
+            {/* Card 3: Scale Confidently / Dedicated RN Support */}
+            <div className="bg-white text-slate-900 rounded-3xl p-8 sm:p-9 shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col justify-between space-y-8 border border-white/80 group">
+              <div className="space-y-5">
+                <div className="w-14 h-14 rounded-2xl bg-amber-50 text-[#b45309] flex items-center justify-center border border-amber-200 group-hover:scale-110 transition-transform">
+                  <TrendingUp className="w-7 h-7" />
+                </div>
+                <div className="space-y-2.5">
+                  <h4 className="text-xl font-black text-slate-900 leading-snug">
+                    Navigate Care Confidently
+                  </h4>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Gain continuous clinical peace of mind with dedicated Registered Nurse home visits, health maintenance delegation, and 24/7 care coordination.
+                  </p>
+                </div>
+              </div>
+
+              <div>
+                <button
+                  onClick={onStartOnboarding}
+                  className="w-full bg-[#F2B632] hover:bg-[#e0a422] text-amber-950 font-black text-xs sm:text-sm py-3 px-6 rounded-full shadow-md hover:shadow-lg transition-all text-center"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================================= */}
       {/* 5. INTERACTIVE COLORADO PAY CALCULATOR                                    */}
       {/* ========================================================================= */}
       <section className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#f4f7f2] to-white">
