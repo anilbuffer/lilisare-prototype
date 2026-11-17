@@ -37,6 +37,7 @@ import {
   Instagram
 } from 'lucide-react';
 import { usePortal } from '@/lib/store/portal-context';
+import { HeroHeartVisual } from './HeroHeartVisual';
 
 /* ========================================================================= */
 /* 1. MULTILINGUAL SUPPORT & REAL SVG FLAGS                                  */
@@ -492,10 +493,10 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. MAIN HEADER NAVIGATION (Short, Clean Menus)                            */}
+      {/* 2. MAIN HEADER NAVIGATION (Modern Glass & Clean Menus)                     */}
       {/* ========================================================================= */}
-      <header className="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-slate-100 shadow-[0_1px_4px_rgba(0,0,0,0.03)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 sm:h-[68px] flex items-center justify-between gap-4">
+      <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-40 border-b border-slate-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 sm:h-[70px] flex items-center justify-between gap-4">
           {/* Logo */}
           <div
             className="flex items-center cursor-pointer group shrink-0"
@@ -508,29 +509,29 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             />
           </div>
 
-          {/* Center: Simplified Short Menu Names */}
-          <nav className="hidden lg:flex items-center bg-gradient-to-r from-[#ff6b4a] via-[#ff7e5f] to-[#ff9e6c] text-white rounded-full px-6 py-2 shadow-xs gap-5 text-xs font-semibold select-none">
-            <a href="#home" className="hover:opacity-90 transition-opacity">Home</a>
-            <a href="#story" className="hover:opacity-90 transition-opacity">Story</a>
-            <a href="#earnings" className="hover:opacity-90 transition-opacity">Earnings</a>
-            <a href="#services" className="hover:opacity-90 transition-opacity">Services</a>
-            <a href="#steps" className="hover:opacity-90 transition-opacity">Steps</a>
-            <a href="#community" className="hover:opacity-90 transition-opacity">Community</a>
-            <a href="#faq" className="hover:opacity-90 transition-opacity">FAQ</a>
-            <a href="#contact" className="hover:opacity-90 transition-opacity">Contact</a>
+          {/* Center: Simplified Clean Pill Navigation */}
+          <nav className="hidden lg:flex items-center bg-slate-100/80 backdrop-blur-md rounded-full px-2 py-1 border border-slate-200/60 shadow-xs gap-1 text-xs select-none">
+            <a href="#home" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Home</a>
+            <a href="#story" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Story</a>
+            <a href="#earnings" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Earnings</a>
+            <a href="#services" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Services</a>
+            <a href="#steps" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Steps</a>
+            <a href="#community" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Community</a>
+            <a href="#faq" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">FAQ</a>
+            <a href="#contact" className="px-3.5 py-1.5 rounded-full font-medium text-slate-700 hover:text-slate-950 hover:bg-white hover:shadow-xs transition-all">Contact</a>
           </nav>
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-3 shrink-0">
             <button
               onClick={onExplorePortal}
-              className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#2d551e] transition-colors hidden sm:block cursor-pointer px-3 py-1.5 rounded-lg hover:bg-slate-50"
+              className="text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#2d551e] transition-colors hidden sm:block cursor-pointer px-3.5 py-2 rounded-xl hover:bg-slate-100/80"
             >
               Staff Portal
             </button>
             <button
               onClick={onStartOnboarding}
-              className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] inline-flex items-center justify-center gap-1.5 cursor-pointer"
+              className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-[0_2px_8px_rgba(45,85,30,0.25)] hover:shadow-[0_4px_16px_rgba(45,85,30,0.35)] transition-all active:scale-[0.98] inline-flex items-center justify-center gap-1.5 cursor-pointer"
             >
               <span>Get Started</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -539,7 +540,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
         </div>
 
         {/* Mobile Horizontal Menu */}
-        <div className="flex lg:hidden overflow-x-auto py-2 px-4 bg-white text-xs font-medium text-slate-700 gap-4 border-t border-slate-100 scrollbar-none">
+        <div className="flex lg:hidden overflow-x-auto py-2.5 px-4 bg-white text-xs font-medium text-slate-700 gap-4 border-t border-slate-100 scrollbar-none">
           <a href="#home" className="whitespace-nowrap hover:text-[#2d551e]">Home</a>
           <a href="#story" className="whitespace-nowrap hover:text-[#2d551e]">Story</a>
           <a href="#earnings" className="whitespace-nowrap hover:text-[#2d551e]">Earnings</a>
@@ -554,39 +555,43 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 3. HERO: SHORT, REFINED, PUNCHY                                           */}
       {/* ========================================================================= */}
-      <section className="relative bg-gradient-to-b from-[#162f11] via-[#1e3d18] to-[#2b5321] text-white pt-12 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-8 overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center relative z-10">
+      <section className="relative bg-[#0d220a] text-white pt-14 pb-20 sm:pt-20 sm:pb-28 px-4 sm:px-8 overflow-hidden">
+        {/* Ambient Radial Lights */}
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#3e6b2b]/30 rounded-full blur-[120px] pointer-events-none -z-0" />
+        <div className="absolute bottom-0 right-1/4 w-[450px] h-[450px] bg-[#F2B632]/15 rounded-full blur-[140px] pointer-events-none -z-0" />
+
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
           {/* Left Text */}
-          <div className="lg:col-span-6 space-y-5 text-center lg:text-left">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-xs font-medium text-[#F2B632] border border-white/15">
-              <Sparkles className="w-3 h-3" />
+          <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold text-[#F2B632] border border-white/20 shadow-inner">
+              <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
               <span>Colorado Medicaid IHSS &amp; CNA</span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.15] text-white">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-[1.12] text-white">
               Care for Family.{' '}
-              <span className="text-[#F2B632] underline decoration-[#ff7e5f] decoration-2 underline-offset-6">
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F2B632] via-[#ffe082] to-[#ffaa00] underline decoration-[#ff7e5f]/70 decoration-2 underline-offset-8">
                 Get Paid at Home.
               </span>
             </h1>
 
-            <p className="text-sm sm:text-base text-emerald-100 max-w-lg mx-auto lg:mx-0 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-emerald-100/90 max-w-lg mx-auto lg:mx-0 leading-relaxed font-normal">
               Under Colorado Medicaid, parents and family members earn <strong className="text-white font-semibold">$28.50 to $32.50 / hour</strong> caring for loved ones at home. With 1-tap mobile visit tracking and dedicated RN nurse support.
             </p>
 
             {/* Quick Hero Form */}
-            <div className="bg-white/10 backdrop-blur-md p-2 rounded-xl border border-white/20 max-w-md mx-auto lg:mx-0 shadow-lg">
+            <div className="bg-white/10 backdrop-blur-xl p-2 rounded-2xl border border-white/20 max-w-md mx-auto lg:mx-0 shadow-2xl">
               <form onSubmit={handleHeroSubmit} className="flex flex-col sm:flex-row items-center gap-2">
                 <input
                   type="text"
                   placeholder="Enter phone number or email..."
                   value={heroContact}
                   onChange={(e) => setHeroContact(e.target.value)}
-                  className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-lg bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#F2B632] font-normal"
+                  className="w-full text-xs sm:text-sm px-4 py-3 rounded-xl bg-white text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#F2B632] font-normal shadow-inner"
                 />
                 <button
                   type="submit"
-                  className="w-full sm:w-auto shrink-0 bg-gradient-to-r from-[#ff6b4a] to-[#ff8c68] hover:from-[#f05c39] hover:to-[#ff7b52] text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-lg shadow-xs hover:shadow-md transition-all active:scale-[0.98] inline-flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer"
+                  className="w-full sm:w-auto shrink-0 bg-gradient-to-r from-[#ff6b4a] to-[#ff8c68] hover:from-[#f05c39] hover:to-[#ff7b52] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] inline-flex items-center justify-center gap-1.5 whitespace-nowrap cursor-pointer"
                 >
                   <span>Check Eligibility</span>
                   <ArrowRight className="w-3.5 h-3.5" />
@@ -595,51 +600,45 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* Micro Trust */}
-            <div className="pt-1 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-emerald-100 font-medium">
-              <div className="flex items-center gap-1.5">
+            <div className="pt-2 flex flex-wrap items-center justify-center lg:justify-start gap-4 text-xs text-emerald-100 font-medium">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
                 <ShieldCheck className="w-3.5 h-3.5 text-[#00d084]" />
                 <span>$0 Family Cost</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#00d084]" />
                 <span>Up to $32.50 / hr</span>
               </div>
-              <div className="flex items-center gap-1.5">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm">
                 <Users className="w-3.5 h-3.5 text-emerald-200" />
-                <span>900+ Colorado Caregivers</span>
+                <span>900+ Caregivers</span>
               </div>
             </div>
           </div>
 
-          {/* Right Visual */}
+          {/* Right Visual: Vector Drawn Heart with Independent Inner Image */}
           <div className="lg:col-span-6 relative flex items-center justify-center">
-            <div className="relative w-full max-w-md aspect-square flex items-center justify-center">
-              <div className="relative w-full max-w-[400px] aspect-square rounded-3xl overflow-hidden shadow-xl border border-white/20 bg-emerald-950/40">
-                <img
-                  src="/images/hero-caregiver-heart.jpg"
-                  alt="Caregiver supporting senior loved one in garden"
-                  className="w-full h-full object-contain"
-                />
-              </div>
+            <div className="relative w-full max-w-[500px] flex items-center justify-center">
+              <HeroHeartVisual className="w-full" />
 
               {/* Floating Badges */}
-              <div className="absolute -top-2 left-0 bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/80 flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#1b3614] flex items-center justify-center font-bold">
+              <div className="absolute top-2 -left-2 sm:left-0 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25)] border border-white/70 flex items-center gap-3 z-20 hover:-translate-y-0.5 transition-transform">
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-[#1b3614] flex items-center justify-center font-bold shadow-xs">
                   <DollarSign className="w-4 h-4 text-emerald-800" />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider block">Bi-Weekly Pay</span>
-                  <span className="text-xs font-semibold text-slate-900">ADP Direct Deposit</span>
+                  <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block">Bi-Weekly Pay</span>
+                  <span className="text-xs font-bold text-slate-900">ADP Direct Deposit</span>
                 </div>
               </div>
 
-              <div className="absolute -bottom-2 left-2 bg-white/95 backdrop-blur-md p-3 rounded-xl shadow-lg border border-white/80 flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#1b3614] flex items-center justify-center font-bold">
+              <div className="absolute bottom-2 -left-2 sm:left-2 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-[0_10px_25px_-5px_rgba(0,0,0,0.25)] border border-white/70 flex items-center gap-3 z-20 hover:-translate-y-0.5 transition-transform">
+                <div className="w-9 h-9 rounded-xl bg-emerald-100 text-[#1b3614] flex items-center justify-center font-bold shadow-xs">
                   <Smartphone className="w-4 h-4 text-emerald-800" />
                 </div>
                 <div>
-                  <span className="text-[10px] text-slate-500 font-medium uppercase tracking-wider block">Colorado EVV</span>
-                  <span className="text-xs font-semibold text-slate-900">1-Tap GPS Clock-In</span>
+                  <span className="text-[10px] text-slate-500 font-semibold uppercase tracking-wider block">Colorado EVV</span>
+                  <span className="text-xs font-bold text-slate-900">1-Tap GPS Clock-In</span>
                 </div>
               </div>
             </div>
@@ -650,60 +649,77 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 4. PARTNERS STRIP (Minimal, Clean)                                        */}
       {/* ========================================================================= */}
-      <div className="py-5 bg-white border-b border-slate-100 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-6 sm:gap-8 text-slate-500 text-xs font-medium">
-          <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Authorized With:</span>
-          <span className="hover:text-slate-900 transition-colors">Rocky Mountain Human Services (RMHS)</span>
-          <span className="hover:text-slate-900 transition-colors">Developmental Pathways</span>
-          <span className="hover:text-slate-900 transition-colors">Imagine! Colorado</span>
-          <span className="hover:text-slate-900 transition-colors">The Resource Exchange (TRE)</span>
+      <div className="py-6 bg-slate-50/70 border-b border-slate-200/60 px-4 sm:px-8">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs">
+          <div className="flex items-center gap-1.5 text-slate-500 font-semibold text-[11px] uppercase tracking-wider">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>Authorized Case Management Agencies:</span>
+          </div>
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+            <span className="px-3.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-medium shadow-xs">Rocky Mountain Human Services (RMHS)</span>
+            <span className="px-3.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-medium shadow-xs">Developmental Pathways</span>
+            <span className="px-3.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-medium shadow-xs">Imagine! Colorado</span>
+            <span className="px-3.5 py-1 rounded-xl bg-white border border-slate-200 text-slate-700 font-medium shadow-xs">The Resource Exchange (TRE)</span>
+          </div>
         </div>
       </div>
 
       {/* ========================================================================= */}
       {/* 5. STORY: SHORT & CONCISE                                                 */}
       {/* ========================================================================= */}
-      <section id="story" className="py-16 sm:py-20 px-4 sm:px-8 bg-white border-b border-slate-100">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Our Story</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="story" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-slate-100">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Our Story</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Built by Caregivers, for Caregivers
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Founded by two Colorado mothers raising children with special needs. We created LiliSare to provide the compensation, clinical guidance, and community we wished we had.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-slate-50 rounded-2xl p-6 sm:p-8 border border-slate-100">
-            {/* Left Photo */}
-            <div className="lg:col-span-5">
-              <div className="rounded-xl overflow-hidden aspect-[4/3] shadow-sm border border-slate-200/80 bg-slate-100">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-gradient-to-br from-slate-50 via-white to-emerald-50/20 rounded-3xl p-6 sm:p-10 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+            {/* Left Photo with Quote */}
+            <div className="lg:col-span-5 relative">
+              <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-lg border border-slate-200/80 bg-slate-100">
                 <img
                   src="/images/about-lilisare-team.jpg"
                   alt="LiliSare founders and families"
                   className="w-full h-full object-cover"
                 />
               </div>
+              <div className="mt-3 p-3 rounded-xl bg-white border border-slate-200/80 shadow-xs flex items-center gap-2.5">
+                <Heart className="w-4 h-4 text-rose-500 shrink-0" />
+                <span className="text-xs font-semibold text-slate-800">"Care for both the loved one and the caregiver."</span>
+              </div>
             </div>
 
             {/* Right Text */}
-            <div className="lg:col-span-7 space-y-4">
-              <h3 className="text-lg font-semibold text-slate-900">
-                Support for the Whole Family
-              </h3>
-              <p className="text-sm text-slate-600 leading-relaxed font-normal">
-                When you call LiliSare, you speak with local coordinators and mothers who understand the daily reality of caring for high-need loved ones. We eliminate bureaucratic paperwork so you can focus on what matters most.
-              </p>
+            <div className="lg:col-span-7 space-y-5">
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-slate-900 tracking-tight">
+                  Support for the Whole Family
+                </h3>
+                <p className="text-sm text-slate-600 leading-relaxed font-normal">
+                  When you call LiliSare, you speak with local coordinators and mothers who understand the daily reality of caring for high-need loved ones. We eliminate bureaucratic paperwork so you can focus on what matters most.
+                </p>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div className="p-3 bg-white rounded-xl border border-slate-200/70 text-xs">
-                  <span className="font-semibold text-slate-900 block mb-0.5">Our Mission</span>
-                  <span className="text-slate-600">Care for both the loved one receiving care and the caregiver giving it.</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-1">
+                <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-emerald-200 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-800 flex items-center justify-center font-bold text-xs mb-2">
+                    01
+                  </div>
+                  <span className="font-bold text-slate-900 block text-xs mb-1">Our Mission</span>
+                  <span className="text-xs text-slate-600 leading-relaxed block">Care for both the loved one receiving care and the caregiver giving it.</span>
                 </div>
-                <div className="p-3 bg-white rounded-xl border border-slate-200/70 text-xs">
-                  <span className="font-semibold text-slate-900 block mb-0.5">Our Vision</span>
-                  <span className="text-slate-600">A Colorado where no caregiving family is overlooked, unpaid, or alone.</span>
+                <div className="p-4 bg-white rounded-2xl border border-slate-200/80 shadow-xs hover:border-amber-200 transition-colors">
+                  <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-800 flex items-center justify-center font-bold text-xs mb-2">
+                    02
+                  </div>
+                  <span className="font-bold text-slate-900 block text-xs mb-1">Our Vision</span>
+                  <span className="text-xs text-slate-600 leading-relaxed block">A Colorado where no caregiving family is overlooked, unpaid, or alone.</span>
                 </div>
               </div>
             </div>
@@ -712,75 +728,87 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 6. SUPPORT PILLARS: 3 SIMPLE CARDS                                        */}
+      {/* 6. SUPPORT PILLARS: 3 ELEVATED CARDS                                      */}
       {/* ========================================================================= */}
-      <section className="py-16 sm:py-20 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center max-w-2xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Why LiliSare</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section className="py-20 sm:py-24 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center max-w-2xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Why LiliSare</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Support That Fits Your Home
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Three core pillars designed to remove administrative stress and keep care where it belongs.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             {/* Card 1 */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-5">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#2d551e] flex items-center justify-center">
-                  <DollarSign className="w-5 h-5" />
+            <div className="group bg-white rounded-3xl p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-emerald-500 to-emerald-600" />
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-emerald-50 text-[#2d551e] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                  <DollarSign className="w-6 h-6 text-emerald-800" />
                 </div>
-                <h3 className="text-base font-semibold text-slate-900">Competitive Pay</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  Earn $28.50+ / hr for IHSS and up to $32.50 / hr for CNA care, paid bi-weekly with ADP direct deposit and W-2 protections.
-                </p>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-bold text-slate-900">Competitive Pay</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Earn $28.50+ / hr for IHSS and up to $32.50 / hr for CNA care, paid bi-weekly with ADP direct deposit and W-2 protections.
+                  </p>
+                </div>
               </div>
               <button
                 onClick={onStartOnboarding}
-                className="w-full bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-bold text-[#2d551e] hover:text-[#1b3614] group-hover:translate-x-1 transition-all cursor-pointer pt-3 border-t border-slate-100"
               >
-                Estimate Pay
+                <span>Calculate Your Pay</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-5">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-amber-50 text-[#a16207] flex items-center justify-center">
-                  <Smartphone className="w-5 h-5" />
+            <div className="group bg-white rounded-3xl p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-amber-400 to-amber-500" />
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-amber-50 text-[#a16207] flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                  <Smartphone className="w-6 h-6 text-amber-700" />
                 </div>
-                <h3 className="text-base font-semibold text-slate-900">1-Tap Mobile EVV</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  Clock in and out in seconds on your phone. GPS verifies your location automatically with zero paper timesheets.
-                </p>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-bold text-slate-900">1-Tap Mobile EVV</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Clock in and out in seconds on your phone. GPS verifies your location automatically with zero paper timesheets.
+                  </p>
+                </div>
               </div>
               <button
                 onClick={onStartOnboarding}
-                className="w-full bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-bold text-amber-700 hover:text-amber-900 group-hover:translate-x-1 transition-all cursor-pointer pt-3 border-t border-slate-100"
               >
-                How It Works
+                <span>See EVV Simplicity</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white rounded-2xl p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-5">
-              <div className="space-y-3">
-                <div className="w-10 h-10 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
-                  <Stethoscope className="w-5 h-5" />
+            <div className="group bg-white rounded-3xl p-7 border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_16px_36px_-6px_rgba(0,0,0,0.1)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between space-y-6 relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-rose-400 to-rose-500" />
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-2xl bg-rose-50 text-rose-700 flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform">
+                  <Stethoscope className="w-6 h-6 text-rose-700" />
                 </div>
-                <h3 className="text-base font-semibold text-slate-900">Dedicated RN Support</h3>
-                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                  Our Colorado Registered Nurses provide in-home visits, health delegation, and clinical coaching whenever you need it.
-                </p>
+                <div className="space-y-1.5">
+                  <h3 className="text-lg font-bold text-slate-900">Dedicated RN Support</h3>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+                    Our Colorado Registered Nurses provide in-home visits, health delegation, and clinical coaching whenever you need it.
+                  </p>
+                </div>
               </div>
               <button
                 onClick={onStartOnboarding}
-                className="w-full bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs transition-all cursor-pointer"
+                className="inline-flex items-center gap-2 text-xs font-bold text-rose-700 hover:text-rose-900 group-hover:translate-x-1 transition-all cursor-pointer pt-3 border-t border-slate-100"
               >
-                Meet Our Nurses
+                <span>Meet Our Nurses</span>
+                <ArrowRight className="w-3.5 h-3.5" />
               </button>
             </div>
           </div>
@@ -788,54 +816,59 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 7. EARNINGS CALCULATOR: CLEAN & INTUITIVE                                 */}
+      {/* 7. EARNINGS CALCULATOR: ULTRA-PREMIUM FINTECH CARD                         */}
       {/* ========================================================================= */}
-      <section id="earnings" className="py-16 sm:py-20 px-4 sm:px-8 bg-white border-b border-slate-100">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Calculator</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="earnings" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-slate-100">
+        <div className="max-w-4xl mx-auto space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Calculator</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Estimate Your Earnings
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Select your program and weekly care hours to calculate your estimated income.
             </p>
           </div>
 
-          <div className="bg-slate-50 rounded-2xl border border-slate-200/80 p-6 sm:p-8 shadow-xs grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div className="bg-gradient-to-br from-slate-50 via-white to-slate-50 rounded-3xl border border-slate-200/80 p-6 sm:p-10 shadow-[0_4px_25px_-4px_rgba(0,0,0,0.06)] grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
             {/* Left Controls */}
-            <div className="md:col-span-7 space-y-5">
-              {/* Role Toggle */}
-              <div className="flex items-center gap-2 p-1 bg-white rounded-xl border border-slate-200">
-                <button
-                  type="button"
-                  onClick={() => setCareRoleType('ihss')}
-                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    careRoleType === 'ihss'
-                      ? 'bg-[#2d551e] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  IHSS ($28.50 / hr)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setCareRoleType('cna')}
-                  className={`flex-1 py-2 px-3 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    careRoleType === 'cna'
-                      ? 'bg-[#2d551e] text-white shadow-xs'
-                      : 'text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  CNA Aide ($32.50 / hr)
-                </button>
+            <div className="md:col-span-7 space-y-6">
+              {/* Program Switcher */}
+              <div className="space-y-2">
+                <label className="text-xs font-bold uppercase tracking-wider text-slate-500">Select Care Level:</label>
+                <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100/90 rounded-2xl border border-slate-200">
+                  <button
+                    type="button"
+                    onClick={() => setCareRoleType('ihss')}
+                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex flex-col items-center ${
+                      careRoleType === 'ihss'
+                        ? 'bg-white text-emerald-900 shadow-sm border border-slate-200/60'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>IHSS Attendant</span>
+                    <span className="text-[10px] font-semibold text-emerald-700">$28.50 / hr</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setCareRoleType('cna')}
+                    className={`py-2.5 px-3 rounded-xl text-xs font-bold transition-all cursor-pointer flex flex-col items-center ${
+                      careRoleType === 'cna'
+                        ? 'bg-white text-emerald-900 shadow-sm border border-slate-200/60'
+                        : 'text-slate-600 hover:text-slate-900'
+                    }`}
+                  >
+                    <span>Certified CNA</span>
+                    <span className="text-[10px] font-semibold text-emerald-700">$32.50 / hr</span>
+                  </button>
+                </div>
               </div>
 
               {/* Slider */}
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-slate-600">Weekly Care Hours:</span>
-                  <span className="text-base font-bold text-[#2d551e] px-2.5 py-0.5 bg-emerald-50 rounded-lg border border-emerald-100">
+                  <span className="text-xs font-semibold text-slate-700">Weekly Care Hours:</span>
+                  <span className="text-base font-extrabold text-emerald-800 px-3 py-1 bg-emerald-50 rounded-xl border border-emerald-200/80 shadow-xs">
                     {hoursPerWeek} hrs / week
                   </span>
                 </div>
@@ -846,40 +879,48 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   step="1"
                   value={hoursPerWeek}
                   onChange={(e) => setHoursPerWeek(Number(e.target.value))}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#2d551e]"
+                  className="w-full h-2.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-[#2d551e]"
                 />
-                <div className="flex justify-between text-[11px] text-slate-400 font-medium">
-                  <span>10 hrs</span>
+                <div className="flex justify-between text-[11px] text-slate-400 font-medium px-0.5">
+                  <span>10 hrs (Part-Time)</span>
                   <span>Average: 28.5 hrs</span>
-                  <span>40 hrs</span>
+                  <span>40 hrs (Full-Time)</span>
                 </div>
               </div>
 
-              <div className="p-3 bg-white rounded-xl border border-slate-200/70 text-xs text-slate-600 flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>100% funded by Colorado Medicaid. Zero out-of-pocket cost.</span>
+              <div className="p-3.5 bg-emerald-50/60 rounded-2xl border border-emerald-100 text-xs text-emerald-900 flex items-center gap-2.5 font-medium">
+                <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>100% funded by Colorado Medicaid. Zero out-of-pocket family cost.</span>
               </div>
             </div>
 
-            {/* Right Summary */}
-            <div className="md:col-span-5 bg-[#1e3d18] text-white p-6 rounded-2xl shadow-sm text-center space-y-4">
-              <div>
-                <span className="text-[11px] text-emerald-200 uppercase tracking-wider font-semibold block">Estimated Monthly Pay</span>
-                <div className="text-3xl sm:text-4xl font-bold text-white mt-1">
+            {/* Right Summary Card (Fintech Style) */}
+            <div className="md:col-span-5 bg-gradient-to-br from-[#163311] via-[#1c3e16] to-[#254f1c] text-white p-7 sm:p-8 rounded-3xl shadow-xl text-center space-y-5 border border-white/10 relative overflow-hidden">
+              <div className="space-y-1">
+                <span className="text-[11px] text-emerald-200/90 uppercase tracking-widest font-bold block">Estimated Monthly Pay</span>
+                <div className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
                   ${monthlyEarnings.toLocaleString()}
                   <span className="text-xs font-normal text-emerald-200"> / mo</span>
                 </div>
-                <p className="text-xs text-emerald-100 mt-1">
-                  Weekly: <strong>${weeklyEarnings.toLocaleString()}</strong>
-                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-white/10 text-xs">
+                <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+                  <span className="text-[10px] text-emerald-200 block">Weekly</span>
+                  <span className="font-bold text-white">${weeklyEarnings.toLocaleString()}</span>
+                </div>
+                <div className="p-2 rounded-xl bg-white/5 border border-white/10">
+                  <span className="text-[10px] text-emerald-200 block">Bi-Weekly (ADP)</span>
+                  <span className="font-bold text-white">${(weeklyEarnings * 2).toLocaleString()}</span>
+                </div>
               </div>
 
               <button
                 onClick={onStartOnboarding}
-                className="w-full bg-gradient-to-r from-[#ff6b4a] to-[#ff8c68] hover:from-[#f05c39] hover:to-[#ff7b52] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs transition-all active:scale-[0.98] inline-flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full bg-gradient-to-r from-[#ff6b4a] to-[#ff8c68] hover:from-[#f05c39] hover:to-[#ff7b52] text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] inline-flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Claim Hours</span>
-                <ArrowRight className="w-3.5 h-3.5" />
+                <span>Claim Your Hours</span>
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </div>
@@ -889,14 +930,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 8. SERVICES & WAIVERS (Short, Scannable Tabs)                             */}
       {/* ========================================================================= */}
-      <section id="services" className="py-16 sm:py-20 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Programs</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="services" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
+        <div className="max-w-6xl mx-auto space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Programs</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Services &amp; Waivers
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Colorado Medicaid programs designed for children and adults with healthcare needs.
             </p>
           </div>
@@ -907,9 +948,9 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <button
                 key={service.id}
                 onClick={() => setActiveServiceTab(idx)}
-                className={`px-4 py-2 rounded-full text-xs font-semibold transition-all whitespace-nowrap cursor-pointer ${
+                className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all whitespace-nowrap cursor-pointer ${
                   activeServiceTab === idx
-                    ? 'bg-[#2d551e] text-white shadow-xs'
+                    ? 'bg-[#2d551e] text-white shadow-md'
                     : 'bg-white text-slate-700 border border-slate-200 hover:border-slate-300'
                 }`}
               >
@@ -919,15 +960,15 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           </div>
 
           {/* 2-Card Showcase */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-stretch">
             {/* Left Card */}
-            <div className="lg:col-span-7 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-7 flex flex-col justify-between space-y-5">
-              <div className="space-y-3">
-                <span className="text-[10px] font-semibold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full inline-block border border-emerald-100">
+            <div className="lg:col-span-7 bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-6 sm:p-8 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full inline-block border border-emerald-100">
                   {servicesList[activeServiceTab].badge}
                 </span>
 
-                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-snug">
+                <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 leading-snug">
                   {servicesList[activeServiceTab].title}
                 </h3>
 
@@ -936,7 +977,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </p>
 
                 {/* Photo inside card */}
-                <div className="rounded-xl overflow-hidden aspect-[16/9] shadow-xs border border-slate-100 mt-2">
+                <div className="rounded-2xl overflow-hidden aspect-[16/9] shadow-sm border border-slate-100 mt-2">
                   <img
                     src={servicesList[activeServiceTab].image}
                     alt={servicesList[activeServiceTab].imageAlt}
@@ -948,14 +989,14 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <div className="flex items-center gap-3 pt-2">
                 <button
                   onClick={onStartOnboarding}
-                  className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-xs transition-all active:scale-[0.98] inline-flex items-center gap-1.5 cursor-pointer"
+                  className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-xs transition-all active:scale-[0.98] inline-flex items-center gap-1.5 cursor-pointer"
                 >
                   <span>Get Started</span>
                   <ArrowRight className="w-3.5 h-3.5" />
                 </button>
                 <button
                   onClick={onStartOnboarding}
-                  className="border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl transition-all cursor-pointer"
+                  className="border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm px-5 py-2.5 rounded-xl transition-all cursor-pointer"
                 >
                   Check Eligibility
                 </button>
@@ -963,21 +1004,21 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* Right Card: Features */}
-            <div className="lg:col-span-5 bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-7 flex flex-col justify-between space-y-4">
+            <div className="lg:col-span-5 bg-white rounded-3xl border border-slate-200/80 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] p-6 sm:p-8 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
-                <h4 className="text-sm font-semibold text-slate-900 pb-2 border-b border-slate-100">
+                <h4 className="text-xs font-bold uppercase tracking-wider text-slate-500 pb-2 border-b border-slate-100">
                   Key Benefits
                 </h4>
-                <div className="space-y-3.5">
+                <div className="space-y-4">
                   {servicesList[activeServiceTab].features.map((feature, idx) => {
                     const IconComp = feature.icon;
                     return (
-                      <div key={idx} className="flex items-start gap-3">
-                        <div className="w-8 h-8 rounded-lg bg-emerald-50 text-[#2d551e] flex items-center justify-center shrink-0">
+                      <div key={idx} className="flex items-start gap-3.5">
+                        <div className="w-8 h-8 rounded-xl bg-emerald-50 text-[#2d551e] flex items-center justify-center shrink-0 shadow-xs">
                           <IconComp className="w-4 h-4" />
                         </div>
                         <div className="space-y-0.5">
-                          <p className="text-xs font-semibold text-slate-900 leading-snug">{feature.title}</p>
+                          <p className="text-xs font-bold text-slate-900 leading-snug">{feature.title}</p>
                           <p className="text-[11px] text-slate-500 leading-snug">{feature.desc}</p>
                         </div>
                       </div>
@@ -986,7 +1027,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 </div>
               </div>
 
-              <div className="p-3 rounded-xl bg-slate-50 border border-slate-200/70 text-[11px] text-slate-600 flex items-center gap-2">
+              <div className="p-3.5 rounded-2xl bg-emerald-50/50 border border-emerald-100 text-[11px] text-emerald-900 flex items-center gap-2 font-medium">
                 <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                 <span>{servicesList[activeServiceTab].tagline}</span>
               </div>
@@ -996,48 +1037,48 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       </section>
 
       {/* ========================================================================= */}
-      {/* 9. HOW IT WORKS: 4 SIMPLE STEPS                                           */}
+      {/* 9. HOW IT WORKS: 4 SIMPLE STEPS (Connected Roadmap)                       */}
       {/* ========================================================================= */}
-      <section id="steps" className="py-16 sm:py-20 px-4 sm:px-8 bg-white border-b border-slate-100">
-        <div className="max-w-6xl mx-auto space-y-10">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Process</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="steps" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-slate-100">
+        <div className="max-w-6xl mx-auto space-y-12">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Process</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               How It Works
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Four straightforward steps from initial call to your first direct deposit.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">01</span>
-              <h3 className="text-sm font-semibold text-slate-900">15-Min Chat</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-900 font-extrabold text-xs">01</span>
+              <h3 className="text-base font-bold text-slate-900">15-Min Chat</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-normal">
                 Call or fill out our short form to discuss your family’s care needs with no pressure.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">02</span>
-              <h3 className="text-sm font-semibold text-slate-900">Waiver Approval</h3>
+            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-900 font-extrabold text-xs">02</span>
+              <h3 className="text-base font-bold text-slate-900">Waiver Approval</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-normal">
                 We coordinate directly with your county case manager to authorize your weekly care hours.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">03</span>
-              <h3 className="text-sm font-semibold text-slate-900">Quick Onboarding</h3>
+            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-900 font-extrabold text-xs">03</span>
+              <h3 className="text-base font-bold text-slate-900">Quick Onboarding</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-normal">
                 Complete digital paperwork from your phone and set up your 1-tap mobile timekeeping app.
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-slate-50 border border-slate-200/70 space-y-3">
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">04</span>
-              <h3 className="text-sm font-semibold text-slate-900">Care &amp; Get Paid</h3>
+            <div className="p-6 rounded-3xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all space-y-3 relative">
+              <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-emerald-100 text-emerald-900 font-extrabold text-xs">04</span>
+              <h3 className="text-base font-bold text-slate-900">Care &amp; Get Paid</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-normal">
                 Clock in with 1 tap at home. Enjoy bi-weekly ADP direct deposit and ongoing nurse check-ins.
               </p>
@@ -1047,7 +1088,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
           <div className="text-center pt-2">
             <button
               onClick={onStartOnboarding}
-              className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
+              className="bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-7 py-3.5 rounded-xl shadow-[0_2px_8px_rgba(45,85,30,0.25)] hover:shadow-[0_4px_16px_rgba(45,85,30,0.35)] transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
             >
               <span>Start Onboarding</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -1059,29 +1100,29 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 10. APPROACH: CLEAN 2-COLUMN WITH MOTHER & CHILD                          */}
       {/* ========================================================================= */}
-      <section className="w-full bg-[#fbfdfa] border-b border-slate-100 overflow-hidden py-16 sm:py-20 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-          <div className="lg:col-span-6 space-y-4">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Our Approach</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight leading-snug">
+      <section className="w-full bg-[#fbfdfa] border-b border-slate-100 overflow-hidden py-20 sm:py-24 px-4 sm:px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-6 space-y-5">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Our Approach</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight leading-snug">
               Human Care, Quiet Technology
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Traditional home health agencies burden families with paper clipboards and rigid policies. LiliSare handles compliance quietly in the background, giving you simple tools so you can focus entirely on the person you love.
             </p>
-            <div className="pt-2 flex flex-wrap gap-2 text-xs text-slate-700">
-              <span className="px-3 py-1 rounded-full bg-white border border-slate-200 font-medium">100% Family Focus</span>
-              <span className="px-3 py-1 rounded-full bg-white border border-slate-200 font-medium">1-Tap Colorado EVV</span>
-              <span className="px-3 py-1 rounded-full bg-white border border-slate-200 font-medium">Dedicated RN Nurses</span>
+            <div className="pt-2 flex flex-wrap gap-2.5 text-xs text-slate-700">
+              <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 font-semibold shadow-xs">100% Family Focus</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 font-semibold shadow-xs">1-Tap Colorado EVV</span>
+              <span className="px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 font-semibold shadow-xs">Dedicated RN Nurses</span>
             </div>
           </div>
 
           <div className="lg:col-span-6">
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-sm border border-slate-200/80 bg-slate-100">
+            <div className="rounded-3xl overflow-hidden aspect-[4/3] shadow-lg border border-slate-200/80 bg-slate-100 group">
               <img
                 src="/images/mother-child-art.jpg"
                 alt="Mother embracing son with special needs"
-                className="w-full h-full object-cover object-[82%_center]"
+                className="w-full h-full object-cover object-[82%_center] group-hover:scale-105 transition-transform duration-500"
               />
             </div>
           </div>
@@ -1091,21 +1132,21 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 11. SUNSET BANNER: PUNCHY & ELEGANT                                       */}
       {/* ========================================================================= */}
-      <section className="bg-gradient-to-r from-[#ff6b4a] via-[#ff7e5f] to-[#ff9e6c] text-white py-14 sm:py-16 px-4 sm:px-8 text-center">
-        <div className="max-w-3xl mx-auto space-y-4">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-snug">
+      <section className="bg-gradient-to-r from-[#e8532f] via-[#f7714d] to-[#ff8f66] text-white py-16 sm:py-20 px-4 sm:px-8 text-center relative overflow-hidden shadow-inner">
+        <div className="max-w-3xl mx-auto space-y-5 relative z-10">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight leading-snug">
             The best caregiver is already family.
           </h2>
-          <p className="text-xs sm:text-sm text-white/95 max-w-xl mx-auto font-normal leading-relaxed">
+          <p className="text-sm sm:text-base text-white/95 max-w-xl mx-auto font-normal leading-relaxed">
             Get paid, clinically supported, and fairly valued to care for your loved one at home.
           </p>
           <div className="pt-2">
             <button
               onClick={onStartOnboarding}
-              className="bg-white hover:bg-slate-50 text-slate-900 font-semibold text-xs sm:text-sm px-6 py-3 rounded-xl shadow-xs hover:shadow-md transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
+              className="bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs sm:text-sm px-7 py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all active:scale-[0.98] inline-flex items-center gap-2 cursor-pointer"
             >
               <span>Become a Family Caregiver</span>
-              <ArrowRight className="w-3.5 h-3.5" />
+              <ArrowRight className="w-3.5 h-3.5 text-slate-900" />
             </button>
           </div>
         </div>
@@ -1114,30 +1155,42 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 12. WEGO COMMUNITY (Clean Photo Grid)                                     */}
       {/* ========================================================================= */}
-      <section id="community" className="py-16 sm:py-20 px-4 sm:px-8 bg-white border-b border-slate-100">
-        <div className="max-w-6xl mx-auto space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Community</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="community" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-slate-100">
+        <div className="max-w-6xl mx-auto space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Community</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               WeGo Family Events
             </h2>
-            <p className="text-sm text-slate-600 leading-relaxed font-normal">
+            <p className="text-sm sm:text-base text-slate-600 leading-relaxed font-normal">
               Connecting Colorado caregiving families through accessible outings and peer support.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="rounded-xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100">
-              <img src="/images/wego-park-wheelchair.jpg" alt="Accessible park walk" className="w-full h-full object-cover" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100 group relative">
+              <img src="/images/wego-park-wheelchair.jpg" alt="Accessible park walk" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
+                <span className="text-[11px] font-semibold text-white">Park Outings</span>
+              </div>
             </div>
-            <div className="rounded-xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100">
-              <img src="/images/wego-therapy-pony.jpg" alt="Therapy pony visit" className="w-full h-full object-cover" />
+            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100 group relative">
+              <img src="/images/wego-therapy-pony.jpg" alt="Therapy pony visit" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
+                <span className="text-[11px] font-semibold text-white">Therapy Ponies</span>
+              </div>
             </div>
-            <div className="rounded-xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100">
-              <img src="/images/wego-chuckecheese.jpg" alt="Sensory play day" className="w-full h-full object-cover" />
+            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100 group relative">
+              <img src="/images/wego-chuckecheese.jpg" alt="Sensory play day" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
+                <span className="text-[11px] font-semibold text-white">Sensory Play</span>
+              </div>
             </div>
-            <div className="rounded-xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100">
-              <img src="/images/wego-family-friends.jpg" alt="Caregiver peer support" className="w-full h-full object-cover" />
+            <div className="rounded-2xl overflow-hidden aspect-[4/3] shadow-xs border border-slate-200/80 bg-slate-100 group relative">
+              <img src="/images/wego-family-friends.jpg" alt="Caregiver peer support" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-3">
+                <span className="text-[11px] font-semibold text-white">Peer Support</span>
+              </div>
             </div>
           </div>
         </div>
@@ -1146,28 +1199,28 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 13. FAQ (Concise & Clear)                                                 */}
       {/* ========================================================================= */}
-      <section id="faq" className="py-16 sm:py-20 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
-        <div className="max-w-3xl mx-auto space-y-8">
-          <div className="text-center space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">FAQ</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="faq" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#fbfdfa] border-b border-slate-100">
+        <div className="max-w-3xl mx-auto space-y-10">
+          <div className="text-center space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">FAQ</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Questions &amp; Answers
             </h2>
-            <p className="text-sm text-slate-600 font-normal">
+            <p className="text-sm sm:text-base text-slate-600 font-normal">
               Clear guidance on getting paid, Medicaid eligibility, and hours.
             </p>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-3.5">
             {faqItems.map((item, idx) => (
               <div
                 key={idx}
-                className="rounded-xl border border-slate-200/80 overflow-hidden bg-white shadow-xs"
+                className="rounded-2xl border border-slate-200/80 overflow-hidden bg-white shadow-xs hover:border-slate-300 transition-colors"
               >
                 <button
                   type="button"
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full p-4 text-left font-semibold text-slate-900 text-xs sm:text-sm flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors cursor-pointer"
+                  className="w-full p-5 text-left font-bold text-slate-900 text-xs sm:text-sm flex items-center justify-between gap-4 hover:bg-slate-50 transition-colors cursor-pointer"
                 >
                   <span>{item.q}</span>
                   {openFaq === idx ? (
@@ -1177,7 +1230,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                   )}
                 </button>
                 {openFaq === idx && (
-                  <div className="p-4 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 font-normal">
+                  <div className="p-5 pt-0 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 font-normal">
                     {item.a}
                   </div>
                 )}
@@ -1190,70 +1243,78 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 14. RESOURCES (Concise Download Cards)                                     */}
       {/* ========================================================================= */}
-      <section id="resources" className="py-16 sm:py-20 px-4 sm:px-8 bg-white border-b border-slate-100">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Resources</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="resources" className="py-20 sm:py-24 px-4 sm:px-8 bg-white border-b border-slate-100">
+        <div className="max-w-5xl mx-auto space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Resources</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Free Family Guides
             </h2>
-            <p className="text-sm text-slate-600 font-normal">
+            <p className="text-sm sm:text-base text-slate-600 font-normal">
               Downloadable tools to help navigate Colorado Medicaid.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col justify-between space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between space-y-4">
               <div>
-                <FileText className="w-5 h-5 text-emerald-800 mb-2" />
-                <h3 className="text-xs font-semibold text-slate-900">Medicaid Waiver Guide</h3>
-                <p className="text-[11px] text-slate-500 mt-1">Breakdown of CES, CHRP, SLS, and EBD.</p>
+                <div className="w-9 h-9 rounded-xl bg-emerald-100/80 text-emerald-900 flex items-center justify-center mb-3">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <h3 className="text-xs font-bold text-slate-900">Medicaid Waiver Guide</h3>
+                <p className="text-[11px] text-slate-500 mt-1 leading-snug">Breakdown of CES, CHRP, SLS, and EBD.</p>
               </div>
               <button
                 onClick={() => handleResourceDownload('Medicaid Waiver Guide')}
-                className="w-full py-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-xs transition-colors cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer shadow-xs"
               >
                 Download PDF
               </button>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col justify-between space-y-3">
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between space-y-4">
               <div>
-                <CheckCheck className="w-5 h-5 text-emerald-800 mb-2" />
-                <h3 className="text-xs font-semibold text-slate-900">IHSS Caregiver Checklist</h3>
-                <p className="text-[11px] text-slate-500 mt-1">CBI fingerprinting and tax forms checklist.</p>
+                <div className="w-9 h-9 rounded-xl bg-emerald-100/80 text-emerald-900 flex items-center justify-center mb-3">
+                  <CheckCheck className="w-4 h-4" />
+                </div>
+                <h3 className="text-xs font-bold text-slate-900">IHSS Caregiver Checklist</h3>
+                <p className="text-[11px] text-slate-500 mt-1 leading-snug">CBI fingerprinting and tax forms checklist.</p>
               </div>
               <button
                 onClick={() => handleResourceDownload('IHSS Checklist')}
-                className="w-full py-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-xs transition-colors cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer shadow-xs"
               >
                 Download PDF
               </button>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col justify-between space-y-3">
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between space-y-4">
               <div>
-                <Smartphone className="w-5 h-5 text-emerald-800 mb-2" />
-                <h3 className="text-xs font-semibold text-slate-900">EVV App User Manual</h3>
-                <p className="text-[11px] text-slate-500 mt-1">Photo tutorial on 1-tap mobile visit logging.</p>
+                <div className="w-9 h-9 rounded-xl bg-emerald-100/80 text-emerald-900 flex items-center justify-center mb-3">
+                  <Smartphone className="w-4 h-4" />
+                </div>
+                <h3 className="text-xs font-bold text-slate-900">EVV App User Manual</h3>
+                <p className="text-[11px] text-slate-500 mt-1 leading-snug">Photo tutorial on 1-tap mobile visit logging.</p>
               </div>
               <button
                 onClick={() => handleResourceDownload('EVV Manual')}
-                className="w-full py-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-xs transition-colors cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer shadow-xs"
               >
                 Download PDF
               </button>
             </div>
 
-            <div className="p-4 rounded-xl bg-slate-50 border border-slate-200/70 flex flex-col justify-between space-y-3">
+            <div className="p-5 rounded-2xl bg-slate-50/90 border border-slate-200/80 shadow-xs hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between space-y-4">
               <div>
-                <Users className="w-5 h-5 text-emerald-800 mb-2" />
-                <h3 className="text-xs font-semibold text-slate-900">Agency Directory</h3>
-                <p className="text-[11px] text-slate-500 mt-1">Phone numbers for RMHS, DP, and TRE.</p>
+                <div className="w-9 h-9 rounded-xl bg-emerald-100/80 text-emerald-900 flex items-center justify-center mb-3">
+                  <Users className="w-4 h-4" />
+                </div>
+                <h3 className="text-xs font-bold text-slate-900">Agency Directory</h3>
+                <p className="text-[11px] text-slate-500 mt-1 leading-snug">Phone numbers for RMHS, DP, and TRE.</p>
               </div>
               <button
                 onClick={() => handleResourceDownload('Agency Directory')}
-                className="w-full py-2 rounded-lg bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-medium text-xs transition-colors cursor-pointer"
+                className="w-full py-2.5 rounded-xl bg-white hover:bg-slate-100 border border-slate-200 text-slate-700 font-semibold text-xs transition-colors cursor-pointer shadow-xs"
               >
                 Download PDF
               </button>
@@ -1265,47 +1326,47 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* ========================================================================= */}
       {/* 15. CONTACT (Clean, Uncluttered Form)                                     */}
       {/* ========================================================================= */}
-      <section id="contact" className="py-16 sm:py-20 px-4 sm:px-8 bg-[#fbfdfa]">
-        <div className="max-w-5xl mx-auto space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Contact</span>
-            <h2 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+      <section id="contact" className="py-20 sm:py-24 px-4 sm:px-8 bg-[#fbfdfa]">
+        <div className="max-w-5xl mx-auto space-y-10">
+          <div className="text-center max-w-xl mx-auto space-y-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-100 px-3 py-1 rounded-full">Contact</span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-900 tracking-tight">
               Get in Touch
             </h2>
-            <p className="text-sm text-slate-600 font-normal">
+            <p className="text-sm sm:text-base text-slate-600 font-normal">
               Speak directly with our local Colorado team.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
             {/* Info */}
-            <div className="md:col-span-5 bg-[#1b3614] text-white p-6 sm:p-7 rounded-2xl shadow-sm space-y-5 text-xs">
-              <h3 className="text-base font-semibold text-white">LiliSare Colorado</h3>
+            <div className="md:col-span-5 bg-gradient-to-br from-[#12280d] to-[#1c3e16] text-white p-7 sm:p-8 rounded-3xl shadow-xl space-y-6 text-xs border border-white/10">
+              <h3 className="text-lg font-bold text-white">LiliSare Colorado</h3>
 
-              <div className="space-y-3 text-slate-200">
-                <div className="flex items-start gap-2.5">
+              <div className="space-y-4 text-slate-200">
+                <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-[#F2B632] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-white block font-medium">Offices:</strong>
+                    <strong className="text-white block font-semibold mb-0.5">Offices:</strong>
                     <p>7100 E Belleview Ave, Ste 310, Greenwood Village</p>
-                    <p className="text-slate-300 mt-0.5">3750 Dacoro Ln, Ste 130, Castle Rock</p>
+                    <p className="text-slate-300 mt-1">3750 Dacoro Ln, Ste 130, Castle Rock</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5">
+                <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 text-[#F2B632] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-white block font-medium">Call or Text:</strong>
-                    <a href="tel:3035780181" className="text-white hover:text-[#F2B632] font-semibold underline">
+                    <strong className="text-white block font-semibold mb-0.5">Call or Text:</strong>
+                    <a href="tel:3035780181" className="text-white hover:text-[#F2B632] font-bold underline">
                       303-578-0181
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-2.5">
+                <div className="flex items-start gap-3">
                   <Mail className="w-4 h-4 text-[#F2B632] shrink-0 mt-0.5" />
                   <div>
-                    <strong className="text-white block font-medium">Email:</strong>
+                    <strong className="text-white block font-semibold mb-0.5">Email:</strong>
                     <a href="mailto:info@lilisare.com" className="text-white hover:underline">
                       info@lilisare.com
                     </a>
@@ -1315,62 +1376,62 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
             </div>
 
             {/* Form */}
-            <div className="md:col-span-7 bg-white border border-slate-200/80 p-6 sm:p-7 rounded-2xl shadow-xs space-y-4">
-              <form onSubmit={handleContactSubmit} className="space-y-3 text-xs">
+            <div className="md:col-span-7 bg-white border border-slate-200/80 p-7 sm:p-8 rounded-3xl shadow-[0_4px_25px_-4px_rgba(0,0,0,0.06)] space-y-5">
+              <form onSubmit={handleContactSubmit} className="space-y-4 text-xs">
                 <div>
-                  <label className="font-medium text-slate-700">Full Name *</label>
+                  <label className="font-bold text-slate-700">Full Name *</label>
                   <input
                     type="text"
                     required
                     placeholder="e.g. Maria Gonzalez"
                     value={contactName}
                     onChange={(e) => setContactName(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
+                    className="w-full mt-1.5 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
                   />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="font-medium text-slate-700">Phone *</label>
+                    <label className="font-bold text-slate-700">Phone *</label>
                     <input
                       type="tel"
                       required
                       placeholder="(303) 555-0123"
                       value={contactPhone}
                       onChange={(e) => setContactPhone(e.target.value)}
-                      className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
+                      className="w-full mt-1.5 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
                     />
                   </div>
                   <div>
-                    <label className="font-medium text-slate-700">Email</label>
+                    <label className="font-bold text-slate-700">Email</label>
                     <input
                       type="email"
                       placeholder="maria@example.com"
                       value={contactEmail}
                       onChange={(e) => setContactEmail(e.target.value)}
-                      className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
+                      className="w-full mt-1.5 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="font-medium text-slate-700">How can we help?</label>
+                  <label className="font-bold text-slate-700">How can we help?</label>
                   <textarea
                     rows={3}
                     placeholder="Tell us about the loved one you care for or questions about Medicaid hours..."
                     value={contactMessage}
                     onChange={(e) => setContactMessage(e.target.value)}
-                    className="w-full mt-1 px-3 py-2 rounded-lg border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
+                    className="w-full mt-1.5 px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-[#2d551e] focus:outline-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#2d551e] hover:bg-[#224417] text-white font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-xs transition-all active:scale-[0.98] inline-flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
+                  className="w-full bg-[#2d551e] hover:bg-[#224417] text-white font-bold text-xs sm:text-sm py-3.5 rounded-xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] inline-flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
-                  <Send className="w-3.5 h-3.5" />
                   <span>{isSubmitting ? 'Sending...' : 'Send Message'}</span>
+                  <Send className="w-3.5 h-3.5" />
                 </button>
               </form>
             </div>
