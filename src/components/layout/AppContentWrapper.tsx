@@ -7,7 +7,7 @@ import { Sidebar } from './Sidebar';
 export function AppContentWrapper({ children }: { children: ReactNode }) {
   const { activeView } = usePortal();
 
-  if (activeView === 'landing') {
+  if (activeView === 'landing' || activeView === 'wizard') {
     return (
       <main className="flex-1 overflow-y-auto w-full">
         {children}

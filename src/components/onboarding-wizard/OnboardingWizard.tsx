@@ -43,7 +43,7 @@ interface WizardCaregiver {
 }
 
 export function OnboardingWizard({ onComplete }: { onComplete?: () => void }) {
-  const { notify } = usePortal();
+  const { notify, setActiveView } = usePortal();
   const [currentStep, setCurrentStep] = useState<number>(1);
 
   // STEP 1 STATE: Patients & Caregivers (Enforcing Rules 1, 2, 3)
@@ -168,9 +168,44 @@ export function OnboardingWizard({ onComplete }: { onComplete?: () => void }) {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 antialiased py-4">
-      {/* 5-Rule Mandatory System Banner */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm">
+    <div className="min-h-screen bg-slate-50 antialiased pb-12">
+      {/* Wizard Header Bar */}
+      <div className="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => setActiveView('landing')}
+          >
+            <img
+              src="/images/lilisare-logo.png"
+              alt="LiliSare"
+              className="h-9 w-auto object-contain"
+            />
+            <div className="hidden sm:block border-l border-slate-200 pl-3">
+              <p className="text-xs font-black text-slate-800">Onboarding Enrollment Wizard</p>
+              <p className="text-[10px] text-slate-500 font-medium">Task 2 • Dual Patient & Caregiver Setup</p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <span className="hidden md:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-bold bg-primary-50 text-primary border border-primary-200">
+              <Sparkles className="w-3 h-3" />
+              Rules 1–5 Enforced
+            </span>
+            <button
+              onClick={() => setActiveView('landing')}
+              className="flex items-center gap-1.5 text-xs font-bold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3.5 py-1.5 rounded-xl transition-all"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span>Back to Home</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 space-y-6 pt-6">
+        {/* 5-Rule Mandatory System Banner */}
+        <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-sm">
         <div className="flex items-center gap-2 mb-2">
           <Sparkles className="w-4 h-4 text-primary" />
           <h2 className="text-xs font-extrabold uppercase tracking-wider text-slate-900">
@@ -831,6 +866,7 @@ export function OnboardingWizard({ onComplete }: { onComplete?: () => void }) {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

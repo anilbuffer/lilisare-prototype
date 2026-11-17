@@ -31,7 +31,7 @@ export default function Home() {
 
   // Task 2: Patient & Caregiver Onboarding Wizard (Rules 1-5)
   if (activeView === 'wizard') {
-    return <OnboardingWizard onComplete={() => setActiveView('portal')} />;
+    return <OnboardingWizard onComplete={() => setActiveView('landing')} />;
   }
 
   // Process Flow Visualizers

@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { PortalProvider } from '@/lib/store/portal-context';
-import { Header } from '@/components/layout/Header';
 import { AppContentWrapper } from '@/components/layout/AppContentWrapper';
 import { ToastContainer } from '@/components/ui/ToastContainer';
 
@@ -19,7 +18,6 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen bg-slate-50 flex flex-col antialiased">
         <PortalProvider>
-          <Header />
           <AppContentWrapper>
             {children}
           </AppContentWrapper>
