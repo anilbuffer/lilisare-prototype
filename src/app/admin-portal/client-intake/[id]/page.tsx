@@ -24,6 +24,7 @@ import {
   Sparkles,
   ChevronRight,
   ExternalLink,
+  Award,
 } from 'lucide-react';
 
 const INTAKE_STEPS = [
@@ -35,6 +36,16 @@ const INTAKE_STEPS = [
   { step: 6, title: 'Family Agreement', desc: 'Mutual service agreements and family caregiver designations e-signed.' },
   { step: 7, title: 'Service Converted', desc: 'Authorized care plan activated, caregiver provisioned for EVV.' },
 ];
+
+const getLeadCounty = (lead: Lead): string => {
+  if ((lead as any).county) return (lead as any).county;
+  if (lead.referralAgency?.includes('Rocky Mountain') || lead.referralAgency?.includes('RMHS')) return 'Denver';
+  if (lead.referralAgency?.includes('Developmental Pathways')) return 'Arapahoe';
+  if (lead.referralAgency?.includes('Imagine')) return 'Boulder';
+  if (lead.referralAgency?.includes('North Metro')) return 'Adams';
+  if (lead.referralAgency?.includes('Continuum')) return 'Jefferson';
+  return 'Denver';
+};
 
 export default function ClientIntakeDetailPage() {
   const params = useParams();
@@ -48,22 +59,24 @@ export default function ClientIntakeDetailPage() {
     return leads.find((l) => l.id === id) || leads[0];
   }, [leads, id]);
 
-  const [activeTab, setActiveTab] = useState<'overview' | 'assessment' | 'medicaid' | 'communication'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'clinical' | 'authorizations' | 'communication'>('overview');
   const [newNoteText, setNewNoteText] = useState('');
-  const [activityNotes, setActivityNotes] = useState<
-    Array<{ id: string; date: string; author: string; text: string }>
+  const [messages, setMessages] = useState<
+    Array<{ id: string; date: string; sender: string; type: string; text: string }>
   >([
     {
-      id: 'note-1',
-      date: 'Today at 10:15 AM',
-      author: 'Maya R.',
-      text: 'Conducted initial phone consultation with primary contact. Family confirmed eligibility under Colorado Medicaid HCBS waiver.',
+      id: 'msg-1',
+      date: 'Nov 16, 2:15 PM',
+      sender: 'Maya R. (Intake Coordinator)',
+      type: 'SMS',
+      text: 'Hello, thank you for contacting LiliSare Home Health. We received your inquiry regarding pediatric care. Would you be free for a 10-minute intake consultation this week?',
     },
     {
-      id: 'note-2',
-      date: 'Yesterday at 3:40 PM',
-      author: 'Jon P.',
-      text: 'Inquiry intake details confirmed. Packet dispatched via secure electronic portal.',
+      id: 'msg-2',
+      date: 'Nov 16, 2:38 PM',
+      sender: 'Family Primary Contact',
+      type: 'SMS',
+      text: 'Thank you! Yes, we have our CMA care plan ready from Rocky Mountain Human Services. We are eager to start as family caregivers. Thursday morning works great.',
     },
   ]);
 
@@ -83,6 +96,7 @@ export default function ClientIntakeDetailPage() {
   }
 
   const currentStep = lead.intakeStepsCompleted || 1;
+  const leadCounty = getLeadCounty(lead);
 
   const handleAdvanceStep = () => {
     if (currentStep < 7) {
@@ -102,21 +116,22 @@ export default function ClientIntakeDetailPage() {
     }
   };
 
-  const handleAddNote = (e: React.FormEvent) => {
+  const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newNoteText.trim()) return;
 
-    setActivityNotes([
+    setMessages([
+      ...messages,
       {
-        id: `note-${Date.now()}`,
+        id: `msg-${Date.now()}`,
         date: 'Just now',
-        author: 'Current User',
+        sender: `${lead.ownerName || lead.assignedStaff} (Staff)`,
+        type: 'SMS',
         text: newNoteText.trim(),
       },
-      ...activityNotes,
     ]);
     setNewNoteText('');
-    notify('Note Logged', 'Case activity updated successfully.', 'success');
+    notify('Message Sent', `SMS dispatched to ${lead.primaryContactName} (${lead.phone}).`, 'info');
   };
 
   return (
@@ -128,11 +143,11 @@ export default function ClientIntakeDetailPage() {
           className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 rounded-full text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer shrink-0"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>&larr; Back to Client Intake Pipeline</span>
+          <span>&larr; Back to Client Intake</span>
         </Link>
       </div>
 
-      {/* 2. Top Header Card */}
+      {/* 2. Top Header Card (Matches Caregiver Intake Detail Page Header) */}
       <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-[0_2px_12px_rgba(15,23,42,0.04)]">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
@@ -140,22 +155,19 @@ export default function ClientIntakeDetailPage() {
               <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                 {lead.clientName}
               </h1>
-              <span className="bg-blue-100 text-blue-700 font-black text-xs px-2.5 py-0.5 rounded-full">
-                CLIENT
-              </span>
-              <span className="bg-emerald-100 text-emerald-800 font-black text-xs px-2.5 py-0.5 rounded-full uppercase">
-                {lead.requestedService}
+              <span className="bg-slate-100 text-slate-700 font-semibold text-xs px-2.5 py-0.5 rounded-full border border-slate-200">
+                {lead.requestedService} · Medicaid HCBS Waiver
               </span>
               {lead.isOverdue && (
-                <span className="bg-rose-100 text-rose-700 font-bold text-xs px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                  <AlertCircle className="w-3.5 h-3.5" />
+                <span className="bg-rose-100 text-rose-800 font-bold text-xs px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
                   <span>Follow-up Overdue</span>
                 </span>
               )}
             </div>
 
             <p className="text-xs sm:text-sm text-slate-500 mt-1.5">
-              Source: <strong className="text-slate-700 font-semibold">{lead.sourceCategory || lead.inquirySource}</strong> · Referral: {lead.referralAgency || 'Direct'} · Assigned Owner: <strong className="text-slate-800">{lead.ownerName || lead.assignedStaff}</strong> · Registered: {lead.createdAt || 'Nov 16, 2026'}
+              Primary Contact: <strong className="text-slate-700 font-semibold">{lead.primaryContactName} ({lead.relationship})</strong> · County: <strong className="text-slate-700 font-semibold">{leadCounty}</strong> · Source: {lead.sourceCategory || lead.inquirySource} · Owner: <strong className="text-slate-800">{lead.ownerName || lead.assignedStaff}</strong> · <strong className="text-slate-900 font-black">CMA: {lead.referralAgency}</strong>
             </p>
           </div>
 
@@ -179,6 +191,16 @@ export default function ClientIntakeDetailPage() {
             <button
               type="button"
               onClick={() => {
+                notify('Consultation Logged', `Phone intake call record created for ${lead.clientName}.`, 'info');
+              }}
+              className="px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-700 shadow-2xs cursor-pointer transition-all"
+            >
+              Log consultation
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
                 updateLeadStatus(lead.id, 'Converted');
                 updateLead(lead.id, { intakeStepsCompleted: 7 });
                 notify('Client Converted', `${lead.clientName} is now converted into active care!`, 'success');
@@ -195,7 +217,7 @@ export default function ClientIntakeDetailPage() {
           <div className="flex items-center justify-between mb-2.5">
             <span className="text-xs font-bold text-slate-700 uppercase tracking-wide flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-[#264e1e]" />
-              <span>Client Intake Roadmap: Step {currentStep} of 7 ({INTAKE_STEPS[currentStep - 1]?.title})</span>
+              <span>INTAKE STEPPER: STEP {currentStep} OF 7 ({INTAKE_STEPS[currentStep - 1]?.title})</span>
             </span>
 
             {currentStep < 7 && (
@@ -204,7 +226,7 @@ export default function ClientIntakeDetailPage() {
                 onClick={handleAdvanceStep}
                 className="px-3 py-1 bg-emerald-50 hover:bg-emerald-100 text-[#166534] border border-emerald-200 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1"
               >
-                <span>Advance step</span>
+                <span>Mark complete</span>
                 <span>✓</span>
               </button>
             )}
@@ -218,16 +240,18 @@ export default function ClientIntakeDetailPage() {
               return (
                 <div key={s.step} className="space-y-1">
                   <div
-                    className={`h-1.5 rounded-full transition-all duration-300 ${isDone ? 'bg-[#264e1e]' : 'bg-slate-200'
-                      }`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                      isDone ? 'bg-[#264e1e]' : 'bg-slate-200'
+                    }`}
                   />
                   <p
-                    className={`text-[10px] truncate ${isCurrent
+                    className={`text-[10px] truncate ${
+                      isCurrent
                         ? 'font-bold text-[#264e1e]'
                         : isDone
-                          ? 'text-slate-700 font-semibold'
-                          : 'text-slate-400'
-                      }`}
+                        ? 'text-slate-700 font-semibold'
+                        : 'text-slate-400'
+                    }`}
                     title={`Step ${s.step}: ${s.title}`}
                   >
                     {s.title}
@@ -239,166 +263,200 @@ export default function ClientIntakeDetailPage() {
         </div>
       </div>
 
-      {/* 3. Multi-Tab Navigation */}
+      {/* 3. Multi-Tab Navigation (Matching Caregiver Intake Detail Page Tabs) */}
       <div className="bg-white rounded-2xl border border-slate-200/90 shadow-2xs overflow-hidden">
         <div className="flex items-center border-b border-slate-200 px-6 gap-6 text-xs font-semibold overflow-x-auto">
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'overview'
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
+              activeTab === 'overview'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+            }`}
           >
-            Client &amp; Contact Overview
+            Overview
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab('assessment')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'assessment'
+            onClick={() => setActiveTab('clinical')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
+              activeTab === 'clinical'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+            }`}
           >
-            Clinical Care &amp; Assessment
+            Needs &amp; Care Plan
           </button>
           <button
             type="button"
-            onClick={() => setActiveTab('medicaid')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'medicaid'
+            onClick={() => setActiveTab('authorizations')}
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
+              activeTab === 'authorizations'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+            }`}
           >
-            Medicaid &amp; State Authorizations
+            Authorization &amp; CMA
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('communication')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'communication'
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
+              activeTab === 'communication'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-              }`}
+            }`}
           >
-            Communication &amp; Case Log ({activityNotes.length})
+            Communication ({messages.length})
           </button>
         </div>
 
         {/* Tab Content */}
         <div className="p-6">
           {activeTab === 'overview' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-              {/* Client Demographics */}
-              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-3">
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                  <User className="w-4 h-4 text-[#264e1e]" />
-                  <span>Client Demographics</span>
+            <div className="space-y-6">
+              {/* Demographics Card */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
+                <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                  Client &amp; Family Demographics
                 </h3>
-                <div className="space-y-2 text-slate-600">
-                  <p>
-                    <strong className="text-slate-800">Full Name:</strong> {lead.clientName}
-                  </p>
-                  <p>
-                    <strong className="text-slate-800">Date of Birth:</strong> {lead.dateOfBirth || '2016-01-01'}
-                  </p>
-                  <p>
-                    <strong className="text-slate-800">County:</strong> Denver Metro / Jefferson
-                  </p>
-                  <p>
-                    <strong className="text-slate-800">Program:</strong> {lead.requestedService} (Family Caregiver Waiver)
-                  </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      PRIMARY CONTACT:
+                    </span>
+                    <span className="text-slate-800 font-semibold mt-0.5 block">
+                      {lead.primaryContactName} ({lead.relationship})
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      PRIMARY TELEPHONE:
+                    </span>
+                    <span className="text-slate-800 font-semibold mt-0.5 block">
+                      {lead.phone}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      EMAIL ADDRESS:
+                    </span>
+                    <span className="text-slate-800 font-semibold mt-0.5 block">
+                      {lead.email}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      COUNTY / LOCATION:
+                    </span>
+                    <span className="text-slate-800 font-semibold mt-0.5 block">
+                      {leadCounty} County, CO
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      DATE OF BIRTH:
+                    </span>
+                    <span className="text-slate-800 font-semibold mt-0.5 block">
+                      {lead.dateOfBirth}
+                    </span>
+                  </div>
+
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      TARGET SERVICE SCHEDULE:
+                    </span>
+                    <span className="text-slate-800 font-semibold mt-0.5 block">
+                      30–35 hrs/wk (Family Caregiver Model)
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              {/* Primary Contact */}
-              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-3">
-                <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-[#264e1e]" />
-                  <span>Primary Family Contact</span>
+              {/* Staff Notes Card */}
+              <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-3">
+                <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                  Intake Staff &amp; Case Notes
                 </h3>
-                <div className="space-y-2 text-slate-600">
-                  <p>
-                    <strong className="text-slate-800">Contact Name:</strong> {lead.primaryContactName}
-                  </p>
-                  <p>
-                    <strong className="text-slate-800">Relationship:</strong> {lead.relationship || 'Parent / Guardian'}
-                  </p>
-                  <p>
-                    <strong className="text-slate-800">Primary Phone:</strong> {lead.phone}
-                  </p>
-                  <p>
-                    <strong className="text-slate-800">Email Address:</strong> {lead.email}
-                  </p>
+
+                <div className="bg-slate-50/70 border border-slate-200/80 rounded-xl p-4 text-xs text-slate-700 leading-relaxed font-medium">
+                  {lead.notes || 'Inquiry registered from administrative command center. Case coordinator assigned to verify waiver program.'}
                 </div>
               </div>
             </div>
           )}
 
-          {activeTab === 'assessment' && (
+          {activeTab === 'clinical' && (
             <div className="space-y-4 text-xs">
-              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-2">
-                <h3 className="text-sm font-bold text-slate-900">Clinical Assessment Summary</h3>
-                <p className="text-slate-600 leading-relaxed">
-                  Client requires attendant care services including personal care support, homemaker assistance, and healthcare maintenance tasks under Colorado HCPF Medicaid guidelines. Family member has designated intent to serve as primary paid caregiver.
-                </p>
+              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-3">
+                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <Award className="w-4 h-4 text-[#264e1e]" />
+                  <span>Clinical Care Needs &amp; ADL Allocation</span>
+                </h3>
+                <div className="space-y-2 text-slate-700">
+                  <p><strong className="text-slate-900">Personal Care:</strong> Assistance with bathing, grooming, and transfers</p>
+                  <p><strong className="text-slate-900">Health Maintenance Activities (HMA):</strong> Nurse delegated medication setup</p>
+                  <p><strong className="text-slate-900">Homemaker Support:</strong> Special meal prep, medical laundry, sanitation</p>
+                  <p><strong className="text-slate-900">Protective Oversight:</strong> 24/7 designated family supervision</p>
+                </div>
               </div>
             </div>
           )}
 
-          {activeTab === 'medicaid' && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
-              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-2">
+          {activeTab === 'authorizations' && (
+            <div className="space-y-4 text-xs">
+              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-3">
                 <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
                   <Building2 className="w-4 h-4 text-[#264e1e]" />
-                  <span>Case Management Agency</span>
+                  <span>Case Management Agency (CMA) Coordinates</span>
                 </h3>
-                <p className="text-slate-600"><strong className="text-slate-800">Agency:</strong> {lead.referralAgency || 'Rocky Mountain Human Services'}</p>
-                <p className="text-slate-600"><strong className="text-slate-800">Coordinator:</strong> {lead.caseManagerName || 'State Case Coordinator'}</p>
-                <p className="text-slate-600"><strong className="text-slate-800">Email:</strong> {lead.caseManagerEmail || 'coordinator@rmhs.org'}</p>
-              </div>
-
-              <div className="bg-slate-50/70 rounded-2xl p-5 border border-slate-200/80 space-y-2">
-                <h3 className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-[#264e1e]" />
-                  <span>PAR &amp; Prior Authorization</span>
-                </h3>
-                <p className="text-slate-600"><strong className="text-slate-800">State PAR Status:</strong> Under Review (10-Day SLA)</p>
-                <p className="text-slate-600"><strong className="text-slate-800">Physician Attestation:</strong> Received &amp; Signed</p>
+                <div className="space-y-2 text-slate-700">
+                  <p><strong className="text-slate-900">Agency:</strong> {lead.referralAgency}</p>
+                  <p><strong className="text-slate-900">Coordinator:</strong> {lead.caseManagerName} ({lead.caseManagerPhone} • {lead.caseManagerEmail})</p>
+                  <p><strong className="text-slate-900">PAR Status:</strong> Prior Authorization Request submitted to State of Colorado</p>
+                  <p><strong className="text-slate-900">Medicaid Benefit:</strong> Health First Colorado (Medicaid HCBS Waiver Active)</p>
+                </div>
               </div>
             </div>
           )}
 
           {activeTab === 'communication' && (
             <div className="space-y-6">
-              {/* Add Note Form */}
-              <form onSubmit={handleAddNote} className="space-y-3">
+              {/* Message History */}
+              <div className="space-y-3">
+                {messages.map((m) => (
+                  <div key={m.id} className="p-4 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-1">
+                    <div className="flex items-center justify-between text-[11px]">
+                      <span className="font-bold text-slate-800">{m.sender} <span className="text-[10px] text-slate-400 font-mono font-normal">({m.type})</span></span>
+                      <span className="text-slate-400 font-mono">{m.date}</span>
+                    </div>
+                    <p className="text-xs text-slate-700 leading-relaxed">{m.text}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Send Quick Reply */}
+              <form onSubmit={handleSendMessage} className="space-y-3">
                 <textarea
                   value={newNoteText}
                   onChange={(e) => setNewNoteText(e.target.value)}
-                  placeholder="Log a new consultation note, phone record, or family follow-up..."
+                  placeholder={`Dispatch SMS or email update to ${lead.primaryContactName}...`}
                   className="w-full p-3.5 bg-slate-50 border border-slate-200 rounded-2xl text-xs text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#264e1e] min-h-[90px]"
                 />
                 <button
                   type="submit"
                   className="px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer inline-flex items-center gap-1.5"
                 >
-                  <Plus className="w-3.5 h-3.5" />
-                  <span>Add Case Note</span>
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Send Message</span>
                 </button>
               </form>
-
-              {/* Activity Log */}
-              <div className="space-y-3">
-                {activityNotes.map((note) => (
-                  <div key={note.id} className="p-4 bg-slate-50/70 rounded-2xl border border-slate-200/80 space-y-1">
-                    <div className="flex items-center justify-between text-[11px]">
-                      <span className="font-bold text-slate-800">{note.author}</span>
-                      <span className="text-slate-400 font-mono">{note.date}</span>
-                    </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">{note.text}</p>
-                  </div>
-                ))}
-              </div>
             </div>
           )}
         </div>

@@ -17,6 +17,7 @@ import {
   Building2,
   CheckCircle2,
   AlertCircle,
+  ArrowLeft,
   ArrowRight,
   Sparkles,
   User,
@@ -197,6 +198,14 @@ export function ClientIntakePortal() {
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [detailActiveTab, setDetailActiveTab] = useState<'overview' | 'clinical' | 'authorizations' | 'communication'>('overview');
 
+  // Wizard Step Titles matching Patient Registration Wizard
+  const clientWizardStepTitles = [
+    'Patient Information',
+    'Responsible Party',
+    'Service, Waiver & CMA',
+    'Pipeline & Review',
+  ];
+
   // Modal states
   const [showAddModal, setShowAddModal] = useState(false);
   const [addInitialStage, setAddInitialStage] = useState<LeadStatus>('New Inquiry');
@@ -207,17 +216,40 @@ export function ClientIntakePortal() {
   const [consultationType, setConsultationType] = useState('Initial Phone Consultation');
   const [showSourceInsightsModal, setShowSourceInsightsModal] = useState(false);
 
-  // Add Client Inquiry form state
-  const [newClientName, setNewClientName] = useState('');
-  const [newContactName, setNewContactName] = useState('');
-  const [newRelationship, setNewRelationship] = useState('Parent / Guardian');
-  const [newPhone, setNewPhone] = useState('');
-  const [newEmail, setNewEmail] = useState('');
-  const [newService, setNewService] = useState<ServiceType>('IHSS');
-  const [newSource, setNewSource] = useState('Website');
+  // Add Client Inquiry Wizard state (Step 1 to 4 matching Patient Registration Wizard)
+  const [addStep, setAddStep] = useState(1);
+  const [newClientFirstName, setNewClientFirstName] = useState('');
+  const [newClientLastName, setNewClientLastName] = useState('');
+  const [newClientDob, setNewClientDob] = useState('2016-04-12');
+  const [newClientGender, setNewClientGender] = useState('Male');
+  const [newMedicaidId, setNewMedicaidId] = useState('CO-984421008');
+  const [newStreet, setNewStreet] = useState('4820 Mountain Crest Dr');
+  const [newCity, setNewCity] = useState('Denver');
+  const [newState, setNewState] = useState('CO');
+  const [newZip, setNewZip] = useState('80219');
   const [newCounty, setNewCounty] = useState('Denver');
+  const [newPhone, setNewPhone] = useState('(303) 555-0142');
+  const [newEmergencyContact, setNewEmergencyContact] = useState('Carlos Morales (Uncle) · (303) 555-0199');
+
+  // Step 2: Responsible Party & Family Caregiver
+  const [newContactName, setNewContactName] = useState('');
+  const [newRelationship, setNewRelationship] = useState('Mother');
+  const [newContactPhone, setNewContactPhone] = useState('(303) 555-0142');
+  const [newEmail, setNewEmail] = useState('');
+  const [newDesignatedCaregiver, setNewDesignatedCaregiver] = useState('Elena Morales (Designated Family Caregiver)');
+
+  // Step 3: Service, Waiver Program & CMA
+  const [newService, setNewService] = useState<ServiceType>('IHSS');
+  const [newWaiver, setNewWaiver] = useState('HCBS-CES (Children’s Extensive Support)');
+  const [newWeeklyHours, setNewWeeklyHours] = useState('32.0 hrs/week');
+  const [newCmaAgency, setNewCmaAgency] = useState('Rocky Mountain Human Services (RMHS)');
+  const [newCaseManagerName, setNewCaseManagerName] = useState('Sarah Jenkins');
+  const [newCaseManagerPhone, setNewCaseManagerPhone] = useState('(303) 636-5600');
+  const [newCaseManagerEmail, setNewCaseManagerEmail] = useState('sjenkins@rmhs.org');
+
+  // Step 4: Pipeline Assignment & Review
+  const [newSource, setNewSource] = useState('Website');
   const [newOwner, setNewOwner] = useState('Maya R.');
-  const [newSchedule, setNewSchedule] = useState('30–35 hrs/wk');
   const [newNotes, setNewNotes] = useState('');
 
   // Drag-and-drop state
@@ -377,19 +409,76 @@ export function ClientIntakePortal() {
   // Open Add Modal
   const handleOpenAddModal = (stage: LeadStatus = 'New Inquiry') => {
     setAddInitialStage(stage);
-    setNewClientName('');
+    setAddStep(1);
+    setNewClientFirstName('');
+    setNewClientLastName('');
+    setNewClientDob('2016-04-12');
+    setNewClientGender('Male');
+    setNewMedicaidId('CO-984421008');
+    setNewStreet('4820 Mountain Crest Dr');
+    setNewCity('Denver');
+    setNewState('CO');
+    setNewZip('80219');
+    setNewCounty('Denver');
+    setNewPhone('(303) 555-0142');
+    setNewEmergencyContact('Carlos Morales (Uncle) · (303) 555-0199');
     setNewContactName('');
-    setNewPhone('');
+    setNewRelationship('Mother');
+    setNewContactPhone('(303) 555-0142');
     setNewEmail('');
+    setNewDesignatedCaregiver('Elena Morales (Designated Family Caregiver)');
+    setNewService('IHSS');
+    setNewWaiver('HCBS-CES (Children’s Extensive Support)');
+    setNewWeeklyHours('32.0 hrs/week');
+    setNewCmaAgency('Rocky Mountain Human Services (RMHS)');
+    setNewCaseManagerName('Sarah Jenkins');
+    setNewCaseManagerPhone('(303) 636-5600');
+    setNewCaseManagerEmail('sjenkins@rmhs.org');
+    setNewSource('Website');
+    setNewOwner('Maya R.');
     setNewNotes('');
     setShowAddModal(true);
   };
 
+  // Pre-fill realistic demo data matching Patient Onboarding Flow
+  const handlePrefillClientData = () => {
+    setNewClientFirstName('Mateo');
+    setNewClientLastName('Morales');
+    setNewClientDob('2016-04-12');
+    setNewClientGender('Male');
+    setNewMedicaidId('CO-984421008');
+    setNewStreet('4820 Mountain Crest Dr');
+    setNewCity('Denver');
+    setNewState('CO');
+    setNewZip('80219');
+    setNewCounty('Denver');
+    setNewPhone('(303) 555-0142');
+    setNewEmergencyContact('Carlos Morales (Uncle) · (303) 555-0199');
+    setNewContactName('Elena Morales');
+    setNewRelationship('Mother');
+    setNewContactPhone('(303) 555-0142');
+    setNewEmail('elena.morales@coloradomail.net');
+    setNewDesignatedCaregiver('Elena Morales (Mother)');
+    setNewService('IHSS');
+    setNewWaiver('HCBS-CES (Children’s Extensive Support)');
+    setNewWeeklyHours('32.0 hrs/week');
+    setNewCmaAgency('Rocky Mountain Human Services (RMHS)');
+    setNewCaseManagerName('Sarah Jenkins');
+    setNewCaseManagerPhone('(303) 636-5600');
+    setNewCaseManagerEmail('sjenkins@rmhs.org');
+    setNewSource('Website');
+    setNewOwner('Maya R.');
+    setNewNotes('Inquiry for pediatric IHSS care under Colorado HCBS-CES waiver. Elena Morales designated as primary family caregiver.');
+    notify('Pre-fill Complete', 'Mateo Morales patient intake data populated for testing.', 'info');
+  };
+
   // Submit Add Client Inquiry
-  const handleCreateLead = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newClientName.trim()) {
-      notify('Missing Information', 'Please provide at least a client name.', 'warning');
+  const handleCreateLead = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const fullName = `${newClientFirstName} ${newClientLastName}`.trim();
+    if (!fullName) {
+      notify('Missing Information', 'Please provide patient first and last name.', 'warning');
+      setAddStep(1);
       return;
     }
 
@@ -407,28 +496,19 @@ export function ClientIntakePortal() {
     };
 
     addLead({
-      clientName: newClientName,
-      primaryContactName: newContactName || `${newClientName} Contact`,
+      clientName: fullName,
+      primaryContactName: newContactName || `${fullName} Contact`,
       relationship: newRelationship,
-      phone: newPhone || '(303) 555-0100',
+      phone: newPhone || '(303) 555-0142',
       email: newEmail || 'inquiry@colorado.org',
-      dateOfBirth: '2016-01-01',
+      dateOfBirth: newClientDob || '2016-04-12',
       inquirySource: (newSource + ' Inquiry') as any,
       sourceCategory: newSource,
       sourceDetail: `Family inquiry · ${newSource}`,
-      referralAgency:
-        newCounty === 'Boulder'
-          ? 'Imagine! Colorado'
-          : newCounty === 'Arapahoe'
-            ? 'Developmental Pathways'
-            : newCounty === 'Jefferson'
-              ? 'Continuum of Colorado'
-              : newCounty === 'Adams'
-                ? 'North Metro Community Services'
-                : 'Rocky Mountain Human Services (RMHS)',
-      caseManagerName: 'State Care Coordinator',
-      caseManagerPhone: '(303) 555-8000',
-      caseManagerEmail: 'coordinator@colorado.gov',
+      referralAgency: newCmaAgency,
+      caseManagerName: newCaseManagerName,
+      caseManagerPhone: newCaseManagerPhone,
+      caseManagerEmail: newCaseManagerEmail,
       requestedService: newService,
       assignedStaff: newOwner,
       ownerName: newOwner,
@@ -464,7 +544,9 @@ export function ClientIntakePortal() {
       isOverdue: false,
       followUpDisplay: addInitialStage === 'Converted' || addInitialStage === 'Closed / Not Proceeding' ? '—' : 'Nov 24',
       nextFollowUpDate: '2026-11-24',
-      notes: newNotes || 'New intake record registered from administrative command center.',
+      notes:
+        newNotes ||
+        `Medicaid ID: ${newMedicaidId}. Waiver: ${newWaiver}. Authorized: ${newWeeklyHours}. Designated Caregiver: ${newDesignatedCaregiver}.`,
     });
 
     setShowAddModal(false);
@@ -1817,197 +1899,598 @@ export function ClientIntakePortal() {
       )}
 
       {/* ========================================================================= */}
-      {/* 7. MODAL: + ADD CLIENT INQUIRY                                            */}
+      {/* 7. MODAL: + ADD CLIENT INQUIRY (4-STEP PATIENT REGISTRATION WIZARD)       */}
       {/* ========================================================================= */}
       {showAddModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
           <div
             className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
             onClick={() => setShowAddModal(false)}
           />
 
-          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 z-10 animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-              <div>
-                <h3 className="text-lg font-black text-slate-900 tracking-tight">
-                  New Client Inquiry
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Record an inbound client inquiry or Case Management Agency referral.
-                </p>
+          <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-slate-200 z-10 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-98 duration-150">
+            {/* Top Wizard Header */}
+            <div className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-white">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                      New Client Inquiry
+                    </h2>
+                    <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#264e1e] border border-emerald-200/80">
+                      Registration Wizard
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Multi-step patient intake wizard matching Colorado Medicaid HCBS standards.
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={handlePrefillClientData}
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white hover:bg-amber-50/50 border border-amber-300 text-slate-900 text-xs font-bold transition-all shadow-2xs cursor-pointer group active:scale-98"
+                    title="Pre-fill realistic Colorado Patient intake test data"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-[#F2B632] group-hover:rotate-12 transition-transform" />
+                    <span>Pre-fill Data</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowAddModal(false)}
+                    className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setShowAddModal(false)}
-                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              {/* Progress & Stepper Pills */}
+              <div className="mt-4 pt-3 border-t border-slate-100 space-y-2.5">
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-900">Step {addStep} of 4:</span>
+                    <span className="text-slate-600 font-medium">
+                      {clientWizardStepTitles[addStep - 1]}
+                    </span>
+                  </div>
+                  <span className="font-bold text-[#264e1e] font-mono text-[11px]">
+                    {Math.round((addStep / 4) * 100)}% Completed
+                  </span>
+                </div>
+
+                <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-gradient-to-r from-[#00d084] to-[#264e1e] rounded-full transition-all duration-300"
+                    style={{ width: `${(addStep / 4) * 100}%` }}
+                  />
+                </div>
+
+                {/* Step indicator tabs */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+                  {clientWizardStepTitles.map((title, idx) => {
+                    const stepNum = idx + 1;
+                    const isCurrent = addStep === stepNum;
+                    const isCompleted = addStep > stepNum;
+
+                    return (
+                      <button
+                        type="button"
+                        key={title}
+                        onClick={() => setAddStep(stepNum)}
+                        className={`p-2 rounded-xl text-left transition-all border cursor-pointer ${isCurrent
+                          ? 'bg-emerald-50/80 border-[#264e1e] text-slate-900 font-bold shadow-2xs'
+                          : isCompleted
+                            ? 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'
+                            : 'bg-white border-slate-200/60 text-slate-400 hover:bg-slate-50'
+                          }`}
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <span
+                            className={`w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shrink-0 ${isCurrent
+                              ? 'bg-[#264e1e] text-white'
+                              : isCompleted
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-slate-200 text-slate-500'
+                              }`}
+                          >
+                            {isCompleted ? '✓' : stepNum}
+                          </span>
+                          <span className="truncate text-[11px] block">{title}</span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
-            <form onSubmit={handleCreateLead} className="space-y-4 pt-4 text-xs">
-              <div className="grid grid-cols-2 gap-3">
-                <div className="col-span-2 sm:col-span-1 space-y-1">
-                  <label className="font-bold text-slate-700">Client Full Name *</label>
-                  <input
-                    type="text"
-                    required
-                    value={newClientName}
-                    onChange={(e) => setNewClientName(e.target.value)}
-                    placeholder="e.g. Liam Hayes"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30"
-                  />
+            {/* Scrollable Form Body */}
+            <div className="flex-1 overflow-y-auto p-5 sm:p-6 bg-slate-50/50">
+              {/* STEP 1: Patient Information */}
+              {addStep === 1 && (
+                <div className="space-y-4">
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#264e1e] uppercase tracking-wider block">
+                        Step 1 of 4
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900">Patient Information</h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Enter personal and Medicaid identification details for the individual needing home care.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Patient First Name *</label>
+                        <input
+                          type="text"
+                          value={newClientFirstName}
+                          onChange={(e) => setNewClientFirstName(e.target.value)}
+                          placeholder="e.g. Mateo"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e] focus:ring-1 focus:ring-[#264e1e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Patient Last Name *</label>
+                        <input
+                          type="text"
+                          value={newClientLastName}
+                          onChange={(e) => setNewClientLastName(e.target.value)}
+                          placeholder="e.g. Morales"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e] focus:ring-1 focus:ring-[#264e1e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Date of Birth *</label>
+                        <input
+                          type="date"
+                          value={newClientDob}
+                          onChange={(e) => setNewClientDob(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Colorado Medicaid ID *</label>
+                        <input
+                          type="text"
+                          value={newMedicaidId}
+                          onChange={(e) => setNewMedicaidId(e.target.value)}
+                          placeholder="e.g. CO-984421008"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs font-mono font-bold text-slate-800 outline-none focus:border-[#264e1e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Gender</label>
+                        <select
+                          value={newClientGender}
+                          onChange={(e) => setNewClientGender(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                          <option value="Non-Binary">Non-Binary</option>
+                          <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">County *</label>
+                        <select
+                          value={newCounty}
+                          onChange={(e) => setNewCounty(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="Denver">Denver County</option>
+                          <option value="Arapahoe">Arapahoe County</option>
+                          <option value="Jefferson">Jefferson County</option>
+                          <option value="Douglas">Douglas County</option>
+                          <option value="Boulder">Boulder County</option>
+                          <option value="Adams">Adams County</option>
+                        </select>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="font-semibold text-slate-700 block mb-1">Street Address</label>
+                        <input
+                          type="text"
+                          value={newStreet}
+                          onChange={(e) => setNewStreet(e.target.value)}
+                          placeholder="4820 Mountain Crest Dr"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e]"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">City</label>
+                        <input
+                          type="text"
+                          value={newCity}
+                          onChange={(e) => setNewCity(e.target.value)}
+                          placeholder="Denver"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">State / ZIP</label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            value={newState}
+                            onChange={(e) => setNewState(e.target.value)}
+                            className="w-16 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs text-center font-bold"
+                          />
+                          <input
+                            type="text"
+                            value={newZip}
+                            onChange={(e) => setNewZip(e.target.value)}
+                            placeholder="80219"
+                            className="flex-1 px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                          />
+                        </div>
+                      </div>
+                      <div className="sm:col-span-2">
+                        <label className="font-semibold text-slate-700 block mb-1">Emergency Contact</label>
+                        <input
+                          type="text"
+                          value={newEmergencyContact}
+                          onChange={(e) => setNewEmergencyContact(e.target.value)}
+                          placeholder="e.g. Carlos Morales (Uncle) · (303) 555-0199"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-                <div className="col-span-2 sm:col-span-1 space-y-1">
-                  <label className="font-bold text-slate-700">Primary Contact Name</label>
-                  <input
-                    type="text"
-                    value={newContactName}
-                    onChange={(e) => setNewContactName(e.target.value)}
-                    placeholder="e.g. Sarah Hayes (Mother)"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30"
-                  />
+              {/* STEP 2: Responsible Party & Caregiver Designation */}
+              {addStep === 2 && (
+                <div className="space-y-4">
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#264e1e] uppercase tracking-wider block">
+                        Step 2 of 4
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900">Responsible Party &amp; Caregiver</h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Record the legal representative, primary family contact, and designated family caregiver.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Primary Contact Full Name *</label>
+                        <input
+                          type="text"
+                          value={newContactName}
+                          onChange={(e) => setNewContactName(e.target.value)}
+                          placeholder="e.g. Elena Morales"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Relationship to Patient *</label>
+                        <select
+                          value={newRelationship}
+                          onChange={(e) => setNewRelationship(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="Mother">Mother</option>
+                          <option value="Father">Father</option>
+                          <option value="Spouse">Spouse</option>
+                          <option value="Legal Guardian">Legal Guardian</option>
+                          <option value="Adult Sibling">Adult Sibling</option>
+                          <option value="Adult Child">Adult Child</option>
+                          <option value="Self">Self (Independent Adult)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Contact Phone Number *</label>
+                        <input
+                          type="text"
+                          value={newPhone}
+                          onChange={(e) => setNewPhone(e.target.value)}
+                          placeholder="(303) 555-0142"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e]"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Contact Email Address *</label>
+                        <input
+                          type="email"
+                          value={newEmail}
+                          onChange={(e) => setNewEmail(e.target.value)}
+                          placeholder="elena.morales@coloradomail.net"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 focus:bg-white text-xs outline-none focus:border-[#264e1e]"
+                        />
+                      </div>
+
+                      <div className="sm:col-span-2 pt-2 border-t border-slate-100">
+                        <label className="font-semibold text-slate-700 block mb-1">
+                          Designated Family Caregiver (for IHSS / Family Care model)
+                        </label>
+                        <input
+                          type="text"
+                          value={newDesignatedCaregiver}
+                          onChange={(e) => setNewDesignatedCaregiver(e.target.value)}
+                          placeholder="e.g. Elena Morales (Mother)"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                        />
+                        <p className="text-[11px] text-slate-400 mt-1">
+                          Family members can be designated as the paid caregiver under Colorado Medicaid IHSS rules.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Phone</label>
-                  <input
-                    type="text"
-                    value={newPhone}
-                    onChange={(e) => setNewPhone(e.target.value)}
-                    placeholder="(303) 555-0100"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                  />
+              {/* STEP 3: Service, Waiver Program & CMA */}
+              {addStep === 3 && (
+                <div className="space-y-4">
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#264e1e] uppercase tracking-wider block">
+                        Step 3 of 4
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900">Service, Waiver Program &amp; CMA</h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Configure Medicaid waiver eligibility and state case management agency linkage.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Requested Service *</label>
+                        <select
+                          value={newService}
+                          onChange={(e) => setNewService(e.target.value as ServiceType)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="IHSS">IHSS (In-Home Support Services)</option>
+                          <option value="CFC">CFC (Children's First Choice)</option>
+                          <option value="HCBS">HCBS (Home &amp; Community-Based Services)</option>
+                          <option value="PDN">PDN (Private Duty Nursing)</option>
+                          <option value="IRSS">IRSS (Residential Services)</option>
+                          <option value="HMA">HMA (Health Maintenance Activities)</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Medicaid Waiver Program</label>
+                        <select
+                          value={newWaiver}
+                          onChange={(e) => setNewWaiver(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="HCBS-CES (Children’s Extensive Support)">HCBS-CES (Children’s Extensive Support)</option>
+                          <option value="HCBS-EBD (Elderly, Blind &amp; Disabled)">HCBS-EBD (Elderly, Blind &amp; Disabled)</option>
+                          <option value="HCBS-DD (Developmental Disabilities)">HCBS-DD (Developmental Disabilities)</option>
+                          <option value="HCBS-SLS (Supported Living Services)">HCBS-SLS (Supported Living Services)</option>
+                          <option value="Colorado Medicaid State Plan">Colorado Medicaid State Plan</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Target Authorized Hours</label>
+                        <input
+                          type="text"
+                          value={newWeeklyHours}
+                          onChange={(e) => setNewWeeklyHours(e.target.value)}
+                          placeholder="32.0 hrs/week"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs font-bold text-slate-800"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Case Management Agency (CMA)</label>
+                        <select
+                          value={newCmaAgency}
+                          onChange={(e) => setNewCmaAgency(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="Rocky Mountain Human Services (RMHS)">Rocky Mountain Human Services (RMHS) - Denver</option>
+                          <option value="Developmental Pathways">Developmental Pathways - Arapahoe / Douglas</option>
+                          <option value="Imagine! Colorado">Imagine! Colorado - Boulder / Broomfield</option>
+                          <option value="Continuum of Colorado">Continuum of Colorado - Jefferson</option>
+                          <option value="North Metro Community Services">North Metro Community Services - Adams</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Assigned Case Manager Name</label>
+                        <input
+                          type="text"
+                          value={newCaseManagerName}
+                          onChange={(e) => setNewCaseManagerName(e.target.value)}
+                          placeholder="Sarah Jenkins"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Case Manager Phone / Email</label>
+                        <input
+                          type="text"
+                          value={`${newCaseManagerPhone} · ${newCaseManagerEmail}`}
+                          onChange={(e) => {
+                            const val = e.target.value;
+                            setNewCaseManagerPhone(val.split('·')[0]?.trim() || val);
+                          }}
+                          placeholder="(303) 636-5600 · sjenkins@rmhs.org"
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              )}
 
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Email</label>
-                  <input
-                    type="email"
-                    value={newEmail}
-                    onChange={(e) => setNewEmail(e.target.value)}
-                    placeholder="family@coloradomail.net"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                  />
+              {/* STEP 4: Pipeline & Review */}
+              {addStep === 4 && (
+                <div className="space-y-4">
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-2xs space-y-4">
+                    <div>
+                      <span className="text-[10px] font-bold text-[#264e1e] uppercase tracking-wider block">
+                        Step 4 of 4
+                      </span>
+                      <h3 className="text-base font-bold text-slate-900">Pipeline Assignment &amp; Review</h3>
+                      <p className="text-xs text-slate-500 mt-0.5">
+                        Assign intake staff, record clinical notes, and place the inquiry into the pipeline.
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Inquiry Source</label>
+                        <select
+                          value={newSource}
+                          onChange={(e) => setNewSource(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="Website">Website Inbound</option>
+                          <option value="Phone">Phone Call to Office</option>
+                          <option value="Case Management Agency">CMA Referral</option>
+                          <option value="Direct Referral">Direct Family Referral</option>
+                          <option value="RFP">State RFP Process</option>
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Initial Pipeline Stage</label>
+                        <select
+                          value={addInitialStage}
+                          onChange={(e) => setAddInitialStage(e.target.value as LeadStatus)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          {INTAKE_STAGES.map((st) => (
+                            <option key={st} value={st}>
+                              {st}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+
+                      <div>
+                        <label className="font-semibold text-slate-700 block mb-1">Assigned Intake Staff</label>
+                        <select
+                          value={newOwner}
+                          onChange={(e) => setNewOwner(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 font-semibold text-xs outline-none focus:border-[#264e1e]"
+                        >
+                          <option value="Maya R.">Maya R.</option>
+                          <option value="Jon P.">Jon P.</option>
+                          <option value="Sam K.">Sam K.</option>
+                          <option value="Alicia T.">Alicia T.</option>
+                        </select>
+                      </div>
+
+                      <div className="sm:col-span-3">
+                        <label className="font-semibold text-slate-700 block mb-1">
+                          Clinical Care &amp; Intake Background Notes
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={newNotes}
+                          onChange={(e) => setNewNotes(e.target.value)}
+                          placeholder="Detail primary care requirements, diagnosis, medical history, and household support needs..."
+                          className="w-full px-3 py-2 rounded-xl border border-slate-200 bg-slate-50/60 text-xs focus:bg-white"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Review Summary Card */}
+                    <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-200/80 space-y-2 text-xs">
+                      <span className="font-bold text-slate-900 block text-[11px] uppercase tracking-wide">
+                        Patient Intake Summary
+                      </span>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-[11px]">
+                        <div>
+                          <span className="text-slate-400 block">Patient Name:</span>
+                          <span className="font-bold text-slate-900">{newClientFirstName || 'Mateo'} {newClientLastName || 'Morales'}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block">Primary Contact:</span>
+                          <span className="font-bold text-slate-900">{newContactName || 'Elena Morales'} ({newRelationship})</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block">Service &amp; Waiver:</span>
+                          <span className="font-bold text-emerald-800">{newService} · {newWaiver.split('(')[0]}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block">Medicaid ID:</span>
+                          <span className="font-bold text-slate-900 font-mono">{newMedicaidId}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block">CMA Agency:</span>
+                          <span className="font-bold text-slate-900">{newCmaAgency.split('(')[0]}</span>
+                        </div>
+                        <div>
+                          <span className="text-slate-400 block">Assigned Owner:</span>
+                          <span className="font-bold text-slate-900">{newOwner}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              )}
+            </div>
 
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Requested Service</label>
-                  <select
-                    value={newService}
-                    onChange={(e) => setNewService(e.target.value as ServiceType)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
-                  >
-                    <option value="IHSS">IHSS</option>
-                    <option value="CFC">CFC</option>
-                    <option value="HCBS">HCBS</option>
-                    <option value="PDN">PDN</option>
-                    <option value="IRSS">IRSS</option>
-                    <option value="HMA">HMA</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Inquiry Source</label>
-                  <select
-                    value={newSource}
-                    onChange={(e) => setNewSource(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
-                  >
-                    <option value="Website">Website</option>
-                    <option value="Phone">Phone</option>
-                    <option value="Case Management Agency">Case Management Agency</option>
-                    <option value="Direct Referral">Direct Referral</option>
-                    <option value="RFP">RFP</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">County</label>
-                  <select
-                    value={newCounty}
-                    onChange={(e) => setNewCounty(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
-                  >
-                    <option value="Denver">Denver</option>
-                    <option value="Arapahoe">Arapahoe</option>
-                    <option value="Jefferson">Jefferson</option>
-                    <option value="Douglas">Douglas</option>
-                    <option value="Boulder">Boulder</option>
-                    <option value="Adams">Adams</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Initial Pipeline Stage</label>
-                  <select
-                    value={addInitialStage}
-                    onChange={(e) => setAddInitialStage(e.target.value as LeadStatus)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
-                  >
-                    {INTAKE_STAGES.map((st) => (
-                      <option key={st} value={st}>
-                        {st}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Assigned Intake Staff</label>
-                  <select
-                    value={newOwner}
-                    onChange={(e) => setNewOwner(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
-                  >
-                    <option value="Maya R.">Maya R.</option>
-                    <option value="Jon P.">Jon P.</option>
-                    <option value="Sam K.">Sam K.</option>
-                    <option value="Alicia T.">Alicia T.</option>
-                  </select>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="font-bold text-slate-700">Target Schedule</label>
-                  <input
-                    type="text"
-                    value={newSchedule}
-                    onChange={(e) => setNewSchedule(e.target.value)}
-                    placeholder="30–35 hrs/wk"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="font-bold text-slate-700">Intake Notes / Clinical Background</label>
-                <textarea
-                  rows={2}
-                  value={newNotes}
-                  onChange={(e) => setNewNotes(e.target.value)}
-                  placeholder="Detail primary care requirements, diagnosis, and current Medicaid status..."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
-                />
-              </div>
-
-              <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+            {/* Pinned Bottom Footer Navigation Bar */}
+            <div className="p-4 sm:p-5 border-t border-slate-200 bg-white flex items-center justify-between gap-3">
+              {addStep > 1 ? (
+                <button
+                  type="button"
+                  onClick={() => setAddStep(addStep - 1)}
+                  className="flex items-center gap-1.5 px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
+                >
+                  <ArrowLeft className="w-3.5 h-3.5" />
+                  <span>Previous</span>
+                </button>
+              ) : (
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold cursor-pointer"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer"
                 >
                   Cancel
                 </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl font-bold shadow-xs cursor-pointer"
-                >
-                  Create Inquiry
-                </button>
+              )}
+
+              <div className="text-xs text-slate-400 font-medium">
+                Step {addStep} of 4
               </div>
-            </form>
+
+              {addStep < 4 ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (addStep === 1 && !newClientFirstName.trim() && !newClientLastName.trim()) {
+                      notify('Patient Name Required', 'Please enter first and last name.', 'warning');
+                      return;
+                    }
+                    setAddStep(addStep + 1);
+                  }}
+                  className="flex items-center gap-1.5 px-5 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+                >
+                  <span>Continue</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => handleCreateLead()}
+                  className="flex items-center gap-1.5 px-6 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
+                >
+                  <Check className="w-4 h-4 stroke-[2.5]" />
+                  <span>Create Client Inquiry</span>
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
