@@ -210,7 +210,7 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
               <img
                 src={isSidebarCollapsed && !isMobile ? "/images/lilisare-icon.png" : "/images/lilisare-logo.png"}
                 alt="LiliSare"
-                className={`${isSidebarCollapsed && !isMobile ? 'h-6 w-6' : 'h-9 sm:h-9.5 w-auto max-h-10'} object-contain`}
+                className={`${isSidebarCollapsed && !isMobile ? 'h-9 w-9' : 'h-12 sm:h-14 w-auto max-h-16'} object-contain`}
               />
             </div>
           </Link>

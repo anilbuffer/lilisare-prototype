@@ -412,10 +412,10 @@ export function ClientIntakePortal() {
       {/* ========================================================================= */}
       {/* 2. FOUR KPI CARDS (Matches Image 1 & 2)                                   */}
       {/* ========================================================================= */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-[0_2px_12px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02]">
+      <div className="portal-kpi-container">
         <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
           {/* 1. TOTAL OPEN */}
-          <div className="px-3 py-2 sm:px-4 sm:py-1 rounded-xl hover:bg-slate-50/60 transition-colors">
+          <div className="portal-kpi-cell">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               TOTAL OPEN
             </p>
@@ -428,7 +428,7 @@ export function ClientIntakePortal() {
           </div>
 
           {/* 2. OVERDUE FOLLOW-UPS */}
-          <div className="px-3 py-2 sm:px-4 sm:py-1 rounded-xl hover:bg-slate-50/60 transition-colors">
+          <div className="portal-kpi-cell">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               OVERDUE FOLLOW-UPS
             </p>
@@ -441,7 +441,7 @@ export function ClientIntakePortal() {
           </div>
 
           {/* 3. CONVERTED THIS MONTH */}
-          <div className="px-3 py-2 sm:px-4 sm:py-1 rounded-xl hover:bg-slate-50/60 transition-colors">
+          <div className="portal-kpi-cell">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               CONVERTED THIS MONTH
             </p>
@@ -454,7 +454,7 @@ export function ClientIntakePortal() {
           </div>
 
           {/* 4. AVG DAYS TO CONVERT */}
-          <div className="px-3 py-2 sm:px-4 sm:py-1 rounded-xl hover:bg-slate-50/60 transition-colors">
+          <div className="portal-kpi-cell">
             <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               AVG DAYS TO CONVERT
             </p>
@@ -471,7 +471,7 @@ export function ClientIntakePortal() {
       {/* ========================================================================= */}
       {/* 3. FILTER BAR WITH SEARCH, DROPDOWNS & BOARD / LIST SWITCHER              */}
       {/* ========================================================================= */}
-      <div className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-3.5 shadow-[0_2px_12px_rgba(15,23,42,0.05),0_1px_3px_rgba(15,23,42,0.03)] ring-1 ring-black/[0.02] flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+      <div className="portal-filter-bar">
         {/* Left: Search & Dropdown Filters */}
         <div className="flex flex-wrap items-center gap-2 flex-1">
           {/* Search by Client Name */}
@@ -482,7 +482,7 @@ export function ClientIntakePortal() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filter by client name..."
-              className="w-full pl-8.5 pr-3 py-1.5 bg-slate-50/50 hover:bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30 focus:border-[#264e1e] shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+              className="portal-input"
             />
           </div>
 
@@ -491,7 +491,7 @@ export function ClientIntakePortal() {
             <select
               value={ownerFilter}
               onChange={(e) => setOwnerFilter(e.target.value)}
-              className="appearance-none pl-3 pr-7 py-1.5 bg-slate-50/50 hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer focus:outline-none shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+              className="portal-select"
             >
               <option value="All Owners">All Owners</option>
               <option value="Maya R.">Maya R.</option>
@@ -507,7 +507,7 @@ export function ClientIntakePortal() {
             <select
               value={serviceFilter}
               onChange={(e) => setServiceFilter(e.target.value)}
-              className="appearance-none pl-3 pr-7 py-1.5 bg-slate-50/50 hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer focus:outline-none shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+              className="portal-select"
             >
               <option value="All Services">All Services</option>
               <option value="IHSS">IHSS</option>
@@ -525,7 +525,7 @@ export function ClientIntakePortal() {
             <select
               value={sourceFilter}
               onChange={(e) => setSourceFilter(e.target.value)}
-              className="appearance-none pl-3 pr-7 py-1.5 bg-slate-50/50 hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700 cursor-pointer focus:outline-none shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+              className="portal-select"
             >
               <option value="All Sources">All Sources</option>
               <option value="Website">Website</option>
@@ -554,31 +554,25 @@ export function ClientIntakePortal() {
           <button
             type="button"
             onClick={() => setShowSourceInsightsModal(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-700 transition-all cursor-pointer shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:shadow"
+            className="portal-filter-btn"
           >
             <span>📊</span>
             <span>Source insights</span>
           </button>
 
           {/* Board / List Switcher */}
-          <div className="bg-slate-100/90 p-0.5 rounded-xl border border-slate-200/80 shadow-inner flex items-center">
+          <div className="portal-view-switcher">
             <button
               type="button"
               onClick={() => setViewMode('board')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${viewMode === 'board'
-                ? 'bg-white text-slate-900 shadow-[0_1px_4px_rgba(15,23,42,0.1),0_1px_2px_rgba(15,23,42,0.06)]'
-                : 'text-slate-500 hover:text-slate-900'
-                }`}
+              className={viewMode === 'board' ? 'portal-view-switcher-btn-active' : 'portal-view-switcher-btn-inactive'}
             >
               Board
             </button>
             <button
               type="button"
               onClick={() => setViewMode('list')}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${viewMode === 'list'
-                ? 'bg-white text-slate-900 shadow-[0_1px_4px_rgba(15,23,42,0.1),0_1px_2px_rgba(15,23,42,0.06)]'
-                : 'text-slate-500 hover:text-slate-900'
-                }`}
+              className={viewMode === 'list' ? 'portal-view-switcher-btn-active' : 'portal-view-switcher-btn-inactive'}
             >
               List
             </button>
@@ -602,7 +596,7 @@ export function ClientIntakePortal() {
                   key={stage}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, stage)}
-                  className={`flex-1 min-w-[210px] max-w-[240px] rounded-2xl border ${cfg.borderColor} ${cfg.bgTint} p-3 flex flex-col gap-2.5 transition-all shadow-[0_2px_10px_rgba(15,23,42,0.04),0_1px_2px_rgba(15,23,42,0.02)] ring-1 ring-black/[0.02]`}
+                  className={`portal-board-column ${cfg.borderColor} ${cfg.bgTint}`}
                 >
                   {/* Column Header */}
                   <div className="flex items-center justify-between px-1 py-0.5">
@@ -632,7 +626,7 @@ export function ClientIntakePortal() {
                           draggable
                           onDragStart={(e) => handleDragStart(e, lead.id)}
                           onClick={() => setSelectedLead(lead)}
-                          className="bg-white rounded-2xl p-3.5 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] hover:shadow-[0_8px_20px_rgba(15,23,42,0.10),0_2px_6px_rgba(15,23,42,0.05)] hover:border-slate-300 transition-all duration-200 cursor-pointer group hover:-translate-y-0.5 active:scale-[0.99] ring-1 ring-black/[0.02]"
+                          className="portal-card-interactive"
                         >
                           {/* Row 1: Name + CLIENT Pill + Service Pill */}
                           <div className="flex items-center justify-between gap-1.5">
@@ -710,7 +704,7 @@ export function ClientIntakePortal() {
                   <button
                     type="button"
                     onClick={() => handleOpenAddModal(stage)}
-                    className="w-full py-1.5 px-2 rounded-xl border border-dashed border-slate-300 hover:border-slate-400 hover:bg-white/90 text-slate-500 hover:text-slate-800 text-[11px] font-semibold flex items-center justify-center gap-1 transition-all cursor-pointer mt-1 bg-white/40 shadow-2xs"
+                    className="portal-column-add-btn"
                   >
                     <Plus className="w-3.5 h-3.5" />
                     <span>Add inquiry</span>
@@ -722,11 +716,11 @@ export function ClientIntakePortal() {
         </div>
       ) : (
         /* LIST / TABLE VIEW (Matches Image 2) */
-        <div className="bg-white rounded-2xl border border-slate-200/90 shadow-[0_4px_20px_-4px_rgba(15,23,42,0.08),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] overflow-hidden">
+        <div className="portal-table-container">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="border-b border-slate-200/80 bg-slate-50/90 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                <tr className="portal-table-head">
                   <th className="py-3 px-4">CLIENT NAME</th>
                   <th className="py-3 px-3">SERVICE</th>
                   <th className="py-3 px-3">SOURCE</th>

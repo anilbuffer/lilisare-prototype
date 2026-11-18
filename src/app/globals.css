@@ -2,6 +2,294 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ========================================================================= */
+/* LILISARE PORTAL SCOPED DESIGN SYSTEM                                      */
+/* Bulletproof pure CSS declarations preventing any PostCSS @apply crashes   */
+/* ========================================================================= */
+
+.portal-shell-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f4f7f6;
+}
+
+.portal-main-scroll {
+  flex: 1 1 0%;
+  overflow-y: auto;
+  padding: 1rem 1.5rem 4rem;
+  scroll-behavior: smooth;
+}
+
+/* 2. Top KPI Metric Summary Container */
+.portal-kpi-container {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.portal-kpi-cell {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.75rem;
+  transition: background-color 0.15s ease;
+}
+.portal-kpi-cell:hover {
+  background-color: rgba(248, 250, 252, 0.8);
+}
+
+/* 3. Filter Bar */
+.portal-filter-bar {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 0.75rem 0.875rem;
+  box-shadow: 0 2px 12px 0 rgba(15, 23, 42, 0.05), 0 1px 3px 0 rgba(15, 23, 42, 0.03), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  justify-content: space-between;
+}
+@media (min-width: 1024px) {
+  .portal-filter-bar {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.portal-input {
+  width: 100%;
+  padding-left: 2.25rem;
+  padding-right: 0.75rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  background-color: rgba(248, 250, 252, 0.7);
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: #1e293b;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+  transition: all 0.15s ease;
+}
+.portal-input:hover {
+  background-color: #f8fafc;
+}
+.portal-input:focus {
+  outline: none;
+  border-color: #264e1e;
+  box-shadow: 0 0 0 1.5px rgba(38, 78, 30, 0.25);
+}
+
+.portal-select {
+  appearance: none;
+  padding-left: 0.75rem;
+  padding-right: 1.75rem;
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+  background-color: rgba(248, 250, 252, 0.7);
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.03);
+  transition: all 0.15s ease;
+}
+.portal-select:hover {
+  background-color: #f8fafc;
+}
+.portal-select:focus {
+  outline: none;
+  border-color: #264e1e;
+}
+
+.portal-filter-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  color: #334155;
+  cursor: pointer;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
+  transition: all 0.15s ease;
+}
+.portal-filter-btn:hover {
+  background-color: #f8fafc;
+  box-shadow: 0 2px 4px 0 rgba(15, 23, 42, 0.08);
+}
+
+/* 4. Segmented View Switcher (Board / List) */
+.portal-view-switcher {
+  background-color: rgba(241, 245, 249, 0.9);
+  padding: 0.125rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: inset 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.portal-view-switcher-btn-active {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  background-color: #ffffff;
+  color: #0f172a;
+  box-shadow: 0 1px 4px 0 rgba(15, 23, 42, 0.1), 0 1px 2px 0 rgba(15, 23, 42, 0.06);
+  transition: all 0.15s ease;
+}
+
+.portal-view-switcher-btn-inactive {
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  color: #64748b;
+  background-color: transparent;
+  transition: all 0.15s ease;
+}
+.portal-view-switcher-btn-inactive:hover {
+  color: #0f172a;
+}
+
+/* 5. Kanban Board Columns */
+.portal-board-column {
+  flex: 1 1 0%;
+  min-width: 210px;
+  max-width: 240px;
+  border-radius: 1rem;
+  border-width: 1px;
+  border-style: solid;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px 0 rgba(15, 23, 42, 0.04), 0 1px 2px 0 rgba(15, 23, 42, 0.02), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+/* 6. Cards: Standard & Interactive Board Cards */
+.portal-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 8px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+.portal-card-interactive {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  padding: 0.875rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 2px 8px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.portal-card-interactive:hover {
+  border-color: #cbd5e1;
+  box-shadow: 0 8px 20px 0 rgba(15, 23, 42, 0.10), 0 2px 6px 0 rgba(15, 23, 42, 0.05);
+  transform: translateY(-2px);
+}
+.portal-card-interactive:active {
+  transform: scale(0.99);
+}
+
+/* 7. Table / List View Container */
+.portal-table-container {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+  overflow: hidden;
+}
+
+.portal-table-head {
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  background-color: rgba(248, 250, 252, 0.9);
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.portal-table-row {
+  transition: background-color 0.15s ease;
+  cursor: pointer;
+}
+.portal-table-row:hover {
+  background-color: rgba(248, 250, 252, 0.85);
+}
+
+.portal-table-action-btn {
+  padding: 0.25rem 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 600;
+  color: #334155;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+  cursor: pointer;
+}
+.portal-table-action-btn:hover {
+  background-color: #f1f5f9;
+  box-shadow: 0 2px 4px 0 rgba(15, 23, 42, 0.08);
+}
+
+/* 8. Modals & Drawers Inner Content Cards */
+.portal-modal-card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 1.25rem;
+  box-shadow: 0 2px 8px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.02);
+}
+
+/* 9. Dashed Add Button for Kanban Columns */
+.portal-column-add-btn {
+  width: 100%;
+  padding: 0.375rem 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px dashed #cbd5e1;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.04);
+}
+.portal-column-add-btn:hover {
+  border-color: #94a3b8;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #1e293b;
+}
+
 :root {
   --primary: #3e6b2b;
   --secondary: #F2B632;

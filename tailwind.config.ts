@@ -71,9 +71,27 @@ const config: Config = {
         premium: "0 10px 30px -10px rgba(62, 107, 43, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.03)",
         glass: "0 8px 32px 0 rgba(31, 38, 135, 0.07)",
         dropdown: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+        // Scoped Portal Design System Shadows (Prevents unstyled/flat UI regressions)
+        '2xs': '0 1px 2px 0 rgba(15, 23, 42, 0.04)',
+        'xs': '0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px 0 rgba(15, 23, 42, 0.03)',
+        'card': '0 2px 8px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04)',
+        'card-hover': '0 8px 20px 0 rgba(15, 23, 42, 0.10), 0 2px 6px 0 rgba(15, 23, 42, 0.05)',
+        'portal-card': '0 2px 8px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04)',
+        'portal-kpi': '0 2px 12px 0 rgba(15, 23, 42, 0.06), 0 1px 3px 0 rgba(15, 23, 42, 0.04)',
+        'portal-filter': '0 2px 12px 0 rgba(15, 23, 42, 0.05), 0 1px 3px 0 rgba(15, 23, 42, 0.03)',
+        'portal-column': '0 2px 10px 0 rgba(15, 23, 42, 0.04), 0 1px 2px 0 rgba(15, 23, 42, 0.02)',
+        'portal-table': '0 4px 20px -4px rgba(15, 23, 42, 0.08), 0 1px 3px 0 rgba(15, 23, 42, 0.04)',
+      },
+      backdropBlur: {
+        'xs': '2px',
+      },
+      ringWidth: {
+        '1.5': '1.5px',
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
 };
 export default config;
