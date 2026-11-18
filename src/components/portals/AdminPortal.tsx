@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { usePortal } from '@/lib/store/portal-context';
 import { TopUtilityBar } from '../dashboard/TopUtilityBar';
-import { DashboardControls } from '../dashboard/DashboardControls';
+import { DashboardControls, DashboardTabs } from '../dashboard/DashboardControls';
 import { KpiCards } from '../dashboard/KpiCards';
 import { NeedsAttentionSection } from '../dashboard/NeedsAttentionSection';
 import { FunnelAndPipelineSection } from '../dashboard/FunnelAndPipelineSection';
@@ -154,18 +154,28 @@ export function AdminPortal() {
         }}
       />
 
-      {/* 2 & 3. GREETING & VIEW CONTROLS */}
+      {/* 2. GREETING & HEADER CONTROLS */}
       <DashboardControls
         branchData={branchData}
         currentBranch={currentBranch}
         onSelectBranch={handleSelectBranch}
-        activeTab={activeTab}
-        onSelectTab={setActiveTab}
         onOpenAIBriefing={() => setIsAIBriefingOpen(true)}
         onTrackCaregivers={() => {
           notify('Caregiver Telemetry', 'Opening live map tracking for active caregivers.', 'info');
           setActiveDrawer('staffing');
         }}
+      />
+
+      {/* 3. TOP KPI CARDS (ACTIVE CLIENTS: 487 • ACTIVE CAREGIVERS: 902 • PENDING AUTHORIZATIONS: 23 • CREDENTIALS EXPIRING: 41 • HOUSEHOLDS STUCK: 11) */}
+      <KpiCards
+        branchData={branchData}
+        onOpenKpiDrawer={handleOpenKpiDrawer}
+      />
+
+      {/* 4. DASHBOARD VIEW TABS (JUST BELOW STATS ROW) */}
+      <DashboardTabs
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
       />
 
       {/* Tab Context Banner when filtered */}
@@ -187,12 +197,6 @@ export function AdminPortal() {
           </button>
         </div>
       )}
-
-      {/* 4. TOP KPI CARDS (ACTIVE CLIENTS: 487 • ACTIVE CAREGIVERS: 902 • PENDING AUTHORIZATIONS: 23 • CREDENTIALS EXPIRING: 41 • HOUSEHOLDS STUCK: 11) */}
-      <KpiCards
-        branchData={branchData}
-        onOpenKpiDrawer={handleOpenKpiDrawer}
-      />
 
       {/* 5. NEEDS YOUR ATTENTION (6 PRIORITY ITEMS) */}
       {(activeTab === 'executive' || activeTab === 'compliance' || activeTab === 'billing') && (

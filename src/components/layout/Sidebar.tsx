@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
@@ -19,8 +19,12 @@ import {
   TrendingUp,
   BarChart3,
   ChevronDown,
+  ChevronUp,
   Columns2,
   X,
+  Settings,
+  LogOut,
+  User,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -36,6 +40,28 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
   const pendingApplicationsCount = applications.filter(
     (a) => a.status === 'Pending Review' || a.status === 'In Verification'
   ).length;
+
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(e.target as Node)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   // Hide sidebar on the full-width marketing landing page or sign in page or registration wizard
   if (
@@ -154,23 +180,26 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
   ];
 
   const renderNavContent = (isMobile: boolean) => (
-    <>
-      <div className="p-4 space-y-4 overflow-y-auto flex-1 scrollbar-thin relative z-10">
-        {/* Top Brand Header (Official LiliSare Logo from Home Page) */}
-        <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'justify-between'} pt-1 pb-2 px-1 border-b border-white/15`}>
+    <div className="flex flex-col h-full overflow-hidden select-none w-full">
+      {/* 1. FIXED TOP BRAND HEADER (Fixed, doesn't scroll) */}
+      <div className="p-3.5 pb-2.5 shrink-0 border-b border-white/10 relative z-20">
+        <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'w-full gap-2'}`}>
           <Link
             href="/admin-portal/dashboard"
             onClick={() => {
               switchRole('admin');
               if (isMobile) onCloseMobile?.();
             }}
-            className="flex items-center gap-2.5 cursor-pointer group"
+            className={`${isSidebarCollapsed && !isMobile ? '' : 'w-full'} cursor-pointer group block`}
           >
-            <div className={`bg-white rounded-xl ${isSidebarCollapsed && !isMobile ? 'p-1.5' : 'px-2.5 py-1.5'} flex items-center justify-center shadow-xs border border-white/20 group-hover:scale-[1.02] transition-transform shrink-0`}>
+            <div className={`bg-white rounded-2xl ${isSidebarCollapsed && !isMobile
+              ? 'p-2 w-10 h-10 flex items-center justify-center'
+              : 'w-full py-2.5 px-3 flex items-center justify-center'
+              } shadow-xs border border-white/20 group-hover:scale-[1.01] group-hover:shadow transition-all`}>
               <img
                 src={isSidebarCollapsed && !isMobile ? "/images/lilisare-icon.png" : "/images/lilisare-logo.png"}
                 alt="LiliSare"
-                className={`${isSidebarCollapsed && !isMobile ? 'h-6 w-6' : 'h-7 w-auto'} object-contain`}
+                className={`${isSidebarCollapsed && !isMobile ? 'h-6 w-6' : 'h-9 sm:h-9.5 w-auto max-h-10'} object-contain`}
               />
             </div>
           </Link>
@@ -179,14 +208,18 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
             <button
               type="button"
               onClick={onCloseMobile}
-              className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer"
+              className="w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 flex items-center justify-center text-white cursor-pointer shrink-0"
               title="Close Navigation"
             >
               <X className="w-4 h-4" />
             </button>
           )}
         </div>
+      </div>
 
+      {/* 2. SCROLLABLE MIDDLE MENU NAVIGATION (Only this menu list scrolls with ultra-thin scrollbar on the right) */}
+      <nav className={`flex-1 overflow-y-auto overflow-x-hidden min-h-0 space-y-4 sidebar-thin-scroll relative z-10 py-3 ${isSidebarCollapsed && !isMobile ? 'px-2' : 'px-3.5 pr-2'
+        }`}>
         {/* ======================================================== */}
         {/* GROUP 1: WORK                                            */}
         {/* ======================================================== */}
@@ -351,10 +384,13 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
             );
           })}
         </div>
+      </nav>
 
+      {/* 3. FIXED BOTTOM FOOTER (HIPAA Badge + Sarah Jenkins Profile Dropup) */}
+      <div className="shrink-0 p-3 pt-2 border-t border-white/10 space-y-2 relative z-20" ref={userMenuRef}>
         {/* HIPAA COMPLIANT BADGE */}
-        <div className={`pt-2 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-          <div className="p-3 rounded-2xl bg-black/20 backdrop-blur-xs border border-white/15 flex items-start gap-2.5 shadow-inner">
+        <div className={isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}>
+          <div className="p-2.5 rounded-2xl bg-black/20 backdrop-blur-xs border border-white/15 flex items-start gap-2.5 shadow-inner">
             <ShieldCheck className="w-4 h-4 text-[#00d084] shrink-0 mt-0.5" />
             <div>
               <p className="font-bold text-xs text-white leading-tight">HIPAA Compliant</p>
@@ -364,35 +400,78 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
             </div>
           </div>
         </div>
-      </div>
 
-      {/* USER PROFILE FOOTER */}
-      <Link
-        href="/login"
-        onClick={() => {
-          if (isMobile) onCloseMobile?.();
-        }}
-        className={`p-3 border-t border-white/15 bg-black/25 flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'justify-between'} cursor-pointer hover:bg-black/35 transition-colors relative z-10`}
-        title="Admin Demo • Click to Sign Out"
-      >
-        <div className="flex items-center gap-2.5 min-w-0">
-          <div className="w-8 h-8 rounded-full bg-white text-[#3e6b2b] border border-white/30 flex items-center justify-center font-bold text-xs shadow-xs shrink-0">
-            AD
+        {/* Floating Dropup Menu */}
+        {isUserMenuOpen && (
+          <div
+            className={`absolute bottom-full mb-2 bg-[#203a13]/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-1.5 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150 ${isSidebarCollapsed && !isMobile
+              ? 'left-2 w-48'
+              : 'left-3 right-3'
+              }`}
+          >
+            {/* Settings Item */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsUserMenuOpen(false);
+                notify('Settings', 'Opening system preferences & agency configuration.', 'info');
+              }}
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-white/90 hover:text-white hover:bg-white/10 transition-colors text-left cursor-pointer group"
+            >
+              <Settings className="w-4 h-4 text-emerald-200 group-hover:rotate-45 transition-transform" />
+              <span>Settings</span>
+            </button>
+
+            {/* Divider */}
+            <div className="border-t border-white/10 my-1" />
+
+            {/* Log out Item */}
+            <button
+              type="button"
+              onClick={() => {
+                setIsUserMenuOpen(false);
+                if (isMobile) onCloseMobile?.();
+                notify('Signed Out', 'You have been safely signed out of LiliSare Operations.', 'info');
+                router.push('/login');
+              }}
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-rose-300 hover:text-rose-200 hover:bg-rose-500/10 transition-colors text-left cursor-pointer"
+            >
+              <LogOut className="w-4 h-4 text-rose-400" />
+              <span>Log out</span>
+            </button>
           </div>
-          <div className={`min-w-0 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-            <p className="text-xs font-bold text-white truncate">Admin Demo</p>
-            <p className="text-[10px] font-semibold text-emerald-200 tracking-wider">LISA • ADMIN</p>
+        )}
+
+        {/* Profile Trigger Card */}
+        <button
+          type="button"
+          onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+          className={`w-full p-2 rounded-2xl border border-white/20 bg-black/20 hover:bg-black/30 transition-all flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'justify-between gap-2.5'
+            } cursor-pointer group active:scale-[0.99]`}
+          title="Sarah Jenkins • Admin Profile"
+        >
+          <div className="flex items-center gap-2.5 min-w-0">
+            <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0 group-hover:bg-white/15 transition-colors">
+              <User className="w-4 h-4 text-emerald-100" />
+            </div>
+            <div className={`min-w-0 text-left ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
+              <p className="text-xs font-bold text-white truncate leading-tight">Sarah Jenkins</p>
+              <p className="text-[10px] font-bold text-emerald-200/90 tracking-wider mt-0.5 uppercase">ADMIN</p>
+            </div>
           </div>
-        </div>
-        <ChevronDown className={`w-4 h-4 text-emerald-200/80 shrink-0 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`} />
-      </Link>
-    </>
+          <ChevronUp
+            className={`w-4 h-4 text-white/70 transition-transform duration-200 shrink-0 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'
+              } ${isUserMenuOpen ? 'rotate-180' : ''}`}
+          />
+        </button>
+      </div>
+    </div>
   );
 
   return (
     <>
       {/* Desktop Persistent Sidebar (Screens >= md) */}
-      <aside className={`h-full shrink-0 bg-gradient-to-b from-[#55823a] via-[#436c2a] to-[#2b4919] text-white flex flex-col justify-between hidden md:flex border-r border-[#243e15] select-none shadow-2xl relative z-30 overflow-hidden transition-all duration-300 ${isSidebarCollapsed ? 'w-18' : 'w-60 lg:w-64'}`}>
+      <aside className={`h-full shrink-0 bg-gradient-to-b from-[#55823a] via-[#436c2a] to-[#2b4919] text-white flex flex-col hidden md:flex border-r border-[#243e15] select-none shadow-2xl relative z-30 transition-all duration-300 overflow-hidden ${isSidebarCollapsed ? 'w-18' : 'w-60 lg:w-64'}`}>
         {renderNavContent(false)}
       </aside>
 
@@ -403,7 +482,7 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
             className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
           />
-          <div className="relative w-72 max-w-[85vw] h-full bg-gradient-to-b from-[#55823a] via-[#436c2a] to-[#2b4919] text-white flex flex-col justify-between shadow-2xl z-10 overflow-hidden">
+          <div className="relative w-72 max-w-[85vw] h-full bg-gradient-to-b from-[#55823a] via-[#436c2a] to-[#2b4919] text-white flex flex-col shadow-2xl z-10 overflow-hidden">
             {renderNavContent(true)}
           </div>
         </div>

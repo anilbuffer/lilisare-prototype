@@ -1153,7 +1153,7 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
 // Global search dataset across all entities
 export interface SearchItem {
   id: string;
-  type: 'client' | 'caregiver' | 'page';
+  type: 'client' | 'caregiver' | 'page' | 'medication' | 'chronology' | 'compliance' | 'assessment';
   title: string;
   subtitle: string;
   tag: string;
@@ -1161,14 +1161,32 @@ export interface SearchItem {
 }
 
 export const GLOBAL_SEARCH_ITEMS: SearchItem[] = [
-  // Clients
-  { id: 'client-1', type: 'client', title: 'Mateo Morales', subtitle: 'Medicaid #CO-984421008 • Denver', tag: 'IHSS Active', meta: 'Client' },
-  { id: 'client-2', type: 'client', title: 'Marisol Vega', subtitle: 'Prior Auth 14d Overdue • Lakewood', tag: 'PAR Overdue', meta: 'Client' },
-  { id: 'client-3', type: 'client', title: 'Harper Nguyen', subtitle: 'Prior Auth 9d Overdue • Denver', tag: 'CNA Under Review', meta: 'Client' },
-  { id: 'client-4', type: 'client', title: 'Desmond Clarke', subtitle: 'Prior Auth 7d Overdue • Aurora', tag: 'Personal Care', meta: 'Client' },
-  { id: 'client-5', type: 'client', title: 'Sophia Ramirez', subtitle: 'HCBS-CES Waiver • Aurora', tag: 'Active Client', meta: 'Client' },
-  { id: 'client-6', type: 'client', title: 'Chloe Bennett', subtitle: 'Health Maintenance (HMA) • Springs', tag: 'In Assessment', meta: 'Client' },
-  { id: 'client-7', type: 'client', title: 'Donald Vance', subtitle: 'HCBS-EBD Personal Care • Frisco', tag: 'Follow-up Scheduled', meta: 'Client' },
+  // Patients / Clients
+  { id: 'client-1', type: 'client', title: 'Mateo Morales', subtitle: 'Medicaid #CO-984421008 • Denver', tag: 'IHSS Active', meta: 'Patient' },
+  { id: 'client-2', type: 'client', title: 'Sarah Jenkins', subtitle: 'Medicaid #CO-90214 • IHSS Client • Denver Metro', tag: 'IHSS Active', meta: 'Patient' },
+  { id: 'client-3', type: 'client', title: 'Marisol Vega', subtitle: 'Prior Auth 14d Overdue • Lakewood', tag: 'PAR Overdue', meta: 'Patient' },
+  { id: 'client-4', type: 'client', title: 'Harper Nguyen', subtitle: 'Prior Auth 9d Overdue • Denver', tag: 'CNA Under Review', meta: 'Patient' },
+  { id: 'client-5', type: 'client', title: 'Harold Jenkins', subtitle: 'Medicaid #CO-8831001 • IHSS Patient • Denver', tag: 'Active Patient', meta: 'Patient' },
+  { id: 'client-6', type: 'client', title: 'Desmond Clarke', subtitle: 'Prior Auth 7d Overdue • Aurora', tag: 'Personal Care', meta: 'Patient' },
+  { id: 'client-7', type: 'client', title: 'Sophia Ramirez', subtitle: 'HCBS-CES Waiver • Aurora', tag: 'Active Client', meta: 'Patient' },
+  { id: 'client-8', type: 'client', title: 'Chloe Bennett', subtitle: 'Health Maintenance (HMA) • Springs', tag: 'In Assessment', meta: 'Patient' },
+
+  // Medications
+  { id: 'med-1', type: 'medication', title: 'Lisinopril 10mg', subtitle: 'Daily Oral • Harold Jenkins • Prescribed by Dr. Adams', tag: 'Active RX', meta: 'Medication' },
+  { id: 'med-2', type: 'medication', title: 'Metformin 500mg', subtitle: 'Twice Daily with meals • Mateo Morales • Active RX', tag: 'Active RX', meta: 'Medication' },
+  { id: 'med-3', type: 'medication', title: 'Atorvastatin 20mg', subtitle: 'Daily Bedtime • Marisol Vega • Refill Due in 5 days', tag: 'Refill Due', meta: 'Medication' },
+  { id: 'med-4', type: 'medication', title: 'Gabapentin 300mg', subtitle: 'Three times daily • Desmond Clarke • Monitored RX', tag: 'Active RX', meta: 'Medication' },
+
+  // Chronology
+  { id: 'chrono-1', type: 'chronology', title: 'Shift EVV Clock-In Verification', subtitle: 'Marcus Jenkins clocked in at Harold Jenkins home • Geofence Validated', tag: '10:14 AM Today', meta: 'Chronology' },
+  { id: 'chrono-2', type: 'chronology', title: '60-Day RN Clinical Supervisory Visit', subtitle: 'Supervisory visit completed by Sarah RN • IHSS care plan updated', tag: 'Yesterday', meta: 'Chronology' },
+  { id: 'chrono-3', type: 'chronology', title: 'CMA Case Manager Email Exchange', subtitle: 'Anthony Lopez (Rocky Mountain HS) • PAR #8920 renewal approved', tag: '2 days ago', meta: 'Chronology' },
+
+  // Compliance Docs
+  { id: 'comp-1', type: 'compliance', title: 'Form I-9 Form (Employment Eligibility)', subtitle: 'U.S. Citizen / Authorized Alien Verification • Elena Morales', tag: 'Verified Active', meta: 'Compliance' },
+  { id: 'comp-2', type: 'compliance', title: 'CBI Colorado Bureau of Investigation Check', subtitle: 'Mandatory State Background Check • Derek Miller • Cleared', tag: 'Cleared', meta: 'Compliance' },
+  { id: 'comp-3', type: 'compliance', title: 'OIG & SAM Exclusion Screening', subtitle: 'Federal Healthcare Exclusion Monthly Audit • Clean Record', tag: 'Active Pass', meta: 'Compliance' },
+  { id: 'comp-4', type: 'compliance', title: 'CPR / First Aid Certification', subtitle: 'American Heart Association • Rosa Vega • Renewal Required', tag: 'Expired', meta: 'Compliance' },
 
   // Caregivers
   { id: 'cg-1', type: 'caregiver', title: 'Elena Morales', subtitle: 'Mother & Family Caregiver • W-2 Active', tag: '98% Compliance', meta: 'Caregiver' },
@@ -1177,6 +1195,11 @@ export const GLOBAL_SEARCH_ITEMS: SearchItem[] = [
   { id: 'cg-4', type: 'caregiver', title: 'Grace Park', subtitle: 'TB Test Expiring in 12 days • Auto-reminder sent', tag: 'Expiring Soon', meta: 'Caregiver' },
   { id: 'cg-5', type: 'caregiver', title: 'Derek Miller', subtitle: 'W-2 Caregiver • 36 hrs/wk logged', tag: 'Active Caregiver', meta: 'Caregiver' },
   { id: 'cg-6', type: 'caregiver', title: 'Clara Miller', subtitle: 'W-2 Caregiver • Initial nurse visit pending', tag: 'Supervision Due', meta: 'Caregiver' },
+
+  // Assessments
+  { id: 'assess-1', type: 'assessment', title: 'Fall Risk Assessment Protocol', subtitle: 'Morse Fall Scale Score: 14 (High Risk) • Safety Plan Instituted', tag: 'High Risk', meta: 'Assessment' },
+  { id: 'assess-2', type: 'assessment', title: 'IHSS ADL Functional Need Assessment', subtitle: 'Bathing, Dressing, Transfers • 28.5 weekly hours certified', tag: 'IHSS Certified', meta: 'Assessment' },
+  { id: 'assess-3', type: 'assessment', title: 'Skin & Wound Clinical Assessment', subtitle: 'Stage 1 Ulcer Monitoring • Bi-weekly Nurse Evaluation Protocol', tag: 'Clinical QA', meta: 'Assessment' },
 
   // Pages & Operational Modules
   { id: 'page-1', type: 'page', title: 'Executive Overview Dashboard', subtitle: 'Central Agency Admin command center', tag: 'Dashboard', meta: 'Page' },
