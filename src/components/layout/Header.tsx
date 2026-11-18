@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { usePortal } from '@/lib/store/portal-context';
-import { RoleSwitcher } from './RoleSwitcher';
 import { Sparkles, UserCheck, Heart, Radio, Archive, LayoutDashboard, Compass } from 'lucide-react';
 
 export function Header() {
@@ -39,10 +38,6 @@ export function Header() {
                 Mountain Lane &amp; Colorado Home Health
               </p>
             </div>
-          </div>
-
-          <div className="md:hidden">
-            <RoleSwitcher />
           </div>
         </div>
 
@@ -116,11 +111,6 @@ export function Header() {
             <Archive className="w-3.5 h-3.5 text-indigo-500" />
             <span>7-Year Vault</span>
           </button>
-        </div>
-
-        {/* Desktop Role switcher */}
-        <div className="hidden md:flex items-center gap-2">
-          <RoleSwitcher />
         </div>
       </div>
     </header>

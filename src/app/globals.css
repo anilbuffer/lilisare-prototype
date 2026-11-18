@@ -335,7 +335,7 @@ code, kbd, samp, pre, .font-mono {
 /* Ultra-thin sleek scrollbar for sidebar menu */
 .sidebar-thin-scroll {
   scrollbar-width: thin;
-  scrollbar-color: rgba(15, 23, 42, 0.15) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
 }
 
 .sidebar-thin-scroll::-webkit-scrollbar {
@@ -347,13 +347,13 @@ code, kbd, samp, pre, .font-mono {
 }
 
 .sidebar-thin-scroll::-webkit-scrollbar-thumb {
-  background: rgba(15, 23, 42, 0.15);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 9999px;
   transition: background 0.2s ease;
 }
 
 .sidebar-thin-scroll::-webkit-scrollbar-thumb:hover {
-  background: rgba(15, 23, 42, 0.35);
+  background: rgba(255, 255, 255, 0.45);
 }
 
 /* Glassmorphism effects */

@@ -310,7 +310,7 @@ export function TopUtilityBar({
               </div>
             )}
 
-            {/* Role Perspective Switcher */}
+            {/* Persona Simulator (Exact match to earliest 7-role configured simulation) */}
             <div className="shrink-0">
               <RoleSwitcher />
             </div>
