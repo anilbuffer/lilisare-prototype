@@ -7,6 +7,8 @@ import {
   Sparkles,
   Check,
   Calendar,
+  Compass,
+  MapPin,
 } from 'lucide-react';
 import { BranchId, DashboardTabId, BranchData } from './dashboard-data';
 
@@ -17,6 +19,7 @@ interface DashboardControlsProps {
   activeTab: DashboardTabId;
   onSelectTab: (tabId: DashboardTabId) => void;
   onOpenAIBriefing: () => void;
+  onTrackCaregivers?: () => void;
 }
 
 export function DashboardControls({
@@ -26,6 +29,7 @@ export function DashboardControls({
   activeTab,
   onSelectTab,
   onOpenAIBriefing,
+  onTrackCaregivers,
 }: DashboardControlsProps) {
   const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
   const branchDropdownRef = useRef<HTMLDivElement>(null);
@@ -57,44 +61,59 @@ export function DashboardControls({
   const currentBranchObj = branches.find((b) => b.id === currentBranch) || branches[0];
 
   return (
-    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-      {/* Left: Greeting & Page Subheading */}
-      <div>
-        <div className="flex items-center gap-2">
-          <h1 className="text-2xl sm:text-[30px] font-black text-[#0f172a] tracking-tight leading-none">
+    <div className="space-y-3.5">
+      {/* Row 2: Greeting & Action Buttons (Exact Reference Layout with Brand Theme) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        {/* Left: Greeting & Date */}
+        <div>
+          <h2 className="text-xl sm:text-2xl font-black text-[#0f172a] tracking-tight">
             Good morning, Lisa!
-          </h1>
-          <span className="hidden sm:inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-[#3e6b2b] border border-emerald-200/80">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse" />
-            Live Sync
-          </span>
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-400 font-normal mt-0.5">
+            Wednesday, November 18, 2026
+          </p>
         </div>
-        <p className="text-xs text-slate-500 mt-1.5 font-medium flex items-center gap-2">
-          <span>Tuesday, November 17, 2026</span>
-          <span className="text-slate-300">•</span>
-          <span className="text-slate-700 font-semibold">Overview</span>
-          <span className="text-slate-300">•</span>
-          <span className="text-slate-500 font-mono text-[11px]">{branchData.code}</span>
-        </p>
+
+        {/* Right: Pill Action Buttons (Matching Reference Image) */}
+        <div className="flex items-center gap-2.5 shrink-0">
+          <button
+            type="button"
+            onClick={onTrackCaregivers}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 border border-slate-200/90 rounded-full text-xs font-bold transition-all shadow-2xs active:scale-98 cursor-pointer"
+          >
+            <Compass className="w-3.5 h-3.5 text-[#3e6b2b]" />
+            <span>Track Caregivers</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={onOpenAIBriefing}
+            className="inline-flex items-center gap-2 px-4 py-2 bg-[#3e6b2b] hover:bg-[#325622] text-white rounded-full text-xs font-bold transition-all shadow-xs hover:shadow active:scale-98 cursor-pointer"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#F2B632] animate-pulse" />
+            <span>AI Briefing</span>
+          </button>
+        </div>
       </div>
 
-      {/* Right: Branch Selector, View Tabs & AI Briefing */}
-      <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
+      {/* Row 3: Operating Branch & Filter Perspective Tabs */}
+      <div className="flex flex-wrap items-center justify-between gap-3 pt-2.5 border-t border-slate-200/70">
         {/* Branch Selector Dropdown */}
         <div className="relative" ref={branchDropdownRef}>
           <button
             onClick={() => setIsBranchDropdownOpen(!isBranchDropdownOpen)}
             aria-label="Select Operating Branch"
             aria-expanded={isBranchDropdownOpen}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-800 transition-all cursor-pointer shadow-[0_1px_2px_0_rgba(0,0,0,0.02)] group active:scale-98"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-800 transition-all cursor-pointer shadow-2xs group active:scale-98"
           >
+            <Building2 className="w-3.5 h-3.5 text-[#3e6b2b]" />
             <span className="text-slate-400 font-normal">Branch:</span>
             <span className="font-bold text-slate-900">{currentBranchObj.name}</span>
             <ChevronDown className={`w-3.5 h-3.5 text-slate-400 group-hover:text-slate-600 transition-transform ${isBranchDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
           {isBranchDropdownOpen && (
-            <div className="absolute top-full right-0 mt-1.5 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-1.5 z-40 animate-in fade-in zoom-in-98 duration-150">
+            <div className="absolute top-full left-0 mt-1.5 w-64 bg-white rounded-2xl shadow-xl border border-slate-200 p-1.5 z-40 animate-in fade-in zoom-in-98 duration-150">
               <div className="px-3 py-1.5 border-b border-slate-100 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
                 Authorized Operating Branches
               </div>
@@ -146,15 +165,6 @@ export function DashboardControls({
             );
           })}
         </div>
-
-        {/* AI Briefing Button (Solid Brand Green Matching Reference Screenshot) */}
-        <button
-          onClick={onOpenAIBriefing}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#3e6b2b] hover:bg-[#345c24] text-white text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 group"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-[#F2B632] group-hover:rotate-12 transition-transform" />
-          <span>AI Briefing</span>
-        </button>
       </div>
     </div>
   );

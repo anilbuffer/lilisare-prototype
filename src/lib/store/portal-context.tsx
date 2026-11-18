@@ -104,6 +104,10 @@ interface PortalContextType {
   notifications: NotificationToast[];
   dismissNotification: (id: string) => void;
   notify: (title: string, message: string, type?: NotificationToast['type']) => void;
+
+  // Sidebar Layout Control
+  isSidebarCollapsed: boolean;
+  toggleSidebar: () => void;
 }
 
 const PortalContext = createContext<PortalContextType | undefined>(undefined);
@@ -119,6 +123,15 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   const [billingClaims, setBillingClaims] = useState<BillingClaim[]>(MOCK_BILLING_CLAIMS);
   const [applications, setApplications] = useState<RegistrationApplication[]>(MOCK_REGISTRATION_APPLICATIONS);
   const [notifications, setNotifications] = useState<NotificationToast[]>([]);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarCollapsed((prev) => {
+      const next = !prev;
+      notify('Sidebar Navigation', next ? 'Sidebar collapsed to compact view.' : 'Sidebar expanded.', 'info');
+      return next;
+    });
+  };
 
   const currentRoleConfig = SYSTEM_ROLES.find((r) => r.id === currentRole) || SYSTEM_ROLES[0];
 
@@ -628,6 +641,8 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         notifications,
         dismissNotification,
         notify,
+        isSidebarCollapsed,
+        toggleSidebar,
       }}
     >
       {children}

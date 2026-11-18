@@ -162,6 +162,10 @@ export function AdminPortal() {
         activeTab={activeTab}
         onSelectTab={setActiveTab}
         onOpenAIBriefing={() => setIsAIBriefingOpen(true)}
+        onTrackCaregivers={() => {
+          notify('Caregiver Telemetry', 'Opening live map tracking for active caregivers.', 'info');
+          setActiveDrawer('staffing');
+        }}
       />
 
       {/* Tab Context Banner when filtered */}
