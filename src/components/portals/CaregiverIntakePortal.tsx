@@ -401,9 +401,6 @@ export function CaregiverIntakePortal() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
             Caregiver Intake
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Track caregiver inquiries and applicants from first contact to hiring and onboarding handoff.
-          </p>
         </div>
         <button
           type="button"

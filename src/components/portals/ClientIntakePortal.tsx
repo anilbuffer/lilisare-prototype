@@ -431,9 +431,6 @@ export function ClientIntakePortal() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
             Client Intake
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Track family and client inquiries from first call to conversion. Caregiver hiring is handled in Onboarding.
-          </p>
         </div>
         <button
           type="button"
