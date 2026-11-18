@@ -193,10 +193,10 @@ export function TopUtilityBar({
 
   return (
     <>
-      {/* Shared Fixed-on-Scroll Top Bar */}
-      <div className="sticky top-0 z-30 bg-[#f4f7f6]/95 backdrop-blur-md -mt-3.5 sm:-mt-6 lg:-mt-7 xl:-mt-8 -mx-3.5 sm:-mx-6 lg:-mx-7 xl:-mx-8 px-3.5 sm:px-6 lg:px-7 xl:px-8 pt-3.5 pb-3 border-b border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)] transition-all">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          {/* Left: Circular Sidebar Toggle Button + Page Title & Optional Subtitle */}
+      {/* Top Edge Separate Common Header */}
+      <header className="bg-[#f4f7f6] border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3.5 z-30 transition-all">
+        <div className="flex items-center justify-between gap-4">
+          {/* Left: Circular Sidebar Toggle Button + Page Title */}
           <div className="flex items-center gap-2.5">
             <button
               type="button"
@@ -206,20 +206,13 @@ export function TopUtilityBar({
             >
               <Columns2 className="w-3.5 h-3.5 text-white" />
             </button>
-            <div>
-              <h1 className="text-xl sm:text-2xl font-black text-[#0f172a] tracking-tight">
-                {title}
-              </h1>
-              {subtitle && (
-                <p className="text-xs text-slate-500 font-normal mt-0.5 hidden xl:block">
-                  {subtitle}
-                </p>
-              )}
-            </div>
+            <h1 className="text-xl sm:text-2xl font-black text-[#0f172a] tracking-tight">
+              {title}
+            </h1>
           </div>
 
-          {/* Right: Pill Search Bar Trigger & Circular Notification Bell & Action Button */}
-          <div className="flex items-center gap-2.5 flex-1 justify-end max-w-2xl">
+          {/* Right: Pill Search Bar Trigger & Circular Notification Bell */}
+          <div className="flex items-center gap-2.5 flex-1 justify-end max-w-xl">
             <button
               type="button"
               onClick={() => {
@@ -258,66 +251,66 @@ export function TopUtilityBar({
                 )}
               </button>
 
-            {isNotificationsOpen && (
-              <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 overflow-hidden animate-in fade-in zoom-in-98 duration-150">
-                <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
-                  <span className="text-xs font-bold text-slate-900">Notifications</span>
-                  <button
-                    onClick={() => {
-                      setReadIds(notifications.map((n) => n.id));
-                      setUnreadCount(0);
-                    }}
-                    className="text-[11px] font-semibold text-[#3e6b2b] hover:underline"
-                  >
-                    Mark all read
-                  </button>
-                </div>
-
-                <div className="max-h-72 overflow-y-auto divide-y divide-slate-100">
-                  {notifications.map((n) => (
-                    <div
-                      key={n.id}
+              {isNotificationsOpen && (
+                <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 overflow-hidden animate-in fade-in zoom-in-98 duration-150">
+                  <div className="p-3.5 border-b border-slate-100 flex items-center justify-between bg-slate-50/80">
+                    <span className="text-xs font-bold text-slate-900">Notifications</span>
+                    <button
                       onClick={() => {
-                        if (!readIds.includes(n.id)) {
-                          setReadIds((prev) => [...prev, n.id]);
-                          setUnreadCount((prev) => Math.max(0, prev - 1));
-                        }
+                        setReadIds(notifications.map((n) => n.id));
+                        setUnreadCount(0);
                       }}
-                      className="p-3.5 hover:bg-slate-50 cursor-pointer text-xs space-y-1 transition-colors"
+                      className="text-[11px] font-semibold text-[#3e6b2b] hover:underline"
                     >
-                      <div className="flex items-center justify-between">
-                        <p className="font-semibold text-slate-800">{n.title}</p>
-                        <span className="text-[10px] text-slate-400 font-mono">{n.time}</span>
-                      </div>
-                      <p className="text-[11px] text-slate-500 leading-snug">{n.detail}</p>
-                    </div>
-                  ))}
-                </div>
+                      Mark all read
+                    </button>
+                  </div>
 
-                <div className="p-2.5 border-t border-slate-100 bg-slate-50 text-center">
-                  <button
-                    onClick={() => {
-                      setIsNotificationsOpen(false);
-                      if (onOpenNotificationsModal) onOpenNotificationsModal();
-                    }}
-                    className="text-xs font-semibold text-[#3e6b2b] hover:underline cursor-pointer"
-                  >
-                    View all notifications &rarr;
-                  </button>
+                  <div className="max-h-72 overflow-y-auto divide-y divide-slate-100">
+                    {notifications.map((n) => (
+                      <div
+                        key={n.id}
+                        onClick={() => {
+                          if (!readIds.includes(n.id)) {
+                            setReadIds((prev) => [...prev, n.id]);
+                            setUnreadCount((prev) => Math.max(0, prev - 1));
+                          }
+                        }}
+                        className="p-3.5 hover:bg-slate-50 cursor-pointer text-xs space-y-1 transition-colors"
+                      >
+                        <div className="flex items-center justify-between">
+                          <p className="font-semibold text-slate-800">{n.title}</p>
+                          <span className="text-[10px] text-slate-400 font-mono">{n.time}</span>
+                        </div>
+                        <p className="text-[11px] text-slate-500 leading-snug">{n.detail}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="p-2.5 border-t border-slate-100 bg-slate-50 text-center">
+                    <button
+                      onClick={() => {
+                        setIsNotificationsOpen(false);
+                        if (onOpenNotificationsModal) onOpenNotificationsModal();
+                      }}
+                      className="text-xs font-semibold text-[#3e6b2b] hover:underline cursor-pointer"
+                    >
+                      View all notifications &rarr;
+                    </button>
+                  </div>
                 </div>
+              )}
+            </div>
+
+            {/* Action Button Slot (e.g. + Add inquiry / + Add caregiver) */}
+            {actionButton && (
+              <div className="shrink-0">
+                {actionButton}
               </div>
             )}
           </div>
-
-          {/* Action Button Slot (e.g. + Add inquiry / + Add caregiver) */}
-          {actionButton && (
-            <div className="shrink-0">
-              {actionButton}
-            </div>
-          )}
         </div>
-      </div>
-    </div>
+      </header>
 
       {/* Global Command Center Search Modal (Exact Match to Attached Reference Screenshot) */}
       {isSearchOpen && (
@@ -394,11 +387,10 @@ export function TopUtilityBar({
                         setSelectedIndex(0);
                         modalInputRef.current?.focus();
                       }}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${
-                        isSelected
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${isSelected
                           ? 'bg-[#3e6b2b] text-white border-[#3e6b2b] shadow-xs'
                           : cat.color
-                      }`}
+                        }`}
                     >
                       <Icon className="w-3.5 h-3.5" />
                       <span>{cat.label}</span>
@@ -447,11 +439,10 @@ export function TopUtilityBar({
                       key={item.id}
                       onClick={() => handleSelectItem(item)}
                       onMouseEnter={() => setSelectedIndex(index)}
-                      className={`w-full flex items-center justify-between p-3 px-4 text-left transition-all cursor-pointer ${
-                        isSelected
+                      className={`w-full flex items-center justify-between p-3 px-4 text-left transition-all cursor-pointer ${isSelected
                           ? 'bg-[#3e6b2b]/10 text-slate-900 font-bold'
                           : 'hover:bg-slate-50 text-slate-700'
-                      }`}
+                        }`}
                     >
                       <div className="min-w-0 pr-3">
                         <div className="flex items-center gap-2">

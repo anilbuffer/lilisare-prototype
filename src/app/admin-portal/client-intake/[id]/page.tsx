@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { LeadStatus, ServiceType, Lead } from '@/lib/types';
-import { TopUtilityBar } from '@/components/dashboard/TopUtilityBar';
 import { INTAKE_STAGES } from '@/components/portals/ClientIntakePortal';
 import {
   ArrowLeft,
@@ -122,20 +121,16 @@ export default function ClientIntakeDetailPage() {
 
   return (
     <div className="space-y-6 pb-16">
-      {/* 1. Shared Dashboard Fixed Header */}
-      <TopUtilityBar
-        title="Client Intake Record"
-        subtitle={`Viewing full case file for ${lead.clientName}`}
-        actionButton={
-          <Link
-            href="/admin-portal/client-intake"
-            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 rounded-full text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer shrink-0"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Intake Pipeline</span>
-          </Link>
-        }
-      />
+      {/* 1. Back Navigation Row */}
+      <div className="flex items-center justify-between gap-4">
+        <Link
+          href="/admin-portal/client-intake"
+          className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 rounded-full text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer shrink-0"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>&larr; Back to Client Intake Pipeline</span>
+        </Link>
+      </div>
 
       {/* 2. Top Header Card */}
       <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-[0_2px_12px_rgba(15,23,42,0.04)]">
@@ -223,18 +218,16 @@ export default function ClientIntakeDetailPage() {
               return (
                 <div key={s.step} className="space-y-1">
                   <div
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
-                      isDone ? 'bg-[#264e1e]' : 'bg-slate-200'
-                    }`}
+                    className={`h-1.5 rounded-full transition-all duration-300 ${isDone ? 'bg-[#264e1e]' : 'bg-slate-200'
+                      }`}
                   />
                   <p
-                    className={`text-[10px] truncate ${
-                      isCurrent
+                    className={`text-[10px] truncate ${isCurrent
                         ? 'font-bold text-[#264e1e]'
                         : isDone
-                        ? 'text-slate-700 font-semibold'
-                        : 'text-slate-400'
-                    }`}
+                          ? 'text-slate-700 font-semibold'
+                          : 'text-slate-400'
+                      }`}
                     title={`Step ${s.step}: ${s.title}`}
                   >
                     {s.title}
@@ -252,44 +245,40 @@ export default function ClientIntakeDetailPage() {
           <button
             type="button"
             onClick={() => setActiveTab('overview')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'overview'
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'overview'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
+              }`}
           >
             Client &amp; Contact Overview
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('assessment')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'assessment'
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'assessment'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
+              }`}
           >
             Clinical Care &amp; Assessment
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('medicaid')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'medicaid'
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'medicaid'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
+              }`}
           >
             Medicaid &amp; State Authorizations
           </button>
           <button
             type="button"
             onClick={() => setActiveTab('communication')}
-            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${
-              activeTab === 'communication'
+            className={`py-3.5 border-b-2 transition-colors cursor-pointer ${activeTab === 'communication'
                 ? 'border-[#264e1e] text-[#264e1e] font-bold'
                 : 'border-transparent text-slate-500 hover:text-slate-800'
-            }`}
+              }`}
           >
             Communication &amp; Case Log ({activityNotes.length})
           </button>

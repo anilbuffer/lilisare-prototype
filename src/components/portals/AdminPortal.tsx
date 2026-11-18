@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { usePortal } from '@/lib/store/portal-context';
-import { TopUtilityBar } from '../dashboard/TopUtilityBar';
 import { DashboardControls, DashboardTabs } from '../dashboard/DashboardControls';
 import { KpiCards } from '../dashboard/KpiCards';
 import { NeedsAttentionSection } from '../dashboard/NeedsAttentionSection';
@@ -142,19 +141,7 @@ export function AdminPortal() {
 
   return (
     <div className="flex flex-col gap-6 w-full animate-in fade-in duration-150">
-      {/* 1. TOP UTILITY BAR (Search, Track Caregivers, AI Briefing, Notifications, Profile) */}
-      <TopUtilityBar
-        onSelectSearchItem={handleSelectSearchItem}
-        onOpenNotificationsModal={() => setActiveDrawer('all-notifications')}
-        onOpenProfileModal={() => setActiveDrawer('user-profile')}
-        onOpenAIBriefing={() => setIsAIBriefingOpen(true)}
-        onTrackCaregivers={() => {
-          notify('Caregiver Telemetry', 'Opening live map tracking for active caregivers.', 'info');
-          setActiveDrawer('staffing');
-        }}
-      />
-
-      {/* 2. GREETING & HEADER CONTROLS */}
+      {/* 1. GREETING & HEADER CONTROLS */}
       <DashboardControls
         branchData={branchData}
         currentBranch={currentBranch}

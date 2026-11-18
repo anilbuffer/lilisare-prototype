@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { CaregiverApplicant, CaregiverIntakeStage } from '@/lib/types';
-import { TopUtilityBar } from '../dashboard/TopUtilityBar';
 import {
   Search,
   Plus,
@@ -395,22 +394,26 @@ export function CaregiverIntakePortal() {
   return (
     <div className="space-y-4 pb-12 select-none">
       {/* ========================================================================= */}
-      {/* 1. SHARED FIXED DASHBOARD HEADER                                          */}
+      {/* 1. PAGE TITLE & ACTION HEADER ROW                                         */}
       {/* ========================================================================= */}
-      <TopUtilityBar
-        title="Caregiver Intake"
-        subtitle="Track caregiver inquiries and applicants from first contact to hiring and onboarding handoff."
-        actionButton={
-          <button
-            type="button"
-            onClick={() => handleOpenAddModal('New Application')}
-            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>Add caregiver inquiry</span>
-          </button>
-        }
-      />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
+            Caregiver Intake
+          </h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Track caregiver inquiries and applicants from first contact to hiring and onboarding handoff.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => handleOpenAddModal('New Application')}
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+        >
+          <Plus className="w-4 h-4 stroke-[2.5]" />
+          <span>+ Add caregiver inquiry</span>
+        </button>
+      </div>
 
       {/* ========================================================================= */}
       {/* 2. STANDARDIZED STATS CARDS (Matching Dashboard KpiCards Layout & Style)   */}
@@ -450,9 +453,8 @@ export function CaregiverIntakePortal() {
         <button
           type="button"
           onClick={() => setStageFilter(stageFilter === 'Phone Screened' ? 'All Stages' : 'Phone Screened')}
-          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
-            stageFilter === 'Phone Screened' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-slate-200/80'
-          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-blue-400 hover:-translate-y-0.5 relative overflow-hidden`}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${stageFilter === 'Phone Screened' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-blue-400 hover:-translate-y-0.5 relative overflow-hidden`}
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
@@ -478,9 +480,8 @@ export function CaregiverIntakePortal() {
         <button
           type="button"
           onClick={() => setStageFilter(stageFilter === 'Interview Scheduled' ? 'All Stages' : 'Interview Scheduled')}
-          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
-            stageFilter === 'Interview Scheduled' ? 'border-amber-500 ring-2 ring-amber-200' : 'border-slate-200/80'
-          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-amber-400 hover:-translate-y-0.5 relative overflow-hidden`}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${stageFilter === 'Interview Scheduled' ? 'border-amber-500 ring-2 ring-amber-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-amber-400 hover:-translate-y-0.5 relative overflow-hidden`}
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
@@ -506,9 +507,8 @@ export function CaregiverIntakePortal() {
         <button
           type="button"
           onClick={() => setStageFilter(stageFilter === 'Hired (→ Onboarding)' ? 'All Stages' : 'Hired (→ Onboarding)')}
-          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
-            stageFilter === 'Hired (→ Onboarding)' ? 'border-[#3e6b2b] ring-2 ring-emerald-200' : 'border-slate-200/80'
-          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden`}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${stageFilter === 'Hired (→ Onboarding)' ? 'border-[#3e6b2b] ring-2 ring-emerald-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden`}
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
@@ -641,11 +641,10 @@ export function CaregiverIntakePortal() {
             <button
               type="button"
               onClick={() => setShowMoreFilters(!showMoreFilters)}
-              className={`portal-filter-btn ${
-                showMoreFilters || countyFilter !== 'All Counties' || cbiFilter !== 'All CBI'
-                  ? 'bg-emerald-50 text-[#3e6b2b] border-[#3e6b2b]/40 font-bold'
-                  : ''
-              }`}
+              className={`portal-filter-btn ${showMoreFilters || countyFilter !== 'All Counties' || cbiFilter !== 'All CBI'
+                ? 'bg-emerald-50 text-[#3e6b2b] border-[#3e6b2b]/40 font-bold'
+                : ''
+                }`}
             >
               <Filter className="w-3.5 h-3.5" />
               <span>More filters</span>

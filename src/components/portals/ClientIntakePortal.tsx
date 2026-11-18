@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { Lead, LeadStatus, ServiceType } from '@/lib/types';
-import { TopUtilityBar } from '../dashboard/TopUtilityBar';
 import {
   Search,
   Plus,
@@ -425,22 +424,26 @@ export function ClientIntakePortal() {
   return (
     <div className="space-y-4 pb-12 select-none">
       {/* ========================================================================= */}
-      {/* 1. SHARED FIXED DASHBOARD HEADER                                          */}
+      {/* 1. PAGE TITLE & ACTION HEADER ROW                                         */}
       {/* ========================================================================= */}
-      <TopUtilityBar
-        title="Client Intake"
-        subtitle="Track family and client inquiries from first call to conversion. Caregiver hiring is handled in Onboarding."
-        actionButton={
-          <button
-            type="button"
-            onClick={() => handleOpenAddModal('New Inquiry')}
-            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
-          >
-            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-            <span>Add inquiry</span>
-          </button>
-        }
-      />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
+            Client Intake
+          </h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Track family and client inquiries from first call to conversion. Caregiver hiring is handled in Onboarding.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={() => handleOpenAddModal('New Inquiry')}
+          className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+        >
+          <Plus className="w-4 h-4 stroke-[2.5]" />
+          <span>+ Add inquiry</span>
+        </button>
+      </div>
 
       {/* ========================================================================= */}
       {/* 2. STANDARDIZED STATS CARDS (Matching Dashboard KpiCards Layout & Style)   */}
@@ -479,9 +482,8 @@ export function ClientIntakePortal() {
         <button
           type="button"
           onClick={() => setOverdueOnly(!overdueOnly)}
-          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
-            overdueOnly ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-200/80'
-          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-rose-400 hover:-translate-y-0.5 relative overflow-hidden`}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${overdueOnly ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-rose-400 hover:-translate-y-0.5 relative overflow-hidden`}
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
@@ -508,9 +510,8 @@ export function ClientIntakePortal() {
         <button
           type="button"
           onClick={() => setStageFilter(stageFilter === 'Converted' ? 'All Stages' : 'Converted')}
-          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
-            stageFilter === 'Converted' ? 'border-[#3e6b2b] ring-2 ring-emerald-200' : 'border-slate-200/80'
-          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden`}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${stageFilter === 'Converted' ? 'border-[#3e6b2b] ring-2 ring-emerald-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden`}
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">

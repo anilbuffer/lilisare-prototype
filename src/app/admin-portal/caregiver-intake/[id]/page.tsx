@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { CaregiverApplicant, CaregiverIntakeStage } from '@/lib/types';
-import { TopUtilityBar } from '@/components/dashboard/TopUtilityBar';
 import { CAREGIVER_STAGES } from '@/components/portals/CaregiverIntakePortal';
 import {
   ArrowLeft,
@@ -119,20 +118,16 @@ export default function CaregiverIntakeDetailPage() {
 
   return (
     <div className="space-y-6 pb-16">
-      {/* 1. Shared Dashboard Fixed Header */}
-      <TopUtilityBar
-        title="Caregiver Intake Record"
-        subtitle={`Candidate profile & recruitment file for ${applicant.name}`}
-        actionButton={
-          <Link
-            href="/admin-portal/caregiver-intake"
-            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 rounded-full text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer shrink-0"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Back to Applicants</span>
-          </Link>
-        }
-      />
+      {/* 1. Back Navigation Row */}
+      <div className="flex items-center justify-between gap-4">
+        <Link
+          href="/admin-portal/caregiver-intake"
+          className="inline-flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200/90 rounded-full text-xs font-bold transition-all shadow-2xs hover:shadow-xs cursor-pointer shrink-0"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>&larr; Back to Caregiver Intake</span>
+        </Link>
+      </div>
 
       {/* 2. Top Header Card (Matches Image 7 - Jordan Bailey Header) */}
       <div className="bg-white rounded-3xl p-6 sm:p-7 border border-slate-200/90 shadow-[0_2px_12px_rgba(15,23,42,0.04)]">

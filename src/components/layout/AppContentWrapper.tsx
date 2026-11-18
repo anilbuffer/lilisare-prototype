@@ -5,7 +5,63 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { Sidebar } from './Sidebar';
+import { TopUtilityBar } from '@/components/dashboard/TopUtilityBar';
 import { Menu } from 'lucide-react';
+
+function getPageTitle(pathname: string): string {
+  if (!pathname || pathname === '/admin-portal' || pathname === '/admin-portal/dashboard') {
+    return 'Dashboard';
+  }
+  if (pathname.startsWith('/admin-portal/client-intake') || pathname.startsWith('/admin-portal/intake-pipeline')) {
+    if (pathname.includes('/[id]') || pathname.match(/\/client-intake\/.+/)) {
+      return 'Client Intake Record';
+    }
+    return 'Client Intake';
+  }
+  if (pathname.startsWith('/admin-portal/caregiver-intake')) {
+    if (pathname.includes('/[id]') || pathname.match(/\/caregiver-intake\/.+/)) {
+      return 'Caregiver Intake Record';
+    }
+    return 'Caregiver Intake';
+  }
+  if (pathname.startsWith('/admin-portal/onboarding')) {
+    return 'Onboarding';
+  }
+  if (pathname.startsWith('/admin-portal/ca-emails')) {
+    return 'CA Emails';
+  }
+  if (pathname.startsWith('/admin-portal/cm-emails')) {
+    return 'CM Emails';
+  }
+  if (pathname.startsWith('/admin-portal/clients')) {
+    return 'Clients';
+  }
+  if (pathname.startsWith('/admin-portal/caregivers')) {
+    return 'Caregivers';
+  }
+  if (pathname.startsWith('/admin-portal/screening-center')) {
+    return 'Screening Center';
+  }
+  if (pathname.startsWith('/admin-portal/scheduling-evv')) {
+    return 'Scheduling and EVV';
+  }
+  if (pathname.startsWith('/admin-portal/compliance')) {
+    return 'Compliance';
+  }
+  if (pathname.startsWith('/admin-portal/billing')) {
+    return 'Billing';
+  }
+  if (pathname.startsWith('/admin-portal/client-profitability')) {
+    return 'Client Profitability';
+  }
+  if (pathname.startsWith('/admin-portal/reports')) {
+    return 'Reports';
+  }
+  if (pathname.startsWith('/admin-portal/note-audit')) {
+    return 'Note Audit';
+  }
+  return 'Dashboard';
+}
 
 export function AppContentWrapper({ children }: { children: ReactNode }) {
   const pathname = usePathname() || '';
@@ -77,6 +133,11 @@ export function AppContentWrapper({ children }: { children: ReactNode }) {
               <Menu className="w-5 h-5 text-slate-700" />
             </button>
           </div>
+        </div>
+
+        {/* Desktop Fixed Top Utility Bar (Separate common header for all inner pages, top aligned/edge) */}
+        <div className="hidden md:block shrink-0 z-30">
+          <TopUtilityBar title={getPageTitle(pathname)} />
         </div>
 
         <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-7 xl:p-8 scroll-smooth">
