@@ -100,7 +100,7 @@ export function LoginPage() {
           <img
             src="/images/lilisare-watermark.png"
             alt=""
-            className="w-[620px] max-w-none opacity-30 select-none pointer-events-none transform -translate-y-8"
+            className="w-[620px] max-w-none opacity-10 select-none pointer-events-none transform -translate-y-8"
           />
         </div>
 
@@ -166,11 +166,10 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleRoleSelect('admin')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
-                  selectedRole === 'admin'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 font-medium'
-                }`}
+                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'admin'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 font-medium'
+                  }`}
               >
                 <Building2 className={`w-3.5 h-3.5 ${selectedRole === 'admin' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
                 <span className="text-[10px] leading-none">Admin</span>
@@ -179,11 +178,10 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleRoleSelect('clinical')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
-                  selectedRole === 'clinical'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 font-medium'
-                }`}
+                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'clinical'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 font-medium'
+                  }`}
               >
                 <Stethoscope className={`w-3.5 h-3.5 ${selectedRole === 'clinical' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
                 <span className="text-[10px] leading-none">Clinical</span>
@@ -192,11 +190,10 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleRoleSelect('caregiver')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
-                  selectedRole === 'caregiver'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 font-medium'
-                }`}
+                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'caregiver'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 font-medium'
+                  }`}
               >
                 <HeartHandshake className={`w-3.5 h-3.5 ${selectedRole === 'caregiver' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
                 <span className="text-[10px] leading-none">Caregiver</span>
@@ -205,11 +202,10 @@ export function LoginPage() {
               <button
                 type="button"
                 onClick={() => handleRoleSelect('enrollment')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
-                  selectedRole === 'enrollment'
-                    ? 'bg-white text-slate-900 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 font-medium'
-                }`}
+                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'enrollment'
+                  ? 'bg-white text-slate-900 shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 font-medium'
+                  }`}
               >
                 <Users className={`w-3.5 h-3.5 ${selectedRole === 'enrollment' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
                 <span className="text-[10px] leading-none">Family</span>
@@ -297,7 +293,7 @@ export function LoginPage() {
           </form>
 
           {/* Registration Navigation Section */}
-          <div className="pt-2 border-t border-slate-100 space-y-2.5 text-center">
+          <div className="pt-3 border-t border-slate-100 space-y-3 text-center">
             <p className="text-xs text-slate-500 font-medium">
               New to LiliSare Healthcare &amp; Support Services?
             </p>

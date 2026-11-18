@@ -115,11 +115,11 @@ export function NeedsAttentionSection({
       </div>
 
       {/* 6 Priority Rows */}
-      <div className="divide-y divide-slate-100/90">
+      <div className="divide-y divide-slate-100">
         {needsAttention.map((item) => (
           <div
             key={item.id}
-            className="py-3 sm:py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/80 px-2.5 sm:px-3 rounded-xl transition-all group"
+            className="py-3 sm:py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-100 px-2.5 sm:px-3 rounded-xl transition-all group"
           >
             {/* Left: Icon & Description */}
             <div className="flex items-center gap-3.5 min-w-0">

@@ -57,7 +57,7 @@ const STAGE_THEMES: Record<
   }
 > = {
   'New Application': {
-    label: 'NEW APPLICATION',
+    label: 'New Application',
     dotColor: 'bg-emerald-600',
     bgTint: 'bg-[#f4f9f4]',
     borderColor: 'border-[#dcf2e3]',
@@ -65,7 +65,7 @@ const STAGE_THEMES: Record<
     countText: 'text-emerald-900',
   },
   'Phone Screened': {
-    label: 'PHONE SCREENED',
+    label: 'Phone Screened',
     dotColor: 'bg-blue-600',
     bgTint: 'bg-[#f4f8fd]',
     borderColor: 'border-[#e1edf8]',
@@ -73,7 +73,7 @@ const STAGE_THEMES: Record<
     countText: 'text-blue-900',
   },
   'Interview Scheduled': {
-    label: 'INTERVIEW SCHEDULED',
+    label: 'Interview Scheduled',
     dotColor: 'bg-amber-600',
     bgTint: 'bg-[#fffdf2]',
     borderColor: 'border-[#fef0c7]',
@@ -81,7 +81,7 @@ const STAGE_THEMES: Record<
     countText: 'text-amber-900',
   },
   'Hiring Decision': {
-    label: 'HIRING DECISION',
+    label: 'Hiring Decision',
     dotColor: 'bg-purple-600',
     bgTint: 'bg-[#faf5ff]',
     borderColor: 'border-[#f3e8ff]',
@@ -89,7 +89,7 @@ const STAGE_THEMES: Record<
     countText: 'text-purple-900',
   },
   'Offer Extended': {
-    label: 'OFFER EXTENDED',
+    label: 'Offer Extended',
     dotColor: 'bg-indigo-600',
     bgTint: 'bg-[#f5f6ff]',
     borderColor: 'border-[#e0e7ff]',
@@ -97,7 +97,7 @@ const STAGE_THEMES: Record<
     countText: 'text-indigo-900',
   },
   'Hired (→ Onboarding)': {
-    label: 'HIRED (→ ONBOARDING)',
+    label: 'Hired & Onboarding',
     dotColor: 'bg-emerald-700',
     bgTint: 'bg-[#f0fdf4]',
     borderColor: 'border-[#bbf7d0]',
@@ -105,7 +105,7 @@ const STAGE_THEMES: Record<
     countText: 'text-emerald-950',
   },
   'Archived / Withdrawn': {
-    label: 'ARCHIVED / WITHDRAWN',
+    label: 'Archived',
     dotColor: 'bg-slate-400',
     bgTint: 'bg-[#f8fafc]',
     borderColor: 'border-[#e2e8f0]',
@@ -471,9 +471,11 @@ export function CaregiverIntakePortal() {
 
   // Render Role Badge
   const renderRoleBadge = (role: string) => {
+    const displayRole =
+      role === 'Personal Care Attendant (PCA)' ? 'PCA' : role === 'Personal Care' ? 'PCA' : role;
     return (
-      <span className="bg-slate-100 text-slate-700 font-semibold text-xs px-2 py-0.5 rounded-md border border-slate-200/80">
-        {role}
+      <span className="bg-slate-100 text-slate-700 font-semibold text-[11px] px-2 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap shrink-0">
+        {displayRole}
       </span>
     );
   };
@@ -820,7 +822,7 @@ export function CaregiverIntakePortal() {
       {viewMode === 'board' ? (
         /* KANBAN BOARD VIEW */
         <div className="overflow-x-auto pb-4">
-          <div className="flex gap-3.5 min-w-[1440px] items-start">
+          <div className="flex gap-3.5 min-w-[1720px] items-start">
             {CAREGIVER_STAGES.map((stage) => {
               const theme = STAGE_THEMES[stage];
               const applicantsInStage = stageGroups[stage] || [];
@@ -836,14 +838,14 @@ export function CaregiverIntakePortal() {
                   <div className="flex items-center justify-between px-1 py-0.5">
                     <div className="flex items-center gap-1.5 min-w-0">
                       <span className={`w-2 h-2 rounded-full ${theme.dotColor} shrink-0 shadow-2xs`} />
-                      <span className="text-[11px] font-black tracking-wider text-slate-800 truncate uppercase">
+                      <span className="text-xs font-bold text-slate-800 truncate">
                         {theme.label}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.2 rounded-full ${theme.countBg} ${theme.countText} border border-black/[0.04]`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${theme.countBg} ${theme.countText} border border-black/[0.04]`}
                       >
                         {applicantsInStage.length}
                       </span>
@@ -859,10 +861,8 @@ export function CaregiverIntakePortal() {
                   </div>
 
                   {/* Cards Stack */}
-                  <div className="space-y-2.5 min-h-[140px]">
+                  <div className="space-y-2 min-h-[120px]">
                     {applicantsInStage.map((app) => {
-                      const stepPct = Math.round((app.currentStep / app.totalSteps) * 100);
-
                       return (
                         <div
                           key={app.id}
@@ -872,57 +872,47 @@ export function CaregiverIntakePortal() {
                             setSelectedApplicant(app);
                             setDetailActiveTab('overview');
                           }}
-                          className="portal-card-interactive"
+                          className="portal-card-interactive group space-y-2"
                         >
                           {/* Row 1: Name + Role Badge */}
                           <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-[13px] font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors truncate">
+                            <span className="text-xs font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors truncate">
                               {app.name}
                             </span>
                             {renderRoleBadge(app.role)}
                           </div>
 
-                          {/* Row 2: Subtitle Meta */}
-                          <p className="text-[11px] text-slate-400 mt-1 truncate">
-                            {app.classificationType} · {app.county} · via {app.source}
-                          </p>
-
-                          {/* Row 3: Step & Progress bar */}
-                          <div className="mt-2.5">
-                            <p className="text-[10px] font-medium text-slate-500 mb-1">
-                              Step {app.currentStep} of {app.totalSteps} · {app.stepLabel}
-                            </p>
-                            <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-[#264e1e] rounded-full transition-all duration-300"
-                                style={{ width: `${stepPct}%` }}
-                              />
-                            </div>
+                          {/* Row 2: Location & Source */}
+                          <div className="text-[11px] text-slate-500 font-medium truncate">
+                            {app.county} Co. • {app.classificationType} • {app.source}
                           </div>
 
-                          {/* Row 4: Footer - Recruiter + CBI pending / Interview Time + Days */}
-                          <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                          {/* Row 3: Action / Milestone Tag (Only when relevant) */}
+                          {(app.interviewScheduledTime || app.cbiPending) && (
+                            <div className="pt-0.5">
+                              {app.interviewScheduledTime ? (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-blue-700 bg-blue-50/80 px-2 py-0.5 rounded-md border border-blue-200/80">
+                                  <Calendar className="w-3 h-3 text-blue-500 shrink-0" />
+                                  <span>{app.interviewScheduledTime}</span>
+                                </span>
+                              ) : app.cbiPending ? (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/80">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                                  <span>CBI pending</span>
+                                </span>
+                              ) : null}
+                            </div>
+                          )}
+
+                          {/* Row 4: Footer - Recruiter + Days in Stage */}
+                          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                             <div className="flex items-center gap-1.5 min-w-0">
                               <div className="w-5 h-5 rounded-full bg-slate-200 text-slate-700 font-bold text-[9px] flex items-center justify-center shrink-0">
                                 {app.recruiterInitials}
                               </div>
-                              <span className="text-slate-600 font-medium truncate">
+                              <span className="text-slate-600 font-medium truncate text-[11px]">
                                 {app.recruiter}
                               </span>
-
-                              {app.cbiPending && (
-                                <span className="inline-flex items-center gap-1 text-[10px] text-amber-700 font-semibold ml-1 shrink-0">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                                  <span>CBI pending</span>
-                                </span>
-                              )}
-
-                              {app.interviewScheduledTime && (
-                                <span className="inline-flex items-center gap-1 text-[10px] text-blue-700 font-semibold ml-1 shrink-0">
-                                  <Calendar className="w-3 h-3 text-blue-600" />
-                                  <span>{app.interviewScheduledTime}</span>
-                                </span>
-                              )}
                             </div>
 
                             <span className="text-[10px] text-slate-400 font-medium shrink-0 ml-1">
@@ -941,7 +931,7 @@ export function CaregiverIntakePortal() {
                     className="portal-column-add-btn"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>+ Add applicant</span>
+                    <span>Add applicant</span>
                   </button>
                 </div>
               );

@@ -57,7 +57,7 @@ const STAGE_THEMES: Record<
   }
 > = {
   'New Inquiry': {
-    label: 'NEW INQUIRY',
+    label: 'New Inquiry',
     dotColor: 'bg-emerald-600',
     bgTint: 'bg-[#f4f9f4]',
     borderColor: 'border-[#dcf2e3]',
@@ -65,7 +65,7 @@ const STAGE_THEMES: Record<
     countText: 'text-emerald-900',
   },
   'Contact Pending': {
-    label: 'NEW INQUIRY',
+    label: 'New Inquiry',
     dotColor: 'bg-emerald-600',
     bgTint: 'bg-[#f4f9f4]',
     borderColor: 'border-[#dcf2e3]',
@@ -73,7 +73,7 @@ const STAGE_THEMES: Record<
     countText: 'text-emerald-900',
   },
   'Contacted': {
-    label: 'CONTACTED',
+    label: 'Contacted',
     dotColor: 'bg-blue-600',
     bgTint: 'bg-[#f4f8fd]',
     borderColor: 'border-[#e1edf8]',
@@ -81,7 +81,7 @@ const STAGE_THEMES: Record<
     countText: 'text-blue-900',
   },
   'Needs Discussion': {
-    label: 'NEEDS DISCUSSION',
+    label: 'Needs Discussion',
     dotColor: 'bg-amber-600',
     bgTint: 'bg-[#fffdf2]',
     borderColor: 'border-[#fef0c7]',
@@ -89,7 +89,7 @@ const STAGE_THEMES: Record<
     countText: 'text-amber-900',
   },
   'Needs Clarification': {
-    label: 'NEEDS DISCUSSION',
+    label: 'Needs Discussion',
     dotColor: 'bg-amber-600',
     bgTint: 'bg-[#fffdf2]',
     borderColor: 'border-[#fef0c7]',
@@ -97,7 +97,7 @@ const STAGE_THEMES: Record<
     countText: 'text-amber-900',
   },
   'Case Manager Coordination': {
-    label: 'CASE MANAGER COORDINATION',
+    label: 'CMA Coordination',
     dotColor: 'bg-purple-600',
     bgTint: 'bg-[#faf5ff]',
     borderColor: 'border-[#f3e8ff]',
@@ -105,7 +105,7 @@ const STAGE_THEMES: Record<
     countText: 'text-purple-900',
   },
   'Family Decision': {
-    label: 'FAMILY DECISION',
+    label: 'Family Decision',
     dotColor: 'bg-indigo-600',
     bgTint: 'bg-[#f5f6ff]',
     borderColor: 'border-[#e0e7ff]',
@@ -113,7 +113,7 @@ const STAGE_THEMES: Record<
     countText: 'text-indigo-900',
   },
   'Follow-up Scheduled': {
-    label: 'FAMILY DECISION',
+    label: 'Family Decision',
     dotColor: 'bg-indigo-600',
     bgTint: 'bg-[#f5f6ff]',
     borderColor: 'border-[#e0e7ff]',
@@ -121,7 +121,7 @@ const STAGE_THEMES: Record<
     countText: 'text-indigo-900',
   },
   'Converted': {
-    label: 'CONVERTED (→ CARE PLAN)',
+    label: 'Converted',
     dotColor: 'bg-emerald-700',
     bgTint: 'bg-[#f0fdf4]',
     borderColor: 'border-[#bbf7d0]',
@@ -129,7 +129,7 @@ const STAGE_THEMES: Record<
     countText: 'text-emerald-950',
   },
   'Closed / Not Proceeding': {
-    label: 'CLOSED / NOT PROCEEDING',
+    label: 'Closed',
     dotColor: 'bg-slate-400',
     bgTint: 'bg-[#f8fafc]',
     borderColor: 'border-[#e2e8f0]',
@@ -615,7 +615,7 @@ export function ClientIntakePortal() {
   // Render Service Badge (Matches renderRoleBadge in Caregiver Intake)
   const renderServiceBadge = (service: string) => {
     return (
-      <span className="bg-slate-100 text-slate-700 font-semibold text-xs px-2 py-0.5 rounded-md border border-slate-200/80">
+      <span className="bg-slate-100 text-slate-700 font-semibold text-[11px] px-2 py-0.5 rounded-md border border-slate-200/80 whitespace-nowrap shrink-0">
         {service}
       </span>
     );
@@ -630,13 +630,11 @@ export function ClientIntakePortal() {
     if (badge === 'Payment at risk') badgeClass = 'bg-rose-50 text-rose-700 border-rose-200/80';
 
     return (
-      <div className="mt-1.5">
-        <span
-          className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-md border ${badgeClass}`}
-        >
-          {badge}
-        </span>
-      </div>
+      <span
+        className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-md border ${badgeClass} whitespace-nowrap`}
+      >
+        {badge}
+      </span>
     );
   };
 
@@ -1004,7 +1002,7 @@ export function ClientIntakePortal() {
       {viewMode === 'board' ? (
         /* KANBAN BOARD VIEW */
         <div className="overflow-x-auto pb-4">
-          <div className="flex gap-3.5 min-w-[1440px] items-start">
+          <div className="flex gap-3.5 min-w-[1720px] items-start">
             {INTAKE_STAGES.map((stage) => {
               const theme = STAGE_THEMES[stage];
               const leadsInStage = stageGroups[stage] || [];
@@ -1020,14 +1018,14 @@ export function ClientIntakePortal() {
                   <div className="flex items-center justify-between px-1 py-0.5">
                     <div className="flex items-center gap-1.5 min-w-0">
                       <span className={`w-2 h-2 rounded-full ${theme.dotColor} shrink-0 shadow-2xs`} />
-                      <span className="text-[11px] font-black tracking-wider text-slate-800 truncate uppercase">
+                      <span className="text-xs font-bold text-slate-800 truncate">
                         {theme.label}
                       </span>
                     </div>
 
                     <div className="flex items-center gap-1.5 shrink-0">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.2 rounded-full ${theme.countBg} ${theme.countText} border border-black/[0.04]`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${theme.countBg} ${theme.countText} border border-black/[0.04]`}
                       >
                         {leadsInStage.length}
                       </span>
@@ -1043,11 +1041,8 @@ export function ClientIntakePortal() {
                   </div>
 
                   {/* Cards Stack */}
-                  <div className="space-y-2.5 min-h-[140px]">
+                  <div className="space-y-2 min-h-[120px]">
                     {leadsInStage.map((lead) => {
-                      const completedSteps = lead.intakeStepsCompleted || 1;
-                      const totalSteps = lead.intakeTotalSteps || 7;
-                      const stepPct = Math.round((completedSteps / totalSteps) * 100);
                       const leadCounty = getLeadCounty(lead);
 
                       return (
@@ -1059,40 +1054,42 @@ export function ClientIntakePortal() {
                             setSelectedLead(lead);
                             setDetailActiveTab('overview');
                           }}
-                          className="portal-card-interactive"
+                          className="portal-card-interactive group space-y-2"
                         >
                           {/* Row 1: Name + Service Badge */}
                           <div className="flex items-center justify-between gap-1.5">
-                            <span className="text-[13px] font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors truncate">
+                            <span className="text-xs font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors truncate">
                               {lead.clientName}
                             </span>
                             {renderServiceBadge(lead.requestedService)}
                           </div>
 
-                          {/* Row 2: Subtitle Meta */}
-                          <p className="text-[11px] text-slate-400 mt-1 truncate">
-                            {lead.requestedService} · {leadCounty} County · via {lead.sourceCategory || lead.inquirySource}
-                          </p>
-
-                          {/* Row 2.5: Alert Badge if present */}
-                          {renderAlertBadge(lead.alertBadge)}
-
-                          {/* Row 3: Step & Progress bar */}
-                          <div className="mt-2.5">
-                            <p className="text-[10px] font-medium text-slate-500 mb-1">
-                              Step {completedSteps} of {totalSteps} · {lead.intakeStageLabel || 'Inquiry logged'}
-                            </p>
-                            <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                              <div
-                                className={`h-full rounded-full transition-all duration-300 ${lead.isOverdue ? 'bg-rose-500' : 'bg-[#264e1e]'
-                                  }`}
-                                style={{ width: `${stepPct}%` }}
-                              />
-                            </div>
+                          {/* Row 2: Location & Source */}
+                          <div className="text-[11px] text-slate-500 font-medium truncate">
+                            {leadCounty} Co. • {lead.sourceCategory || lead.inquirySource}
                           </div>
 
-                          {/* Row 4: Footer - Owner + Follow-Up Status + Days in Stage */}
-                          <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                          {/* Row 3: Action / Milestone Tag (Only when relevant) */}
+                          {(lead.isOverdue || lead.alertBadge || lead.followUpDisplay) && (
+                            <div className="pt-0.5">
+                              {lead.isOverdue ? (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-rose-700 bg-rose-50 px-2 py-0.5 rounded-md border border-rose-200/80">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                                  <span>Overdue ({lead.daysInStage || 1}d)</span>
+                                </span>
+                              ) : lead.alertBadge ? (
+                                renderAlertBadge(lead.alertBadge)
+                              ) : lead.followUpDisplay ? (
+                                <span className="inline-flex items-center gap-1 text-[10px] font-medium text-blue-700 bg-blue-50/80 px-2 py-0.5 rounded-md border border-blue-200/80">
+                                  <Calendar className="w-3 h-3 text-blue-500 shrink-0" />
+                                  <span>{lead.followUpDisplay}</span>
+                                </span>
+                              ) : null}
+                            </div>
+                          )}
+
+                          {/* Row 4: Footer - Owner + Days in Stage */}
+                          <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                             <div className="flex items-center gap-1.5 min-w-0">
                               <div
                                 className={`w-5 h-5 rounded-full ${lead.ownerAvatarColor || 'bg-slate-200'
@@ -1100,23 +1097,9 @@ export function ClientIntakePortal() {
                               >
                                 {lead.ownerInitials || 'MR'}
                               </div>
-                              <span className="text-slate-600 font-medium truncate">
+                              <span className="text-slate-600 font-medium truncate text-[11px]">
                                 {lead.ownerName || lead.assignedStaff}
                               </span>
-
-                              {lead.isOverdue && (
-                                <span className="inline-flex items-center gap-1 text-[10px] text-rose-700 font-semibold ml-1 shrink-0">
-                                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
-                                  <span>Overdue</span>
-                                </span>
-                              )}
-
-                              {!lead.isOverdue && lead.followUpDisplay && (
-                                <span className="inline-flex items-center gap-1 text-[10px] text-blue-700 font-semibold ml-1 shrink-0">
-                                  <Calendar className="w-3 h-3 text-blue-600" />
-                                  <span>{lead.followUpDisplay}</span>
-                                </span>
-                              )}
                             </div>
 
                             <span className="text-[10px] text-slate-400 font-medium shrink-0 ml-1">
