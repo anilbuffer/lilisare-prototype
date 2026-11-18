@@ -31,7 +31,6 @@ import {
 } from 'lucide-react';
 import { GLOBAL_SEARCH_ITEMS, SearchItem } from './dashboard-data';
 import { usePortal } from '@/lib/store/portal-context';
-import { RoleSwitcher } from '@/components/layout/RoleSwitcher';
 
 interface TopUtilityBarProps {
   title?: string;
@@ -309,11 +308,6 @@ export function TopUtilityBar({
                 {actionButton}
               </div>
             )}
-
-            {/* Persona Simulator (Exact match to earliest 7-role configured simulation) */}
-            <div className="shrink-0">
-              <RoleSwitcher />
-            </div>
           </div>
         </div>
       </header>

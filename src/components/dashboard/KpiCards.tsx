@@ -22,12 +22,124 @@ import {
 
 interface KpiCardsProps {
   branchData: BranchData;
-  domain?: DashboardTabId;
+  domain?: DashboardTabId | 'top-summary';
   onOpenKpiDrawer?: (kpiId: string) => void;
 }
 
-export function KpiCards({ branchData, domain = 'executive', onOpenKpiDrawer }: KpiCardsProps) {
-  const { kpis } = branchData;
+export function KpiCards({ branchData, domain = 'top-summary', onOpenKpiDrawer }: KpiCardsProps) {
+  const { kpis, executiveMetrics } = branchData;
+
+  // 7 Compact Cards for Top Summary Section (EHR Dashboard Standard)
+  if (domain === 'top-summary') {
+    const summaryCards = [
+      {
+        id: 'clients',
+        drawerTarget: 'kpi-clients',
+        label: 'Active Patients',
+        value: executiveMetrics?.activePatients?.value ?? 247,
+        subtext: executiveMetrics?.activePatients?.change ?? '+12 this month',
+        subtextColor: 'text-emerald-700 font-semibold',
+        icon: Users,
+        iconBg: 'bg-emerald-50 text-[#00d084]',
+      },
+      {
+        id: 'caregivers',
+        drawerTarget: 'kpi-caregivers',
+        label: 'Active Caregivers',
+        value: executiveMetrics?.activeCaregivers?.value ?? 84,
+        subtext: executiveMetrics?.activeCaregivers?.subtext ?? '1 onboarding',
+        subtextColor: 'text-slate-500 font-medium',
+        icon: HeartHandshake,
+        iconBg: 'bg-purple-50 text-purple-600',
+      },
+      {
+        id: 'visits',
+        drawerTarget: 'evv-exceptions',
+        label: "Today's Visits",
+        value: executiveMetrics?.todaysVisits?.value ?? 142,
+        subtext: executiveMetrics?.todaysVisits?.subtext ?? '58 completed · 44 upcoming',
+        subtextColor: 'text-slate-500 font-medium',
+        icon: Calendar,
+        iconBg: 'bg-blue-50 text-blue-600',
+      },
+      {
+        id: 'evv',
+        drawerTarget: 'evv-exceptions',
+        label: 'EVV Compliance',
+        value: executiveMetrics?.evvCompliance?.value ?? '96.4%',
+        subtext: executiveMetrics?.evvCompliance?.subtext ?? '4 exceptions today',
+        subtextColor: 'text-rose-600 font-semibold',
+        icon: ShieldCheck,
+        iconBg: 'bg-emerald-50 text-[#3e6b2b]',
+      },
+      {
+        id: 'unfilled-shifts',
+        drawerTarget: 'staffing',
+        label: 'Open Unfilled Shifts',
+        value: executiveMetrics?.openUnfilledShifts?.value ?? 8,
+        subtext: executiveMetrics?.openUnfilledShifts?.subtext ?? '3 urgent (within 4 hrs)',
+        subtextColor: 'text-orange-600 font-semibold',
+        icon: Clock,
+        iconBg: 'bg-orange-50 text-orange-600',
+      },
+      {
+        id: 'incidents',
+        drawerTarget: 'expired-credentials',
+        label: 'Open Incidents',
+        value: executiveMetrics?.openIncidents?.value ?? 3,
+        subtext: executiveMetrics?.openIncidents?.subtext ?? '1 in compliance review',
+        subtextColor: 'text-amber-700 font-semibold',
+        icon: AlertTriangle,
+        iconBg: 'bg-amber-50 text-amber-600',
+      },
+      {
+        id: 'revenue',
+        drawerTarget: 'kpi-authorizations',
+        label: 'Monthly Revenue',
+        value: executiveMetrics?.monthlyRevenue?.value ?? '$486k',
+        subtext: executiveMetrics?.monthlyRevenue?.change ?? '+4.4% vs last month',
+        subtextColor: 'text-emerald-700 font-semibold',
+        icon: DollarSign,
+        iconBg: 'bg-teal-50 text-teal-600',
+      },
+    ];
+
+    return (
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3.5 w-full">
+        {summaryCards.map((card) => {
+          const IconComponent = card.icon;
+          return (
+            <button
+              key={card.id}
+              type="button"
+              onClick={() => onOpenKpiDrawer?.(card.drawerTarget)}
+              className="bg-white rounded-2xl p-3 sm:p-3.5 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_1px_2px_rgba(15,23,42,0.02)] hover:shadow-card-hover hover:border-slate-300 transition-all text-left cursor-pointer flex flex-col justify-between group h-full"
+            >
+              <div className="flex items-center justify-between gap-1 w-full">
+                <span className="text-[11px] sm:text-xs font-semibold text-slate-500 truncate group-hover:text-slate-800 transition-colors">
+                  {card.label}
+                </span>
+                <div
+                  className={`w-6 h-6 rounded-full ${card.iconBg} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}
+                >
+                  <IconComponent className="w-3.5 h-3.5" />
+                </div>
+              </div>
+
+              <div className="mt-1.5">
+                <div className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-mono leading-none">
+                  {card.value}
+                </div>
+                <div className={`text-[10px] sm:text-[11px] mt-1 font-medium truncate ${card.subtextColor}`}>
+                  {card.subtext}
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    );
+  }
 
   const getCardsForDomain = () => {
     switch (domain) {

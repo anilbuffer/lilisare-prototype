@@ -257,23 +257,23 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
     },
     executiveMetrics: {
       activePatients: { value: 247, change: '+12 this month', label: 'Active Patients' },
-      activeCaregivers: { value: 84, subtext: '5 onboarding', label: 'Active Caregivers' },
-      todaysVisits: { value: 142, subtext: '98 completed • 44 upcoming', label: "Today's Visits" },
-      evvCompliance: { value: '98.4%', subtext: '3 exceptions today', label: 'EVV Compliance' },
-      openUnfilledShifts: { value: 8, subtext: '5 urgent (within 4 hrs)', label: 'Open Unfilled Shifts' },
+      activeCaregivers: { value: 84, subtext: '1 onboarding', label: 'Active Caregivers' },
+      todaysVisits: { value: 142, subtext: '58 completed · 44 upcoming', label: "Today's Visits" },
+      evvCompliance: { value: '96.4%', subtext: '4 exceptions today', label: 'EVV Compliance' },
+      openUnfilledShifts: { value: 8, subtext: '3 urgent (within 4 hrs)', label: 'Open Unfilled Shifts' },
       openIncidents: { value: 3, subtext: '1 in compliance review', label: 'Open Incidents' },
       monthlyRevenue: { value: '$486k', change: '+4.4% vs last month', label: 'Monthly Revenue' },
     },
     weeklyVisits: {
-      completionRate: 90,
+      completionRate: 86,
       days: [
-        { day: 'Mon', scheduled: 80, completed: 74 },
-        { day: 'Tue', scheduled: 95, completed: 88 },
-        { day: 'Wed', scheduled: 100, completed: 92 },
-        { day: 'Thu', scheduled: 104, completed: 96 },
-        { day: 'Fri', scheduled: 110, completed: 98 },
-        { day: 'Sat', scheduled: 70, completed: 62 },
-        { day: 'Sun', scheduled: 65, completed: 58 },
+        { day: 'Mon', scheduled: 100, completed: 86 },
+        { day: 'Tue', scheduled: 120, completed: 105 },
+        { day: 'Wed', scheduled: 115, completed: 102 },
+        { day: 'Thu', scheduled: 120, completed: 108 },
+        { day: 'Fri', scheduled: 125, completed: 108 },
+        { day: 'Sat', scheduled: 75, completed: 58 },
+        { day: 'Sun', scheduled: 70, completed: 54 },
       ],
     },
     patientSatisfaction: {
@@ -289,7 +289,7 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
     evvSummary: {
       complianceRate: 98.2,
       atRiskVisits: 14,
-      atRiskMessage: 'Missing EVV data may block billing',
+      atRiskMessage: 'Missing EVV data may block billing.',
       exceptions: [
         { type: 'Missing Location', count: 8 },
         { type: 'Late Clock-out', count: 4 },
@@ -303,8 +303,8 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
       earlyClockOuts: 3.1,
       lateClockOuts: 2.3,
       offenders: [
-        { name: 'Carlos Morales', scheduled: '08:00 - 12:00', actual: '08:54 - 11:46', diff: '-48m' },
-        { name: 'Rachel Kim', scheduled: '09:00 - 13:00', actual: '09:18 - 12:52', diff: '-26m' },
+        { name: 'Carlos Mendez', scheduled: '08:00 - 12:00', actual: '08:24 - 11:45', diff: '-39m' },
+        { name: 'Rachel Kim', scheduled: '08:30 - 13:00', actual: '09:08 - 12:52', diff: '-38m' },
       ],
     },
     financialHealth: {
@@ -320,9 +320,9 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
       arAging: { days0_30: 72, days31_60: 20, days60Plus: 8 },
     },
     authUtilization: {
-      atRisk: { count: 12, percentage: 92, label: 'At Risk (90%+)' },
-      approaching: { count: 38, percentage: 80, label: 'Approaching (75-90%)' },
-      onTrack: { count: 545, percentage: 55, label: 'On Track (<75%)' },
+      atRisk: { count: 12, percentage: 90, label: 'At Risk (>90%)' },
+      approaching: { count: 28, percentage: 75, label: 'Approaching (75-90%)' },
+      onTrack: { count: 845, percentage: 60, label: 'On Track (<75%)' },
       stats: { active: 885, expiringSoon: 14, expired: 3 },
     },
     caregiverOvertime: {
@@ -331,7 +331,7 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
       estOtCost: 543.75,
       approachingOt: 5,
       flaggedStaff: [
-        { name: 'Jessica Miller', initials: 'JM', hours: '46.5 hrs', otHours: '6.5 hrs OT' },
+        { name: 'Jessica Miller', initials: 'JM', hours: '42.5 hrs', otHours: '2.5 hrs OT' },
         { name: 'Thomas Wright', initials: 'TW', hours: '41.0 hrs', otHours: '1.0 hr OT' },
       ],
     },
@@ -342,7 +342,7 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
     ],
     topCaregivers: [
       { rank: 1, name: 'Emily R.', role: 'RN', rating: 4.9, score: 98 },
-      { rank: 2, name: 'Sarah J.', role: 'CNA', rating: 4.8, score: 96 },
+      { rank: 2, name: 'Sarah J.', role: 'HHA', rating: 4.8, score: 96 },
       { rank: 3, name: 'Marcus T.', role: 'CNA', rating: 4.7, score: 94 },
       { rank: 4, name: 'David K.', role: 'PT', rating: 4.6, score: 91 },
     ],
@@ -354,16 +354,16 @@ export const BRANCH_DATA: Record<BranchId, BranchData> = {
     ],
     atAGlance: {
       retention: { rate: 87, target: 85 },
-      complianceAlerts: { total: 7, requireReview: 2 },
+      complianceAlerts: { total: 7, requireReview: 3 },
       avgCompletion: { rate: 98.2, change: '+1.2%' },
-      unbilledVisits: { count: 23, atRiskAmount: '$4,200' },
+      unbilledVisits: { count: 23, atRiskAmount: '$4,100 at risk' },
     },
     liveVisitFeed: [
-      { id: 'lv-1', time: '09:30 AM', initials: 'MC', name: 'Margaret Chen', address: '1280 Sunset Blvd', status: 'Completed', variant: 'verified' },
-      { id: 'lv-2', time: '09:00 AM', initials: 'RA', name: 'Robert Alvarez', address: '44 Cedar Rd', status: 'In progress', variant: 'info' },
-      { id: 'lv-3', time: '08:30 AM', initials: 'AT', name: 'Aiko Tanaka', address: '92 Fillmore St', status: 'Scheduled', variant: 'pending' },
-      { id: 'lv-4', time: '08:00 AM', initials: 'TB', name: 'Thomas Becker', address: '1810 Lombard', status: 'Scheduled', variant: 'pending' },
-      { id: 'lv-5', time: '07:30 AM', initials: 'MC', name: 'Margaret Chen', address: '1280 Sunset Blvd', status: 'Scheduled', variant: 'pending' },
+      { id: 'lv-1', time: '08:00 AM', initials: 'MC', name: 'Margaret Chen', address: '1285 Sunset Blvd', status: 'Completed', variant: 'verified' },
+      { id: 'lv-2', time: '09:00 AM', initials: 'RA', name: 'Robert Alvarez', address: '44 Cedar Ave', status: 'In progress', variant: 'info' },
+      { id: 'lv-3', time: '09:30 AM', initials: 'AT', name: 'Aika Tanaka', address: '23 Fillmore St', status: 'Scheduled', variant: 'pending' },
+      { id: 'lv-4', time: '10:00 AM', initials: 'TB', name: 'Thomas Becker', address: '1651 Camino', status: 'Scheduled', variant: 'pending' },
+      { id: 'lv-5', time: '10:00 AM', initials: 'MC', name: 'Margaret Chen', address: '1285 Sunset Blvd', status: 'Scheduled', variant: 'pending' },
     ],
     funnel: {
       avgDaysToActivate: 14,

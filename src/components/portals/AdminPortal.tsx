@@ -1,32 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { usePortal } from '@/lib/store/portal-context';
 import { DashboardControls } from '../dashboard/DashboardControls';
 import { KpiCards } from '../dashboard/KpiCards';
-import { NeedsAttentionSection } from '../dashboard/NeedsAttentionSection';
-import { FunnelAndPipelineSection } from '../dashboard/FunnelAndPipelineSection';
-import { ComplianceSectionCards } from '../dashboard/ComplianceSectionCards';
-import { BillingSectionCards } from '../dashboard/BillingSectionCards';
-import { SchedulerSectionCards } from '../dashboard/SchedulerSectionCards';
-import { InsightsAndActivitySection } from '../dashboard/InsightsAndActivitySection';
+import { VisitsAndSatisfactionSection } from '../dashboard/VisitsAndSatisfactionSection';
+import { EVVAndWastedHoursSection } from '../dashboard/EVVAndWastedHoursSection';
+import { FinancialAndAuthSection } from '../dashboard/FinancialAndAuthSection';
+import { IncidentsAndPerformanceSection } from '../dashboard/IncidentsAndPerformanceSection';
+import { InsightsAndFeedSection } from '../dashboard/InsightsAndFeedSection';
 import { AutomationBanner } from '../dashboard/AutomationBanner';
 import { AIBriefingDrawer } from '../dashboard/AIBriefingDrawer';
 import { DashboardDrawers } from '../dashboard/DashboardDrawers';
 import {
   BranchId,
-  DashboardTabId,
   BRANCH_DATA,
   SearchItem,
 } from '../dashboard/dashboard-data';
-import {
-  LayoutDashboard,
-  Users,
-  ShieldCheck,
-  DollarSign,
-  Clock,
-  Sparkles,
-} from 'lucide-react';
 import { CaregiverPortal } from './CaregiverPortal';
 import { ClinicalPortal } from './ClinicalPortal';
 import { EnrollmentPortal } from './EnrollmentPortal';
@@ -60,9 +50,6 @@ export function AdminPortal() {
   // Branch Selector State: Default 'mountain-lane'
   const [currentBranch, setCurrentBranch] = useState<BranchId>('mountain-lane');
 
-  // Active section indicator for in-page navigation
-  const [activeSection, setActiveSection] = useState<DashboardTabId>('executive');
-
   // AI Briefing Drawer State
   const [isAIBriefingOpen, setIsAIBriefingOpen] = useState(false);
 
@@ -84,40 +71,6 @@ export function AdminPortal() {
     );
   };
 
-  // Smooth scroll to target section
-  const handleNavigateSection = (sectionId: DashboardTabId) => {
-    setActiveSection(sectionId);
-    const element = document.getElementById(`section-${sectionId}`);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  // Track active section via IntersectionObserver
-  useEffect(() => {
-    const sectionIds: DashboardTabId[] = ['executive', 'onboarding', 'compliance', 'billing', 'scheduler'];
-    const observerCallback: IntersectionObserverCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const id = entry.target.id.replace('section-', '') as DashboardTabId;
-          setActiveSection(id);
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, {
-      rootMargin: '-20% 0px -60% 0px',
-      threshold: 0,
-    });
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(`section-${id}`);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
   // Handler for search selection
   const handleSelectSearchItem = (item: SearchItem) => {
     if (item.type === 'client') {
@@ -130,7 +83,7 @@ export function AdminPortal() {
       notify('Caregiver Selected', `Viewing caregiver file for ${item.title}`, 'info');
     } else if (item.type === 'page') {
       if (item.id === 'page-2') {
-        handleNavigateSection('onboarding');
+        setActiveDrawer('kpi-caregivers');
       } else if (item.id === 'page-4') {
         setActiveDrawer('kpi-authorizations');
       } else if (item.id === 'page-5') {
@@ -138,11 +91,9 @@ export function AdminPortal() {
       } else if (item.id === 'page-3') {
         setActiveView('evv-aggregator');
       } else if (item.id === 'page-7') {
-        handleNavigateSection('billing');
+        setActiveDrawer('kpi-authorizations');
       } else if (item.id === 'page-8') {
         setActiveView('data-migration');
-      } else {
-        handleNavigateSection('executive');
       }
       notify('Navigation', `Navigated to ${item.title}`, 'info');
     }
@@ -166,18 +117,29 @@ export function AdminPortal() {
   const handleOpenKpiDrawer = (kpiId: string) => {
     switch (kpiId) {
       case 'clients':
+      case 'kpi-clients':
         setActiveDrawer('kpi-clients');
         break;
       case 'caregivers':
+      case 'kpi-caregivers':
         setActiveDrawer('kpi-caregivers');
         break;
       case 'authorizations':
+      case 'kpi-authorizations':
         setActiveDrawer('kpi-authorizations');
         break;
       case 'compliance':
+      case 'expired-credentials':
         setActiveDrawer('expired-credentials');
         break;
+      case 'evv-exceptions':
+        setActiveDrawer('evv-exceptions');
+        break;
+      case 'staffing':
+        setActiveDrawer('staffing');
+        break;
       case 'households':
+      case 'kpi-households':
         setActiveDrawer('kpi-households');
         break;
       default:
@@ -185,13 +147,8 @@ export function AdminPortal() {
     }
   };
 
-  // Handler for Needs Attention Drawer
-  const handleOpenAttentionDrawer = (contextType: string) => {
-    setActiveDrawer(contextType);
-  };
-
   // Handler for Insights action
-  const handleInsightAction = (actionType: 'staffing' | 'compliance' | 'revenue' | 'onboarding') => {
+  const handleInsightAction = (actionType: 'staffing' | 'compliance' | 'revenue' | 'onboarding' | string) => {
     switch (actionType) {
       case 'staffing':
         setActiveDrawer('staffing');
@@ -203,243 +160,77 @@ export function AdminPortal() {
         setActiveDrawer('kpi-authorizations');
         break;
       case 'onboarding':
+      case 'risk':
         setActiveDrawer('stuck-households');
         break;
+      default:
+        setActiveDrawer('all-notifications');
     }
   };
 
   return (
-    <div className="flex flex-col gap-8 w-full animate-in fade-in duration-150">
-      {/* 1. GREETING & UNIFIED CONTROLS */}
+    <div className="flex flex-col gap-3.5 sm:gap-4 w-full animate-in fade-in duration-150">
+      {/* 1. GREETING & EHR CONTROLS (Single-Page Header, No In-Page Tabs) */}
       <DashboardControls
         branchData={branchData}
         currentBranch={currentBranch}
         onSelectBranch={handleSelectBranch}
-        activeSection={activeSection}
-        onNavigateSection={handleNavigateSection}
         onOpenAIBriefing={() => setIsAIBriefingOpen(true)}
       />
 
-      {/* ========================================================================= */}
-      {/* SECTION 1: EXECUTIVE OVERVIEW                                             */}
-      {/* ========================================================================= */}
-      <section id="section-executive" className="scroll-mt-6 space-y-4">
-        {/* Section Title Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#3e6b2b]/10 text-[#3e6b2b] flex items-center justify-center font-bold shadow-2xs">
-              <LayoutDashboard className="w-4 h-4" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                Executive Overview
-              </h2>
-              <p className="text-xs text-slate-500">
-                Agency census, critical attention items, and organizational health
-              </p>
-            </div>
-          </div>
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-200">
-            Overview
-          </span>
-        </div>
-
-        {/* 5 Executive KPI Cards */}
-        <KpiCards
-          branchData={branchData}
-          domain="executive"
-          onOpenKpiDrawer={handleOpenKpiDrawer}
-        />
-
-        {/* Needs your attention (7 priority items) */}
-        <NeedsAttentionSection
-          branchData={branchData}
-          onOpenAttentionDrawer={handleOpenAttentionDrawer}
-          onViewAllTasks={() => setActiveDrawer('all-notifications')}
-        />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* SECTION 2: ONBOARDING & INTAKE PIPELINE                                   */}
-      {/* ========================================================================= */}
-      <section id="section-onboarding" className="scroll-mt-6 space-y-4">
-        {/* Section Title Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#3e6b2b]/10 text-[#3e6b2b] flex items-center justify-center font-bold shadow-2xs">
-              <Users className="w-4 h-4" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                Onboarding &amp; Intake Pipeline
-              </h2>
-              <p className="text-xs text-slate-500">
-                Caregiver activation velocity, document verification, and client referrals
-              </p>
-            </div>
-          </div>
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#3e6b2b] border border-emerald-200/80">
-            Onboarding Hub
-          </span>
-        </div>
-
-        {/* 5 Onboarding KPI Cards */}
-        <KpiCards
-          branchData={branchData}
-          domain="onboarding"
-          onOpenKpiDrawer={handleOpenKpiDrawer}
-        />
-
-        {/* 2-Column Funnel & Pipeline Cards */}
-        <FunnelAndPipelineSection
-          branchData={branchData}
-          onViewAllFunnel={() => setActiveDrawer('kpi-caregivers')}
-          onViewAllPipeline={() => setActiveDrawer('kpi-clients')}
-          onOpenStageDetails={(type) => {
-            if (type === 'funnel') setActiveDrawer('kpi-caregivers');
-            else setActiveDrawer('kpi-clients');
-          }}
-        />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* SECTION 3: COMPLIANCE & CLINICAL QA                                       */}
-      {/* ========================================================================= */}
-      <section id="section-compliance" className="scroll-mt-6 space-y-4">
-        {/* Section Title Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#3e6b2b]/10 text-[#3e6b2b] flex items-center justify-center font-bold shadow-2xs">
-              <ShieldCheck className="w-4 h-4" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                Compliance &amp; Clinical Oversight
-              </h2>
-              <p className="text-xs text-slate-500">
-                State Medicaid licenses, background check re-screenings, and nurse supervisory visits
-              </p>
-            </div>
-          </div>
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200/80">
-            State QA &amp; Audits
-          </span>
-        </div>
-
-        {/* 5 Compliance KPI Cards */}
-        <KpiCards
-          branchData={branchData}
-          domain="compliance"
-          onOpenKpiDrawer={handleOpenKpiDrawer}
-        />
-
-        {/* 2-Column Credentials & Supervisory Cards */}
-        <ComplianceSectionCards
-          branchData={branchData}
-          onViewAllCompliance={() => setActiveDrawer('expired-credentials')}
-          onOpenComplianceDetail={(item) => {
-            setActiveDrawer('expired-credentials');
-            setDrawerData(item);
-          }}
-          onViewAllVisits={() => setActiveDrawer('supervisory-visits')}
-        />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* SECTION 4: BILLING & REVENUE CYCLE                                        */}
-      {/* ========================================================================= */}
-      <section id="section-billing" className="scroll-mt-6 space-y-4">
-        {/* Section Title Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#3e6b2b]/10 text-[#3e6b2b] flex items-center justify-center font-bold shadow-2xs">
-              <DollarSign className="w-4 h-4" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                Billing &amp; Revenue Cycle
-              </h2>
-              <p className="text-xs text-slate-500">
-                Claims submission, prior authorizations, commercial denial letters, and ADP payroll
-              </p>
-            </div>
-          </div>
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-50 text-[#3e6b2b] border border-emerald-200/80">
-            Revenue Cycle
-          </span>
-        </div>
-
-        {/* 5 Billing KPI Cards */}
-        <KpiCards
-          branchData={branchData}
-          domain="billing"
-          onOpenKpiDrawer={handleOpenKpiDrawer}
-        />
-
-        {/* 4-Card 2x2 Billing Grid */}
-        <BillingSectionCards
-          branchData={branchData}
-          onViewAllBilling={() => setActiveDrawer('kpi-authorizations')}
-          onSendFollowUp={(record) => {
-            setActiveDrawer('kpi-authorizations');
-            setDrawerData(record);
-          }}
-          onExportPayroll={() => notify('ADP Export Generated', 'Successfully generated payroll batch export file.', 'success')}
-        />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* SECTION 5: SCHEDULER & EVV TELEMETRY                                      */}
-      {/* ========================================================================= */}
-      <section id="section-scheduler" className="scroll-mt-6 space-y-4">
-        {/* Section Title Header */}
-        <div className="flex items-center justify-between pb-2.5 border-b border-slate-200/80">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-[#3e6b2b]/10 text-[#3e6b2b] flex items-center justify-center font-bold shadow-2xs">
-              <Clock className="w-4 h-4" />
-            </div>
-            <div>
-              <h2 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">
-                Scheduler &amp; EVV Telemetry
-              </h2>
-              <p className="text-xs text-slate-500">
-                Shift allocation, Sandata Colorado GPS compliance, unverified hours, and regional overtime
-              </p>
-            </div>
-          </div>
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-sky-50 text-sky-800 border border-sky-200/80">
-            Live EVV Hub
-          </span>
-        </div>
-
-        {/* 5 Scheduler KPI Cards */}
-        <KpiCards
-          branchData={branchData}
-          domain="scheduler"
-          onOpenKpiDrawer={handleOpenKpiDrawer}
-        />
-
-        {/* 4-Card 2x2 Scheduler Grid */}
-        <SchedulerSectionCards
-          branchData={branchData}
-          onViewAllScheduler={() => setActiveDrawer('evv-exceptions')}
-          onOpenShiftDetail={() => setActiveDrawer('staffing')}
-          onOpenEvvDetail={() => setActiveDrawer('evv-exceptions')}
-        />
-      </section>
-
-      {/* ========================================================================= */}
-      {/* SECTION 6: INSIGHTS & LIVE ACTIVITY                                       */}
-      {/* ========================================================================= */}
-      <InsightsAndActivitySection
+      {/* 2. TOP KPI SUMMARY SECTION (7 Compact Cards in Clean Single Row) */}
+      <KpiCards
         branchData={branchData}
-        onInsightAction={handleInsightAction}
-        onViewAll={() => setActiveDrawer('all-notifications')}
+        domain="top-summary"
+        onOpenKpiDrawer={handleOpenKpiDrawer}
       />
 
-      {/* ========================================================================= */}
-      {/* SECTION 7: BOTTOM AUTOMATION SUMMARY BANNER                               */}
-      {/* ========================================================================= */}
+      {/* 3. ROW 2: VISITS THIS WEEK (Bar Chart) & PATIENT SATISFACTION (Radial Gauge) */}
+      <VisitsAndSatisfactionSection
+        branchData={branchData}
+        onViewAllSatisfaction={() => setActiveDrawer('all-notifications')}
+        onViewVisitsDetail={() => setActiveDrawer('evv-exceptions')}
+      />
+
+      {/* 4. ROW 3: EVV COMPLIANCE (Donut Ring & Risk Card) & WASTED HOURS (Schedule vs Actual Breakdown) */}
+      <EVVAndWastedHoursSection
+        branchData={branchData}
+        onOpenEvvExceptions={() => setActiveDrawer('evv-exceptions')}
+        onOpenWastedTime={() => setActiveDrawer('evv-exceptions')}
+      />
+
+      {/* 5. ROW 4: FINANCIAL HEALTH (Donut & AR Aging), AUTHORIZATION UTILIZATION (Bars), CAREGIVER OVERTIME */}
+      <FinancialAndAuthSection
+        branchData={branchData}
+        onOpenFinancialDetails={() => setActiveDrawer('kpi-authorizations')}
+        onOpenAuthReport={() => setActiveDrawer('kpi-authorizations')}
+        onOpenOvertimeSchedule={() => setActiveDrawer('staffing')}
+      />
+
+      {/* 6. ROW 5: RECENT INCIDENTS, TOP PERFORMING CAREGIVERS, TRAINING EXPIRY */}
+      <IncidentsAndPerformanceSection
+        branchData={branchData}
+        onViewAllIncidents={() => setActiveDrawer('all-notifications')}
+        onViewFullRanking={() => setActiveDrawer('kpi-caregivers')}
+        onManageTraining={() => setActiveDrawer('expired-credentials')}
+        onSelectIncident={(inc) => {
+          setActiveDrawer('all-notifications');
+          setDrawerData(inc);
+        }}
+      />
+
+      {/* 7. ROW 6: AT A GLANCE (Mini Gauges), ALL INSIGHTS (Sidekick AI), LIVE VISIT FEED */}
+      <InsightsAndFeedSection
+        branchData={branchData}
+        onOpenLiveFeed={() => setActiveDrawer('evv-exceptions')}
+        onTriggerInsight={handleInsightAction}
+        onSelectVisit={(visit) => {
+          setActiveDrawer('evv-exceptions');
+          setDrawerData(visit);
+        }}
+      />
+
+      {/* 8. BOTTOM AUTOMATION SUMMARY BANNER */}
       <AutomationBanner
         branchData={branchData}
         onOpenAutomationRules={() => setActiveDrawer('automation-rules')}

@@ -5,6 +5,7 @@ import {
   Sparkles,
   ChevronDown,
   Building2,
+  Users,
 } from 'lucide-react';
 import { BranchId, DashboardTabId, BranchData, BRANCH_DATA } from './dashboard-data';
 
@@ -27,45 +28,37 @@ export function DashboardControls({
 }: DashboardControlsProps) {
   const [isBranchDropdownOpen, setIsBranchDropdownOpen] = useState(false);
 
-  const sections: { id: DashboardTabId; label: string }[] = [
-    { id: 'executive', label: 'Executive' },
-    { id: 'onboarding', label: 'Onboarding' },
-    { id: 'compliance', label: 'Compliance' },
-    { id: 'billing', label: 'Billing' },
-    { id: 'scheduler', label: 'Scheduler' },
-  ];
-
   const branchList: { id: BranchId | 'all'; name: string }[] = [
     { id: 'mountain-lane', name: 'Mountain Lane (Denver)' },
     { id: 'colorado-home-health', name: 'Colorado Home Health (Colo Spgs)' },
     { id: 'frisco', name: 'High Country (Frisco)' },
   ];
 
-  const currentBranchName = branchData?.name || 'All';
+  const currentBranchName = branchData?.name || 'Mountain Lane';
 
   return (
-    <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 pb-2">
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-1">
       {/* Left: Greeting & Date */}
       <div>
-        <h2 className="text-xl sm:text-2xl font-black text-[#0f172a] tracking-tight">
-          Good morning, Lisa!
+        <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+          Good morning, Sarah!
         </h2>
-        <p className="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">
-          Tuesday, November 17, 2026 · Overview
+        <p className="text-xs text-slate-500 font-medium mt-0.5">
+          Wednesday, November 18
         </p>
       </div>
 
-      {/* Right Controls: Branch Filter + Unified Section Jumper Tabs + AI Briefing */}
-      <div className="flex flex-wrap items-center gap-2.5 sm:gap-3">
+      {/* Right Controls: Branch Filter + AI Briefing */}
+      <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
         {/* Branch Selector Dropdown */}
         <div className="relative">
           <button
             type="button"
             onClick={() => setIsBranchDropdownOpen(!isBranchDropdownOpen)}
-            className="flex items-center gap-2 px-3 py-1.5 sm:py-2 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-full text-xs font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-full text-xs font-semibold text-slate-700 shadow-2xs transition-all cursor-pointer"
           >
             <span className="text-slate-400 font-normal">Branch:</span>
-            <span className="font-bold text-slate-900 truncate max-w-[120px] sm:max-w-[150px]">
+            <span className="font-bold text-slate-900 truncate max-w-[120px] sm:max-w-[140px]">
               {currentBranchName}
             </span>
             <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -102,34 +95,13 @@ export function DashboardControls({
           )}
         </div>
 
-        {/* Section Jump Pill Bar (Single-Page In-Page Navigation) */}
-        <div className="bg-slate-100/90 p-1 rounded-2xl flex items-center gap-1 border border-slate-200/70 shadow-inner overflow-x-auto scrollbar-none">
-          {sections.map((sec) => {
-            const isActive = activeSection === sec.id;
-            return (
-              <button
-                key={sec.id}
-                type="button"
-                onClick={() => onNavigateSection?.(sec.id)}
-                className={`px-3.5 py-1.5 rounded-xl text-xs transition-all whitespace-nowrap cursor-pointer ${
-                  isActive
-                    ? 'bg-white text-slate-900 shadow-xs font-bold ring-1 ring-slate-900/10'
-                    : 'text-slate-600 hover:text-slate-900 font-medium hover:bg-white/50'
-                }`}
-              >
-                {sec.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* AI Briefing Button */}
+        {/* AI Briefing Button (EHR Reference Primary Green Pill) */}
         <button
           type="button"
           onClick={onOpenAIBriefing}
-          className="inline-flex items-center gap-1.5 px-4 py-1.5 sm:py-2 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-full text-xs font-bold text-slate-800 transition-all shadow-2xs hover:shadow-xs active:scale-98 cursor-pointer shrink-0"
+          className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-[#3e6b2b] hover:bg-[#325722] text-white rounded-full text-xs font-bold transition-all shadow-2xs hover:shadow-xs active:scale-98 cursor-pointer shrink-0"
         >
-          <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
+          <Sparkles className="w-3.5 h-3.5 text-[#7bdcb5]" />
           <span>AI Briefing</span>
         </button>
       </div>

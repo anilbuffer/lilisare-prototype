@@ -20,11 +20,11 @@ export function FinancialAndAuthSection({
   const { financialHealth, authUtilization, caregiverOvertime } = branchData;
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5 sm:gap-4">
       {/* Col 1: Financial Health */}
-      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col justify-between">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100/80">
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_1px_2px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-100/90">
+          <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
             Financial Health
           </h3>
           <button
@@ -154,9 +154,9 @@ export function FinancialAndAuthSection({
       </div>
 
       {/* Col 2: Authorization utilization */}
-      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col justify-between">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100/80">
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_1px_2px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-100/90">
+          <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
             Authorization utilization
           </h3>
           <button
@@ -255,9 +255,9 @@ export function FinancialAndAuthSection({
       </div>
 
       {/* Col 3: Caregiver overtime */}
-      <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] flex flex-col justify-between">
-        <div className="flex items-center justify-between pb-3 border-b border-slate-100/80">
-          <h3 className="text-base font-bold text-slate-900 tracking-tight">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_1px_2px_rgba(15,23,42,0.02)] flex flex-col justify-between">
+        <div className="flex items-center justify-between pb-2.5 border-b border-slate-100/90">
+          <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
             Caregiver overtime
           </h3>
           <button

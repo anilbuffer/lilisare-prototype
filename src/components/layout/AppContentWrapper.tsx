@@ -7,7 +7,6 @@ import { usePortal } from '@/lib/store/portal-context';
 import { UserRole, RoleConfig } from '@/lib/types';
 import { Sidebar } from './Sidebar';
 import { TopUtilityBar } from '@/components/dashboard/TopUtilityBar';
-import { RoleSwitcher } from './RoleSwitcher';
 import { Menu, ShieldAlert, Sparkles, ArrowRight } from 'lucide-react';
 
 function getPageTitle(pathname: string, currentRole: UserRole): string {
@@ -144,7 +143,6 @@ export function AppContentWrapper({ children }: { children: ReactNode }) {
           </Link>
 
           <div className="flex items-center gap-2">
-            <RoleSwitcher />
             {pendingApprovalsCount > 0 && currentRole === 'onboarding' && (
               <Link
                 href="/admin-portal/onboarding"
@@ -170,8 +168,8 @@ export function AppContentWrapper({ children }: { children: ReactNode }) {
           <TopUtilityBar title={getPageTitle(pathname, currentRole)} />
         </div>
 
-        <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-7 xl:p-8 scroll-smooth">
-          <div className="max-w-9xl mx-auto pb-16">
+        <main className="flex-1 overflow-y-auto p-3.5 sm:p-4.5 lg:p-5 scroll-smooth">
+          <div className="max-w-9xl mx-auto pb-8">
             {!isPathAllowed ? (
               <div className="max-w-2xl mx-auto my-12 bg-white rounded-3xl border border-slate-200/90 p-8 shadow-sm text-center space-y-5 animate-in fade-in duration-200">
                 <div className="w-16 h-16 rounded-2xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center mx-auto shadow-xs">
