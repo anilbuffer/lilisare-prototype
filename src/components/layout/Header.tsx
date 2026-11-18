@@ -10,7 +10,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-6 py-2.5 shadow-[0_1px_6px_rgba(0,0,0,0.03)]">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 max-w-9xl mx-auto">
         {/* Brand identity */}
         <div className="flex items-center justify-between">
           <div
@@ -53,11 +53,10 @@ export function Header() {
               setActiveView('portal');
               switchRole('admin');
             }}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'portal' && currentRole === 'admin'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${activeView === 'portal' && currentRole === 'admin'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+              }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5 text-amber-500" />
             <span>Admin Dashboard</span>
@@ -65,11 +64,10 @@ export function Header() {
 
           <button
             onClick={() => setActiveView('landing')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'landing'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${activeView === 'landing'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Sparkles className="w-3.5 h-3.5 text-[#F2B632]" />
             <span>Landing Page</span>
@@ -77,11 +75,10 @@ export function Header() {
 
           <button
             onClick={() => setActiveView('patient-flow')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'patient-flow' || activeView === 'wizard'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${activeView === 'patient-flow' || activeView === 'wizard'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
             <span>Patient Register (8 Steps)</span>
@@ -89,11 +86,10 @@ export function Header() {
 
           <button
             onClick={() => setActiveView('caregiver-flow')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'caregiver-flow'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${activeView === 'caregiver-flow'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+              }`}
           >
             <UserCheck className="w-3.5 h-3.5 text-[#00d084]" />
             <span>Caregiver Register (10 Steps)</span>
@@ -101,11 +97,10 @@ export function Header() {
 
           <button
             onClick={() => setActiveView('evv-aggregator')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'evv-aggregator'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${activeView === 'evv-aggregator'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Radio className="w-3.5 h-3.5 text-emerald-500" />
             <span>Colorado EVV Hub</span>
@@ -113,11 +108,10 @@ export function Header() {
 
           <button
             onClick={() => setActiveView('data-migration')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
-              activeView === 'data-migration'
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${activeView === 'data-migration'
                 ? 'bg-primary text-white shadow-xs'
                 : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Archive className="w-3.5 h-3.5 text-indigo-500" />
             <span>7-Year Vault</span>

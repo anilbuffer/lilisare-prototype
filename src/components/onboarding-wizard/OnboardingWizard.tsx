@@ -96,7 +96,7 @@ export function OnboardingWizard({ onComplete }: { onComplete?: () => void }) {
   };
 
   return (
-    <div className="space-y-6 max-w-7xl mx-auto pb-12 antialiased">
+    <div className="space-y-6 max-w-9xl mx-auto pb-12 antialiased">
       {/* ========================================================================= */}
       {/* 1. TOP TAB NAVIGATION BAR (Home Page Styled)                              */}
       {/* ========================================================================= */}

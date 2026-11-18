@@ -12,6 +12,8 @@ import {
   BillingClaim,
   RegistrationApplication,
   StepReviewStatus,
+  CaregiverApplicant,
+  CaregiverIntakeStage,
 } from '../types';
 import {
   SYSTEM_ROLES,
@@ -22,6 +24,7 @@ import {
   MOCK_COMPLIANCE_VISITS,
   MOCK_BILLING_CLAIMS,
   MOCK_REGISTRATION_APPLICATIONS,
+  MOCK_CAREGIVER_APPLICANTS,
 } from '../mock-data';
 
 interface NotificationToast {
@@ -54,6 +57,12 @@ interface PortalContextType {
   leads: Lead[];
   updateLeadStatus: (leadId: string, status: Lead['status']) => void;
   addLead: (lead: Omit<Lead, 'id' | 'communicationCount' | 'lastContactDate' | 'createdAt'>) => void;
+  
+  // Caregiver Intake Pipeline
+  caregiverApplicants: CaregiverApplicant[];
+  updateCaregiverApplicantStage: (applicantId: string, stage: CaregiverIntakeStage) => void;
+  advanceApplicantStep: (applicantId: string) => void;
+  addCaregiverApplicant: (applicant: Omit<CaregiverApplicant, 'id'>) => void;
   
   // Caregivers & Onboarding
   caregivers: Caregiver[];
@@ -122,6 +131,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   const [complianceVisits, setComplianceVisits] = useState<ComplianceVisit[]>(MOCK_COMPLIANCE_VISITS);
   const [billingClaims, setBillingClaims] = useState<BillingClaim[]>(MOCK_BILLING_CLAIMS);
   const [applications, setApplications] = useState<RegistrationApplication[]>(MOCK_REGISTRATION_APPLICATIONS);
+  const [caregiverApplicants, setCaregiverApplicants] = useState<CaregiverApplicant[]>(MOCK_CAREGIVER_APPLICANTS);
   const [notifications, setNotifications] = useState<NotificationToast[]>([]);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
@@ -178,6 +188,72 @@ export function PortalProvider({ children }: { children: ReactNode }) {
     };
     setLeads((prev) => [newLead, ...prev]);
     notify('Inquiry Registered', `New lead for ${newLead.clientName} created successfully`, 'success');
+  };
+
+  const updateCaregiverApplicantStage = (applicantId: string, stage: CaregiverIntakeStage) => {
+    const stageStepMap: Record<CaregiverIntakeStage, { step: number; label: string }> = {
+      'New Application': { step: 1, label: 'Application logged' },
+      'Phone Screened': { step: 2, label: 'Phone screened' },
+      'Interview Scheduled': { step: 3, label: 'Interview conducted' },
+      'Hiring Decision': { step: 4, label: 'References verified' },
+      'Offer Extended': { step: 5, label: 'Offer extended' },
+      'Hired (→ Onboarding)': { step: 7, label: 'Hired to onboarding' },
+      'Archived / Withdrawn': { step: 2, label: 'Archived' },
+    };
+
+    const mapping = stageStepMap[stage] || { step: 1, label: 'Application logged' };
+
+    setCaregiverApplicants((prev) =>
+      prev.map((app) =>
+        app.id === applicantId
+          ? {
+              ...app,
+              stage,
+              currentStep: mapping.step,
+              stepLabel: mapping.label,
+              daysInStage: 1,
+            }
+          : app
+      )
+    );
+    notify('Applicant Stage Updated', `Applicant moved to "${stage}"`, 'success');
+  };
+
+  const advanceApplicantStep = (applicantId: string) => {
+    const stepStages: CaregiverIntakeStage[] = [
+      'New Application',
+      'Phone Screened',
+      'Interview Scheduled',
+      'Hiring Decision',
+      'Offer Extended',
+      'Offer Extended',
+      'Hired (→ Onboarding)',
+    ];
+
+    setCaregiverApplicants((prev) =>
+      prev.map((app) => {
+        if (app.id !== applicantId) return app;
+        const nextStep = Math.min(app.totalSteps, app.currentStep + 1);
+        const nextStage = stepStages[nextStep - 1] || app.stage;
+        return {
+          ...app,
+          currentStep: nextStep,
+          stage: nextStage,
+          stepLabel: `Step ${nextStep} completed`,
+        };
+      })
+    );
+    notify('Hiring Milestone Completed', 'Applicant progressed to next hiring step.', 'success');
+  };
+
+  const addCaregiverApplicant = (newApplicant: Omit<CaregiverApplicant, 'id'>) => {
+    const id = `cg-app-${Date.now()}`;
+    const fullApplicant: CaregiverApplicant = {
+      ...newApplicant,
+      id,
+    };
+    setCaregiverApplicants((prev) => [fullApplicant, ...prev]);
+    notify('Applicant Registered', `Caregiver applicant ${fullApplicant.name} added.`, 'success');
   };
 
   const updateCaregiverDocStatus = (caregiverId: string, docId: string, status: 'Verified' | 'Rejected') => {
@@ -618,6 +694,10 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         leads,
         updateLeadStatus,
         addLead,
+        caregiverApplicants,
+        updateCaregiverApplicantStage,
+        advanceApplicantStep,
+        addCaregiverApplicant,
         caregivers,
         updateCaregiverDocStatus,
         runBackgroundCheck,

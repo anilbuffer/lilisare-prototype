@@ -23,7 +23,45 @@ export type ServiceType =
   | 'Personal Care'
   | 'Homemaker'
   | 'IRSS / Host Home'
-  | 'PDN';
+  | 'IRSS'
+  | 'PDN'
+  | 'CFC'
+  | 'HCBS';
+
+export type CaregiverIntakeStage =
+  | 'New Application'
+  | 'Phone Screened'
+  | 'Interview Scheduled'
+  | 'Hiring Decision'
+  | 'Offer Extended'
+  | 'Hired (→ Onboarding)'
+  | 'Archived / Withdrawn';
+
+export interface CaregiverApplicant {
+  id: string;
+  name: string;
+  role: 'CNA' | 'IHSS' | 'Personal Care' | 'SCC' | 'HMA' | string;
+  classificationType: 'Employee' | 'Both' | '1099';
+  stage: CaregiverIntakeStage;
+  currentStep: number;
+  totalSteps: number;
+  stepLabel: string;
+  source: 'Indeed' | 'Referral' | 'Website' | 'Job Fair' | 'Phone Call' | string;
+  county: string;
+  recruiter: 'Alicia T.' | 'Maya R.' | 'Jon P.' | 'Sam K.' | string;
+  recruiterInitials: string;
+  daysInStage: number;
+  cbiPending?: boolean;
+  interviewScheduledTime?: string;
+  phone: string;
+  email: string;
+  targetSchedule: string;
+  targetRate: string;
+  appliedDate: string;
+  notes: string;
+  experienceYears?: number;
+  certifications?: string[];
+}
 
 export type CaregiverClassification =
   | 'Employee (W-2)'
@@ -55,7 +93,9 @@ export type LeadStatus =
   | 'Contact Pending'
   | 'Contacted'
   | 'Needs Clarification'
+  | 'Needs Discussion'
   | 'Case Manager Coordination'
+  | 'Family Decision'
   | 'Follow-up Scheduled'
   | 'Converted'
   | 'Closed / Not Proceeding';
@@ -68,7 +108,7 @@ export interface Lead {
   phone: string;
   email: string;
   dateOfBirth: string;
-  inquirySource: 'Case Management Agency' | 'Direct Referral' | 'Family Inbound Call' | 'Website Inquiry' | 'RFP Process';
+  inquirySource: 'Case Management Agency' | 'Direct Referral' | 'Family Inbound Call' | 'Website Inquiry' | 'RFP Process' | string;
   referralAgency: string;
   caseManagerName: string;
   caseManagerPhone: string;
@@ -81,6 +121,19 @@ export interface Lead {
   nextFollowUpDate: string;
   notes: string;
   createdAt: string;
+  // Extended fields for Client Intake Board & List
+  sourceCategory?: 'Website' | 'Phone' | 'Case Management Agency' | 'Direct Referral' | 'RFP' | string;
+  sourceDetail?: string;
+  alertBadge?: 'Auto follow-up sent' | 'Awaiting case manager' | 'Docs missing' | 'Payment at risk' | string;
+  intakeStepsCompleted?: number;
+  intakeTotalSteps?: number;
+  intakeStageLabel?: string;
+  daysInStage?: number;
+  isOverdue?: boolean;
+  followUpDisplay?: string;
+  ownerName?: string;
+  ownerInitials?: string;
+  ownerAvatarColor?: string;
 }
 
 export type DocumentStatus = 'Required' | 'Submitted' | 'Verified' | 'Rejected' | 'Expired';

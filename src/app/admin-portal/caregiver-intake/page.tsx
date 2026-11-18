@@ -1,23 +1,18 @@
 'use client';
 
 import React, { Suspense } from 'react';
-import { AgencyApprovalsCenter } from '@/components/portals/AgencyApprovalsCenter';
+import { CaregiverIntakePortal } from '@/components/portals/CaregiverIntakePortal';
 
 export default function CaregiverIntakePage() {
   return (
     <Suspense
       fallback={
         <div className="p-8 text-center text-xs text-slate-500">
-          Loading Caregiver Intake Center...
+          Loading Caregiver Intake Pipeline...
         </div>
       }
     >
-      <div className="space-y-6">
-        <AgencyApprovalsCenter
-          title="Caregiver Intake & Approvals"
-          defaultTypeFilter="Caregiver"
-        />
-      </div>
+      <CaregiverIntakePortal />
     </Suspense>
   );
 }

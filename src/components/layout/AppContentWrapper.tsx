@@ -80,7 +80,7 @@ export function AppContentWrapper({ children }: { children: ReactNode }) {
         </div>
 
         <main className="flex-1 overflow-y-auto p-3.5 sm:p-6 lg:p-7 xl:p-8 scroll-smooth">
-          <div className="max-w-7xl mx-auto pb-16">
+          <div className="max-w-9xl mx-auto pb-16">
             {children}
           </div>
         </main>

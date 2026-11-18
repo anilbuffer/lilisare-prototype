@@ -430,7 +430,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* 1. TOP UTILITY BAR (Clean, Concise)                                       */}
       {/* ========================================================================= */}
       <div className="bg-[#1b3614] text-white text-xs py-2 px-4 sm:px-8 border-b border-emerald-950/40">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+        <div className="max-w-9xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
           <div className="flex items-center gap-3 flex-wrap justify-center text-[11px] sm:text-xs">
             <span className="flex items-center gap-1.5 font-medium text-emerald-200">
               <ShieldCheck className="w-3.5 h-3.5 text-[#00d084] shrink-0" />
@@ -503,7 +503,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* 2. MAIN HEADER NAVIGATION (Modern Glass & Clean Menus)                     */}
       {/* ========================================================================= */}
       <header className="bg-white/90 backdrop-blur-xl sticky top-0 z-40 border-b border-slate-200/60 shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8 h-16 sm:h-[70px] flex items-center justify-between gap-4">
+        <div className="max-w-9xl mx-auto px-4 sm:px-8 h-16 sm:h-[70px] flex items-center justify-between gap-4">
           {/* Logo */}
           <div
             className="flex items-center cursor-pointer group shrink-0"
@@ -565,7 +565,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-[#4a802f]/25 rounded-full blur-[120px] pointer-events-none -z-0" />
         <div className="absolute bottom-0 right-1/4 w-[450px] h-[450px] bg-[#F2B632]/20 rounded-full blur-[140px] pointer-events-none -z-0" />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
+        <div className="max-w-9xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center relative z-10">
           {/* Left Text */}
           <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md text-xs font-semibold text-[#F2B632] border border-white/20 shadow-inner">
@@ -655,7 +655,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* 4. PARTNERS STRIP (Minimal, Clean)                                        */}
       {/* ========================================================================= */}
       <div className="py-6 bg-slate-50/70 border-b border-slate-200/60 px-4 sm:px-8">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs">
+        <div className="max-w-9xl mx-auto flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-xs">
           <div className="flex items-center gap-1.5 text-slate-500 font-semibold text-[11px] uppercase tracking-wider">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             <span>Authorized Case Management Agencies:</span>
@@ -1242,7 +1242,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
       {/* 10. APPROACH (Brand-Related Image Flush to Right Edge - Full Width Feel)   */}
       {/* ========================================================================= */}
       <section className="relative w-full bg-white border-b border-[#2e541c]/10 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-8">
+        <div className="max-w-9xl mx-auto px-4 sm:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 items-center min-h-[460px] lg:min-h-[500px]">
             {/* Left Text Column */}
             <div className="lg:col-span-6 py-14 sm:py-18 lg:py-20 space-y-5 max-w-xl z-10 pr-0 lg:pr-8">
@@ -1516,8 +1516,8 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
               <div
                 key={idx}
                 className={`rounded-2xl sm:rounded-3xl border transition-all duration-300 overflow-hidden bg-white ${openFaq === idx
-                    ? 'border-[#2e541c]/40 shadow-[0_20px_50px_rgba(0,0,0,0.08)] -translate-y-0.5'
-                    : 'border-slate-200/70 shadow-[0_15px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-0.5'
+                  ? 'border-[#2e541c]/40 shadow-[0_20px_50px_rgba(0,0,0,0.08)] -translate-y-0.5'
+                  : 'border-slate-200/70 shadow-[0_15px_35px_rgba(0,0,0,0.04)] hover:shadow-[0_20px_45px_rgba(0,0,0,0.08)] hover:-translate-y-0.5'
                   }`}
               >
                 <button

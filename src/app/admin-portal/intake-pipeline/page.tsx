@@ -1,12 +1,8 @@
 'use client';
 
 import React from 'react';
-import { EnrollmentPortal } from '@/components/portals/EnrollmentPortal';
+import { ClientIntakePortal } from '@/components/portals/ClientIntakePortal';
 
 export default function IntakePipelinePage() {
-  return (
-    <div className="space-y-6">
-      <EnrollmentPortal />
-    </div>
-  );
+  return <ClientIntakePortal />;
 }
