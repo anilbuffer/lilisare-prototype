@@ -195,7 +195,7 @@ export function TopUtilityBar({
   return (
     <>
       {/* Top Edge Separate Common Header */}
-      <header className="bg-[#f4f7f6] border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3.5 z-30 transition-all">
+      <header className="bg-white border-b border-slate-200/80 px-4 sm:px-6 lg:px-8 py-3.5 z-30 transition-all shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         <div className="flex items-center justify-between gap-4">
           {/* Left: Circular Sidebar Toggle Button + Page Title */}
           <div className="flex items-center gap-2.5">
@@ -220,7 +220,7 @@ export function TopUtilityBar({
                 setIsSearchOpen(true);
                 setSearchQuery('');
               }}
-              className="relative flex-1 max-w-xs sm:max-w-lg bg-white border border-slate-200/90 rounded-full py-1.5 sm:py-2 pl-4 pr-3 flex items-center justify-between shadow-2xs hover:border-[#3e6b2b]/40 hover:shadow-xs transition-all cursor-pointer group text-left"
+              className="relative flex-1 max-w-xs sm:max-w-lg bg-slate-50 hover:bg-white border border-slate-200/90 rounded-full py-1.5 sm:py-2 pl-4 pr-3 flex items-center justify-between shadow-2xs hover:border-[#3e6b2b]/40 hover:shadow-xs transition-all cursor-pointer group text-left"
             >
               <div className="flex items-center gap-2 min-w-0">
                 <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#3e6b2b] transition-colors shrink-0" />
