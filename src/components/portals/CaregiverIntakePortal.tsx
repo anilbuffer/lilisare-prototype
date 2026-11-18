@@ -408,7 +408,7 @@ export function CaregiverIntakePortal() {
           className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>+ Add caregiver inquiry</span>
+          <span>Add caregiver inquiry</span>
         </button>
       </div>
 

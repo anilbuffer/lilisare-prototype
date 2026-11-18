@@ -10,7 +10,6 @@ import {
   Plus,
   X,
   Filter,
-  BarChart3,
   Calendar,
   Clock,
   Phone,
@@ -24,12 +23,14 @@ import {
   Users,
   Check,
   ChevronDown,
-  Layers,
   FileText,
   UserCheck,
-  LayoutGrid,
-  List as ListIcon,
-  ShieldAlert,
+  ShieldCheck,
+  Send,
+  MessageSquare,
+  Award,
+  DollarSign,
+  ChevronRight,
   SlidersHorizontal,
 } from 'lucide-react';
 
@@ -43,7 +44,7 @@ export const INTAKE_STAGES: LeadStatus[] = [
   'Closed / Not Proceeding',
 ];
 
-const STAGE_CONFIG: Record<
+const STAGE_THEMES: Record<
   LeadStatus,
   {
     label: string;
@@ -56,75 +57,75 @@ const STAGE_CONFIG: Record<
 > = {
   'New Inquiry': {
     label: 'NEW INQUIRY',
-    dotColor: 'bg-blue-500',
-    bgTint: 'bg-[#f4f8fd]',
-    borderColor: 'border-[#e1edf8]',
-    countBg: 'bg-blue-100',
-    countText: 'text-blue-800',
+    dotColor: 'bg-emerald-600',
+    bgTint: 'bg-[#f4f9f4]',
+    borderColor: 'border-[#dcf2e3]',
+    countBg: 'bg-emerald-100',
+    countText: 'text-emerald-900',
   },
   'Contact Pending': {
-    label: 'CONTACT PENDING',
-    dotColor: 'bg-sky-500',
-    bgTint: 'bg-[#f4f8fd]',
-    borderColor: 'border-[#e1edf8]',
-    countBg: 'bg-sky-100',
-    countText: 'text-sky-800',
+    label: 'NEW INQUIRY',
+    dotColor: 'bg-emerald-600',
+    bgTint: 'bg-[#f4f9f4]',
+    borderColor: 'border-[#dcf2e3]',
+    countBg: 'bg-emerald-100',
+    countText: 'text-emerald-900',
   },
   'Contacted': {
     label: 'CONTACTED',
-    dotColor: 'bg-emerald-500',
-    bgTint: 'bg-[#f3faf5]',
-    borderColor: 'border-[#dcf2e3]',
-    countBg: 'bg-emerald-100',
-    countText: 'text-emerald-800',
+    dotColor: 'bg-blue-600',
+    bgTint: 'bg-[#f4f8fd]',
+    borderColor: 'border-[#e1edf8]',
+    countBg: 'bg-blue-100',
+    countText: 'text-blue-900',
   },
   'Needs Discussion': {
     label: 'NEEDS DISCUSSION',
-    dotColor: 'bg-amber-500',
-    bgTint: 'bg-[#fffdf0]',
+    dotColor: 'bg-amber-600',
+    bgTint: 'bg-[#fffdf2]',
     borderColor: 'border-[#fef0c7]',
     countBg: 'bg-amber-100',
-    countText: 'text-amber-800',
+    countText: 'text-amber-900',
   },
   'Needs Clarification': {
-    label: 'NEEDS CLARIFICATION',
-    dotColor: 'bg-amber-500',
-    bgTint: 'bg-[#fffdf0]',
+    label: 'NEEDS DISCUSSION',
+    dotColor: 'bg-amber-600',
+    bgTint: 'bg-[#fffdf2]',
     borderColor: 'border-[#fef0c7]',
     countBg: 'bg-amber-100',
-    countText: 'text-amber-800',
+    countText: 'text-amber-900',
   },
   'Case Manager Coordination': {
     label: 'CASE MANAGER COORDINATION',
-    dotColor: 'bg-purple-500',
-    bgTint: 'bg-[#fbf7fe]',
+    dotColor: 'bg-purple-600',
+    bgTint: 'bg-[#faf5ff]',
     borderColor: 'border-[#f3e8ff]',
     countBg: 'bg-purple-100',
-    countText: 'text-purple-800',
+    countText: 'text-purple-900',
   },
   'Family Decision': {
     label: 'FAMILY DECISION',
-    dotColor: 'bg-indigo-500',
+    dotColor: 'bg-indigo-600',
     bgTint: 'bg-[#f5f6ff]',
     borderColor: 'border-[#e0e7ff]',
     countBg: 'bg-indigo-100',
-    countText: 'text-indigo-800',
+    countText: 'text-indigo-900',
   },
   'Follow-up Scheduled': {
-    label: 'FOLLOW-UP SCHEDULED',
-    dotColor: 'bg-indigo-500',
+    label: 'FAMILY DECISION',
+    dotColor: 'bg-indigo-600',
     bgTint: 'bg-[#f5f6ff]',
     borderColor: 'border-[#e0e7ff]',
     countBg: 'bg-indigo-100',
-    countText: 'text-indigo-800',
+    countText: 'text-indigo-900',
   },
   'Converted': {
-    label: 'CONVERTED',
-    dotColor: 'bg-emerald-600',
+    label: 'CONVERTED (→ CARE PLAN)',
+    dotColor: 'bg-emerald-700',
     bgTint: 'bg-[#f0fdf4]',
-    borderColor: 'border-[#dcfce7]',
+    borderColor: 'border-[#bbf7d0]',
     countBg: 'bg-emerald-200',
-    countText: 'text-emerald-900',
+    countText: 'text-emerald-950',
   },
   'Closed / Not Proceeding': {
     label: 'CLOSED / NOT PROCEEDING',
@@ -136,67 +137,91 @@ const STAGE_CONFIG: Record<
   },
 };
 
-const INTAKE_STEPS_CHECKLIST = [
-  { step: 1, title: 'Inquiry Logged', desc: 'Contact details, household demographics and source recorded.' },
-  { step: 2, title: 'Family Contacted', desc: 'Initial telephone intake consultation conducted with primary caregiver.' },
-  { step: 3, title: 'Needs Assessed', desc: 'Clinical care hours, waiver program, and scheduling needs identified.' },
-  { step: 4, title: 'Case Manager Linked', desc: 'Case Management Agency coordinator connected for state authorization.' },
-  { step: 5, title: 'Medicaid Waiver Review', desc: 'Prior Authorization Request (PAR) and physician orders submitted.' },
-  { step: 6, title: 'Family Agreement', desc: 'Mutual service agreements and family caregiver designations e-signed.' },
-  { step: 7, title: 'Service Converted', desc: 'Authorized care plan activated, caregiver provisioned for EVV.' },
+const INTAKE_STEPS_LABELS = [
+  'Inquiry logged',
+  'Family contacted',
+  'Needs assessed',
+  'Case manager linked',
+  'Medicaid waiver review',
+  'Family agreement',
+  'Service converted',
 ];
 
-export function ClientIntakePortal() {
-  const { leads, updateLeadStatus, addLead, notify } = usePortal();
+const getLeadCounty = (lead: Lead): string => {
+  if ((lead as any).county) return (lead as any).county;
+  if (lead.referralAgency?.includes('Rocky Mountain') || lead.referralAgency?.includes('RMHS')) return 'Denver';
+  if (lead.referralAgency?.includes('Developmental Pathways')) return 'Arapahoe';
+  if (lead.referralAgency?.includes('Imagine')) return 'Boulder';
+  if (lead.referralAgency?.includes('North Metro')) return 'Adams';
+  if (lead.referralAgency?.includes('Continuum')) return 'Jefferson';
+  return 'Denver';
+};
 
-  // View state: 'board' or 'list'
+export function ClientIntakePortal() {
+  const router = useRouter();
+  const { leads, updateLeadStatus, updateLead, addLead, notify } = usePortal();
+
+  // View mode: 'board' or 'list'
   const [viewMode, setViewMode] = useState<'board' | 'list'>('board');
 
-  // Filter states
+  // Filters
   const [searchQuery, setSearchQuery] = useState('');
   const [stageFilter, setStageFilter] = useState('All Stages');
-  const [ownerFilter, setOwnerFilter] = useState('All Owners');
+  const [ownerFilter, setOwnerFilter] = useState('All Intake Staff');
   const [serviceFilter, setServiceFilter] = useState('All Services');
   const [sourceFilter, setSourceFilter] = useState('All Sources');
-  const [overdueOnly, setOverdueOnly] = useState(false);
+  const [countyFilter, setCountyFilter] = useState('All Counties');
+  const [priorityFilter, setPriorityFilter] = useState('All Priorities');
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
 
-  // Check if any filter is actively applied
   const isFiltered =
     searchQuery.trim() !== '' ||
     stageFilter !== 'All Stages' ||
-    ownerFilter !== 'All Owners' ||
+    ownerFilter !== 'All Intake Staff' ||
     serviceFilter !== 'All Services' ||
     sourceFilter !== 'All Sources' ||
-    overdueOnly;
+    countyFilter !== 'All Counties' ||
+    priorityFilter !== 'All Priorities';
 
   const handleClearFilters = () => {
     setSearchQuery('');
     setStageFilter('All Stages');
-    setOwnerFilter('All Owners');
+    setOwnerFilter('All Intake Staff');
     setServiceFilter('All Services');
     setSourceFilter('All Sources');
-    setOverdueOnly(false);
+    setCountyFilter('All Counties');
+    setPriorityFilter('All Priorities');
   };
 
-  // Modals & Drawers
+  // Selected lead for detail modal (matching CaregiverIntake's centered modal)
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [detailActiveTab, setDetailActiveTab] = useState<'overview' | 'clinical' | 'authorizations' | 'communication'>('overview');
+
+  // Modal states
   const [showAddModal, setShowAddModal] = useState(false);
-  const [addModalInitialStage, setAddModalInitialStage] = useState<LeadStatus>('New Inquiry');
+  const [addInitialStage, setAddInitialStage] = useState<LeadStatus>('New Inquiry');
+  const [showLogConsultationModal, setShowLogConsultationModal] = useState(false);
+  const [consultationNotes, setConsultationNotes] = useState('');
+  const [consultationDate, setConsultationDate] = useState('2026-11-20');
+  const [consultationTime, setConsultationTime] = useState('10:00 AM');
+  const [consultationType, setConsultationType] = useState('Initial Phone Consultation');
   const [showSourceInsightsModal, setShowSourceInsightsModal] = useState(false);
 
-  // Drag-and-drop state
-  const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
-
-  // New Inquiry form state
+  // Add Client Inquiry form state
   const [newClientName, setNewClientName] = useState('');
   const [newContactName, setNewContactName] = useState('');
+  const [newRelationship, setNewRelationship] = useState('Parent / Guardian');
   const [newPhone, setNewPhone] = useState('');
   const [newEmail, setNewEmail] = useState('');
   const [newService, setNewService] = useState<ServiceType>('IHSS');
   const [newSource, setNewSource] = useState('Website');
-  const [newStage, setNewStage] = useState<LeadStatus>('New Inquiry');
+  const [newCounty, setNewCounty] = useState('Denver');
   const [newOwner, setNewOwner] = useState('Maya R.');
+  const [newSchedule, setNewSchedule] = useState('30–35 hrs/wk');
   const [newNotes, setNewNotes] = useState('');
+
+  // Drag-and-drop state
+  const [draggedLeadId, setDraggedLeadId] = useState<string | null>(null);
 
   // Filtered Leads
   const filteredLeads = useMemo(() => {
@@ -210,22 +235,35 @@ export function ClientIntakePortal() {
         if (currentLeadStage !== stageFilter) return false;
       }
 
-      // 2. Comprehensive Search across name, contact, phone, email, agency, staff, notes
+      // 2. Comprehensive Search query
       if (searchQuery.trim()) {
-        const query = searchQuery.toLowerCase();
-        const matchesName = lead.clientName.toLowerCase().includes(query);
-        const matchesContact = lead.primaryContactName.toLowerCase().includes(query);
-        const matchesPhone = lead.phone ? lead.phone.toLowerCase().includes(query) : false;
-        const matchesEmail = lead.email ? lead.email.toLowerCase().includes(query) : false;
-        const matchesAgency = lead.referralAgency ? lead.referralAgency.toLowerCase().includes(query) : false;
-        const matchesService = lead.requestedService ? lead.requestedService.toLowerCase().includes(query) : false;
-        const matchesStaff = (lead.assignedStaff || lead.ownerName || '').toLowerCase().includes(query);
-        const matchesNotes = lead.notes ? lead.notes.toLowerCase().includes(query) : false;
-        if (!matchesName && !matchesContact && !matchesPhone && !matchesEmail && !matchesAgency && !matchesService && !matchesStaff && !matchesNotes) return false;
+        const q = searchQuery.toLowerCase();
+        const county = getLeadCounty(lead).toLowerCase();
+        const matchesName = lead.clientName.toLowerCase().includes(q);
+        const matchesContact = lead.primaryContactName.toLowerCase().includes(q);
+        const matchesPhone = lead.phone ? lead.phone.toLowerCase().includes(q) : false;
+        const matchesEmail = lead.email ? lead.email.toLowerCase().includes(q) : false;
+        const matchesAgency = lead.referralAgency ? lead.referralAgency.toLowerCase().includes(q) : false;
+        const matchesService = lead.requestedService ? lead.requestedService.toLowerCase().includes(q) : false;
+        const matchesStaff = (lead.assignedStaff || lead.ownerName || '').toLowerCase().includes(q);
+        const matchesCounty = county.includes(q);
+        const matchesNotes = lead.notes ? lead.notes.toLowerCase().includes(q) : false;
+        if (
+          !matchesName &&
+          !matchesContact &&
+          !matchesPhone &&
+          !matchesEmail &&
+          !matchesAgency &&
+          !matchesService &&
+          !matchesStaff &&
+          !matchesCounty &&
+          !matchesNotes
+        )
+          return false;
       }
 
-      // 3. Owner filter
-      if (ownerFilter !== 'All Owners') {
+      // 3. Owner / Staff filter
+      if (ownerFilter !== 'All Intake Staff') {
         const leadOwner = lead.ownerName || lead.assignedStaff;
         if (leadOwner !== ownerFilter) return false;
       }
@@ -241,35 +279,54 @@ export function ClientIntakePortal() {
         if (!cat.toLowerCase().includes(sourceFilter.toLowerCase())) return false;
       }
 
-      // 6. Overdue filter
-      if (overdueOnly) {
-        if (!lead.isOverdue) return false;
+      // 6. County filter
+      if (countyFilter !== 'All Counties') {
+        if (getLeadCounty(lead) !== countyFilter) return false;
+      }
+
+      // 7. Priority / Alert filter
+      if (priorityFilter !== 'All Priorities') {
+        if (priorityFilter === 'Overdue Only' && !lead.isOverdue) return false;
+        if (priorityFilter === 'Awaiting case manager' && lead.alertBadge !== 'Awaiting case manager') return false;
+        if (priorityFilter === 'Docs missing' && lead.alertBadge !== 'Docs missing') return false;
+        if (priorityFilter === 'Payment at risk' && lead.alertBadge !== 'Payment at risk') return false;
       }
 
       return true;
     });
-  }, [leads, searchQuery, stageFilter, ownerFilter, serviceFilter, sourceFilter, overdueOnly]);
+  }, [leads, searchQuery, stageFilter, ownerFilter, serviceFilter, sourceFilter, countyFilter, priorityFilter]);
 
-  // Key Metrics
-  const totalOpen = useMemo(() => {
+  // Key Metrics matching Caregiver Intake's 5 cards layout:
+  // 1. Open inquiries
+  // 2. Family contacted
+  // 3. CMA coordination
+  // 4. Converted this month
+  // 5. Avg days to convert
+  const openInquiriesCount = useMemo(() => {
     return leads.filter(
       (l) => l.status !== 'Converted' && l.status !== 'Closed / Not Proceeding'
     ).length;
   }, [leads]);
 
-  const overdueFollowUps = useMemo(() => {
-    return leads.filter((l) => l.isOverdue).length;
+  const contactedCount = useMemo(() => {
+    return leads.filter((l) => l.status === 'Contacted').length;
   }, [leads]);
 
-  const convertedThisMonth = useMemo(() => {
-    return leads.filter((l) => l.status === 'Converted').length + 5; // 6 as shown in screenshot
+  const cmaCoordinationCount = useMemo(() => {
+    return leads.filter(
+      (l) => l.status === 'Case Manager Coordination' || l.status === 'Needs Discussion'
+    ).length;
+  }, [leads]);
+
+  const convertedCount = useMemo(() => {
+    return leads.filter((l) => l.status === 'Converted').length + 5;
   }, [leads]);
 
   const avgDaysToConvert = '11d';
 
-  // Group leads by 7 columns
-  const columnLeads = useMemo(() => {
-    const map: Record<LeadStatus, Lead[]> = {
+  // Group leads by 7 stages
+  const stageGroups = useMemo(() => {
+    const groups: Record<LeadStatus, Lead[]> = {
       'New Inquiry': [],
       'Contact Pending': [],
       'Contacted': [],
@@ -284,22 +341,21 @@ export function ClientIntakePortal() {
 
     filteredLeads.forEach((lead) => {
       let stage = lead.status;
-      // Map legacy statuses
       if (stage === 'Contact Pending') stage = 'New Inquiry';
       if (stage === 'Needs Clarification') stage = 'Needs Discussion';
       if (stage === 'Follow-up Scheduled') stage = 'Family Decision';
 
-      if (map[stage]) {
-        map[stage].push(lead);
+      if (groups[stage]) {
+        groups[stage].push(lead);
       } else {
-        map['New Inquiry'].push(lead);
+        groups['New Inquiry'].push(lead);
       }
     });
 
-    return map;
+    return groups;
   }, [filteredLeads]);
 
-  // Drag and Drop handlers
+  // Drag-and-drop
   const handleDragStart = (e: React.DragEvent, id: string) => {
     e.dataTransfer.setData('text/plain', id);
     setDraggedLeadId(id);
@@ -318,10 +374,9 @@ export function ClientIntakePortal() {
     }
   };
 
-  // Open Add Inquiry Modal
+  // Open Add Modal
   const handleOpenAddModal = (stage: LeadStatus = 'New Inquiry') => {
-    setAddModalInitialStage(stage);
-    setNewStage(stage);
+    setAddInitialStage(stage);
     setNewClientName('');
     setNewContactName('');
     setNewPhone('');
@@ -330,7 +385,7 @@ export function ClientIntakePortal() {
     setShowAddModal(true);
   };
 
-  // Create new lead
+  // Submit Add Client Inquiry
   const handleCreateLead = (e: React.FormEvent) => {
     e.preventDefault();
     if (!newClientName.trim()) {
@@ -354,14 +409,23 @@ export function ClientIntakePortal() {
     addLead({
       clientName: newClientName,
       primaryContactName: newContactName || `${newClientName} Contact`,
-      relationship: 'Parent / Guardian',
+      relationship: newRelationship,
       phone: newPhone || '(303) 555-0100',
       email: newEmail || 'inquiry@colorado.org',
       dateOfBirth: '2016-01-01',
       inquirySource: (newSource + ' Inquiry') as any,
       sourceCategory: newSource,
       sourceDetail: `Family inquiry · ${newSource}`,
-      referralAgency: newSource === 'Case Management Agency' ? 'Rocky Mountain Human Services (RMHS)' : 'Direct',
+      referralAgency:
+        newCounty === 'Boulder'
+          ? 'Imagine! Colorado'
+          : newCounty === 'Arapahoe'
+            ? 'Developmental Pathways'
+            : newCounty === 'Jefferson'
+              ? 'Continuum of Colorado'
+              : newCounty === 'Adams'
+                ? 'North Metro Community Services'
+                : 'Rocky Mountain Human Services (RMHS)',
       caseManagerName: 'State Care Coordinator',
       caseManagerPhone: '(303) 555-8000',
       caseManagerEmail: 'coordinator@colorado.gov',
@@ -370,13 +434,35 @@ export function ClientIntakePortal() {
       ownerName: newOwner,
       ownerInitials,
       ownerAvatarColor: ownerColors[newOwner] || 'bg-slate-700',
-      status: newStage,
-      intakeStepsCompleted: newStage === 'Converted' ? 7 : newStage === 'Family Decision' ? 6 : newStage === 'Case Manager Coordination' ? 4 : newStage === 'Needs Discussion' ? 3 : newStage === 'Contacted' ? 2 : 1,
+      status: addInitialStage,
+      intakeStepsCompleted:
+        addInitialStage === 'Converted'
+          ? 7
+          : addInitialStage === 'Family Decision'
+            ? 6
+            : addInitialStage === 'Case Manager Coordination'
+              ? 4
+              : addInitialStage === 'Needs Discussion'
+                ? 3
+                : addInitialStage === 'Contacted'
+                  ? 2
+                  : 1,
       intakeTotalSteps: 7,
-      intakeStageLabel: newStage === 'Converted' ? 'Service started' : newStage === 'Family Decision' ? 'Decision pending' : newStage === 'Case Manager Coordination' ? 'Case manager linked' : 'Inquiry logged',
+      intakeStageLabel:
+        addInitialStage === 'Converted'
+          ? 'Service converted'
+          : addInitialStage === 'Family Decision'
+            ? 'Family agreement'
+            : addInitialStage === 'Case Manager Coordination'
+              ? 'Case manager linked'
+              : addInitialStage === 'Needs Discussion'
+                ? 'Needs assessed'
+                : addInitialStage === 'Contacted'
+                  ? 'Family contacted'
+                  : 'Inquiry logged',
       daysInStage: 1,
       isOverdue: false,
-      followUpDisplay: newStage === 'Converted' || newStage === 'Closed / Not Proceeding' ? '—' : 'Nov 24',
+      followUpDisplay: addInitialStage === 'Converted' || addInitialStage === 'Closed / Not Proceeding' ? '—' : 'Nov 24',
       nextFollowUpDate: '2026-11-24',
       notes: newNotes || 'New intake record registered from administrative command center.',
     });
@@ -384,13 +470,73 @@ export function ClientIntakePortal() {
     setShowAddModal(false);
   };
 
-  // Render progress bar color
-  const getProgressBarColor = (lead: Lead) => {
-    if (lead.isOverdue) return 'bg-[#ef4444]'; // Red
-    if (lead.status === 'Needs Discussion' || lead.status === 'Case Manager Coordination') {
-      return 'bg-[#f59e0b]'; // Amber
+  // Advance Roadmap Step
+  const handleAdvanceLeadStep = (leadId: string) => {
+    const targetLead = leads.find((l) => l.id === leadId);
+    if (!targetLead) return;
+    const currentStep = targetLead.intakeStepsCompleted || 1;
+    if (currentStep < 7) {
+      const nextStep = currentStep + 1;
+      let nextStage: LeadStatus = targetLead.status;
+      if (nextStep === 2) nextStage = 'Contacted';
+      if (nextStep === 3) nextStage = 'Needs Discussion';
+      if (nextStep === 4) nextStage = 'Case Manager Coordination';
+      if (nextStep === 6) nextStage = 'Family Decision';
+      if (nextStep === 7) nextStage = 'Converted';
+
+      updateLead(targetLead.id, {
+        intakeStepsCompleted: nextStep,
+        status: nextStage,
+        intakeStageLabel: INTAKE_STEPS_LABELS[nextStep - 1] || 'In progress',
+      });
+
+      if (selectedLead && selectedLead.id === leadId) {
+        setSelectedLead({
+          ...selectedLead,
+          intakeStepsCompleted: nextStep,
+          status: nextStage,
+          intakeStageLabel: INTAKE_STEPS_LABELS[nextStep - 1] || 'In progress',
+        });
+      }
+
+      notify(
+        'Intake Roadmap Advanced',
+        `${targetLead.clientName} advanced to Step ${nextStep}: ${INTAKE_STEPS_LABELS[nextStep - 1]}`,
+        'success'
+      );
     }
-    return 'bg-[#2b501a]'; // Dark green / Forest
+  };
+
+  // Convert to Active Client
+  const handleConvertToActiveClient = (lead: Lead) => {
+    updateLeadStatus(lead.id, 'Converted');
+    updateLead(lead.id, {
+      intakeStepsCompleted: 7,
+      status: 'Converted',
+      intakeStageLabel: 'Service converted',
+    });
+    if (selectedLead && selectedLead.id === lead.id) {
+      setSelectedLead({
+        ...selectedLead,
+        status: 'Converted',
+        intakeStepsCompleted: 7,
+        intakeStageLabel: 'Service converted',
+      });
+    }
+    notify(
+      'Client Converted!',
+      `${lead.clientName} has been converted into an active client! Care plan and EVV provisioning unlocked.`,
+      'success'
+    );
+  };
+
+  // Render Service Badge (Matches renderRoleBadge in Caregiver Intake)
+  const renderServiceBadge = (service: string) => {
+    return (
+      <span className="bg-slate-100 text-slate-700 font-semibold text-xs px-2 py-0.5 rounded-md border border-slate-200/80">
+        {service}
+      </span>
+    );
   };
 
   // Render Alert Badge
@@ -402,7 +548,7 @@ export function ClientIntakePortal() {
     if (badge === 'Payment at risk') badgeClass = 'bg-rose-50 text-rose-700 border-rose-200/80';
 
     return (
-      <div className="mt-2">
+      <div className="mt-1.5">
         <span
           className={`inline-flex items-center text-[10px] font-semibold px-2 py-0.5 rounded-md border ${badgeClass}`}
         >
@@ -412,14 +558,10 @@ export function ClientIntakePortal() {
     );
   };
 
-  // Render Service Pill
-  const renderServicePill = (service: ServiceType) => {
-    return (
-      <span className="bg-emerald-100 text-emerald-800 font-black text-[10px] px-2 py-0.5 rounded uppercase tracking-wide">
-        {service}
-      </span>
-    );
-  };
+  // Active lead in modal (synced)
+  const currentLead = selectedLead
+    ? leads.find((l) => l.id === selectedLead.id) || selectedLead
+    : null;
 
   return (
     <div className="space-y-4 pb-12 select-none">
@@ -431,6 +573,9 @@ export function ClientIntakePortal() {
           <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
             Client Intake
           </h1>
+          <p className="text-xs text-slate-500 mt-1">
+            Track family and client inquiries from first call to conversion and care plan handoff.
+          </p>
         </div>
         <button
           type="button"
@@ -438,72 +583,101 @@ export function ClientIntakePortal() {
           className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>+ Add inquiry</span>
+          <span>+ Add client inquiry</span>
         </button>
       </div>
 
       {/* ========================================================================= */}
-      {/* 2. STANDARDIZED STATS CARDS (Matching Dashboard KpiCards Layout & Style)   */}
+      {/* 2. STANDARDIZED STATS CARDS (Matching Caregiver Intake 5-Card Layout)      */}
       {/* ========================================================================= */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5">
-        {/* 1. TOTAL OPEN */}
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
+        {/* 1. OPEN INQUIRIES */}
         <button
           type="button"
           onClick={() => {
             setStageFilter('All Stages');
-            setOverdueOnly(false);
+            setCountyFilter('All Counties');
+            setPriorityFilter('All Priorities');
           }}
-          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-blue-400 hover:-translate-y-0.5 relative overflow-hidden"
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden"
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
               <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
-                TOTAL OPEN
+                OPEN INQUIRIES
               </span>
-              <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-200/70 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200/70 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                 <Users className="w-4 h-4" />
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              {totalOpen}
+              {openInquiriesCount}
             </div>
           </div>
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-500">
-              Active intake inquiries
+              Active client pipeline
             </span>
           </div>
         </button>
 
-        {/* 2. OVERDUE FOLLOW-UPS */}
+        {/* 2. FAMILY CONTACTED */}
         <button
           type="button"
-          onClick={() => setOverdueOnly(!overdueOnly)}
-          className={`bg-white rounded-2xl p-4 sm:p-5 border ${overdueOnly ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-200/80'
-            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-rose-400 hover:-translate-y-0.5 relative overflow-hidden`}
+          onClick={() => setStageFilter(stageFilter === 'Contacted' ? 'All Stages' : 'Contacted')}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${stageFilter === 'Contacted' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-blue-400 hover:-translate-y-0.5 relative overflow-hidden`}
         >
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
               <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
-                OVERDUE FOLLOW-UPS
+                FAMILY CONTACTED
               </span>
-              <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-200/70 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                <AlertCircle className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-200/70 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Phone className="w-4 h-4" />
               </div>
             </div>
-            <div className="text-2xl sm:text-3xl font-black text-rose-600 tracking-tight">
-              {overdueFollowUps}
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {contactedCount}
             </div>
           </div>
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-            <span className="text-xs font-bold text-rose-600 flex items-center gap-1">
-              <span>Action required today</span>
-              {overdueOnly && <span className="text-[10px] bg-rose-100 px-1.5 py-0.5 rounded">Active</span>}
+            <span className="text-xs font-semibold text-blue-700">
+              Initial intake consultations
             </span>
           </div>
         </button>
 
-        {/* 3. CONVERTED THIS MONTH */}
+        {/* 3. CMA COORDINATION */}
+        <button
+          type="button"
+          onClick={() =>
+            setStageFilter(stageFilter === 'Case Manager Coordination' ? 'All Stages' : 'Case Manager Coordination')
+          }
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${stageFilter === 'Case Manager Coordination' ? 'border-amber-500 ring-2 ring-amber-200' : 'border-slate-200/80'
+            } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-amber-400 hover:-translate-y-0.5 relative overflow-hidden`}
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                CMA COORDINATION
+              </span>
+              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 text-amber-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Building2 className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {cmaCoordinationCount}
+            </div>
+          </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-amber-800">
+              Awaiting PAR &amp; state waiver
+            </span>
+          </div>
+        </button>
+
+        {/* 4. CONVERTED THIS MONTH */}
         <button
           type="button"
           onClick={() => setStageFilter(stageFilter === 'Converted' ? 'All Stages' : 'Converted')}
@@ -520,24 +694,24 @@ export function ClientIntakePortal() {
               </div>
             </div>
             <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              {convertedThisMonth}
+              {convertedCount}
             </div>
           </div>
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
             <span className="text-xs font-bold text-emerald-700">
-              +2 vs last month
+              Ready for care plan activation
             </span>
           </div>
         </button>
 
-        {/* 4. AVG DAYS TO CONVERT */}
-        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left group flex flex-col justify-between hover:border-amber-400 relative overflow-hidden">
+        {/* 5. AVG DAYS TO CONVERT */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left group flex flex-col justify-between hover:border-purple-400 relative overflow-hidden">
           <div>
             <div className="flex items-center justify-between gap-1.5 mb-2">
               <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
                 AVG DAYS TO CONVERT
               </span>
-              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 text-amber-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+              <div className="w-8 h-8 rounded-full bg-purple-50 border border-purple-200/70 text-purple-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                 <Clock className="w-4 h-4" />
               </div>
             </div>
@@ -546,135 +720,140 @@ export function ClientIntakePortal() {
             </div>
           </div>
           <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
-            <span className="text-xs font-semibold text-amber-800">
-              Within 14d SLA target
+            <span className="text-xs font-semibold text-purple-700">
+              Target &lt; 14 days
             </span>
           </div>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. OPTIMIZED FILTER BAR WITH SEARCH, STAGE DROPDOWN & VIEW SWITCHER       */}
+      {/* 3. OPTIMIZED FILTER BAR WITH STAGE SELECTOR & FUNCTIONAL MORE FILTERS      */}
       {/* ========================================================================= */}
-      <div className="portal-filter-bar">
-        {/* Left: Search & Dropdown Filters */}
-        <div className="flex flex-wrap items-center gap-2 flex-1">
-          {/* Search across name, contact, phone, email, notes */}
-          <div className="relative min-w-[210px] flex-1 sm:flex-initial">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Filter by name, phone, email..."
-              className="portal-input"
-            />
-          </div>
+      <div className="space-y-2">
+        <div className="portal-filter-bar">
+          {/* Left: Search & Filter Dropdowns */}
+          <div className="flex flex-wrap items-center gap-2 flex-1">
+            {/* Search inquiries */}
+            <div className="relative min-w-[210px] flex-1 sm:flex-initial">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by name, contact, phone, CMA..."
+                className="portal-input"
+              />
+            </div>
 
-          {/* Stage Dropdown Filter */}
-          <div className="relative">
-            <select
-              value={stageFilter}
-              onChange={(e) => setStageFilter(e.target.value)}
-              className="portal-select"
-            >
-              <option value="All Stages">All Stages</option>
-              {INTAKE_STAGES.map((st) => (
-                <option key={st} value={st}>
-                  {st}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+            {/* Stage Dropdown Filter */}
+            <div className="relative">
+              <select
+                value={stageFilter}
+                onChange={(e) => setStageFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Stages">All Stages</option>
+                {INTAKE_STAGES.map((st) => (
+                  <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
 
-          {/* All Owners Dropdown */}
-          <div className="relative">
-            <select
-              value={ownerFilter}
-              onChange={(e) => setOwnerFilter(e.target.value)}
-              className="portal-select"
-            >
-              <option value="All Owners">All Owners</option>
-              <option value="Maya R.">Maya R.</option>
-              <option value="Jon P.">Jon P.</option>
-              <option value="Sam K.">Sam K.</option>
-              <option value="Alicia T.">Alicia T.</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+            {/* All Intake Staff */}
+            <div className="relative">
+              <select
+                value={ownerFilter}
+                onChange={(e) => setOwnerFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Intake Staff">All Intake Staff</option>
+                <option value="Maya R.">Maya R.</option>
+                <option value="Jon P.">Jon P.</option>
+                <option value="Sam K.">Sam K.</option>
+                <option value="Alicia T.">Alicia T.</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
 
-          {/* All Services Dropdown */}
-          <div className="relative">
-            <select
-              value={serviceFilter}
-              onChange={(e) => setServiceFilter(e.target.value)}
-              className="portal-select"
-            >
-              <option value="All Services">All Services</option>
-              <option value="IHSS">IHSS</option>
-              <option value="CFC">CFC</option>
-              <option value="HCBS">HCBS</option>
-              <option value="PDN">PDN</option>
-              <option value="IRSS">IRSS</option>
-              <option value="HMA">HMA</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+            {/* All Services */}
+            <div className="relative">
+              <select
+                value={serviceFilter}
+                onChange={(e) => setServiceFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Services">All Services</option>
+                <option value="IHSS">IHSS</option>
+                <option value="CFC">CFC</option>
+                <option value="HCBS">HCBS</option>
+                <option value="PDN">PDN</option>
+                <option value="IRSS">IRSS</option>
+                <option value="HMA">HMA</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
 
-          {/* All Sources Dropdown */}
-          <div className="relative">
-            <select
-              value={sourceFilter}
-              onChange={(e) => setSourceFilter(e.target.value)}
-              className="portal-select"
-            >
-              <option value="All Sources">All Sources</option>
-              <option value="Website">Website</option>
-              <option value="Phone">Phone</option>
-              <option value="Case Management Agency">Case Management Agency</option>
-              <option value="Direct Referral">Direct Referral</option>
-              <option value="RFP">RFP</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
+            {/* All Sources */}
+            <div className="relative">
+              <select
+                value={sourceFilter}
+                onChange={(e) => setSourceFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Sources">All Sources</option>
+                <option value="Website">Website</option>
+                <option value="Phone">Phone</option>
+                <option value="Case Management Agency">Case Management Agency</option>
+                <option value="Direct Referral">Direct Referral</option>
+                <option value="RFP">RFP</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
 
-          {/* Overdue Follow-ups Only Checkbox */}
-          <label className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl hover:bg-slate-50 cursor-pointer text-xs font-medium text-slate-700 select-none">
-            <input
-              type="checkbox"
-              checked={overdueOnly}
-              onChange={(e) => setOverdueOnly(e.target.checked)}
-              className="w-3.5 h-3.5 rounded border-slate-300 text-[#264e1e] focus:ring-[#264e1e] cursor-pointer"
-            />
-            <span>Overdue follow-ups only</span>
-          </label>
-
-          {/* Reset Filters Control */}
-          {isFiltered && (
+            {/* More filters Toggle Button */}
             <button
               type="button"
-              onClick={handleClearFilters}
-              className="text-xs font-semibold text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-xl hover:bg-rose-50 flex items-center gap-1 transition-colors cursor-pointer"
+              onClick={() => setShowMoreFilters(!showMoreFilters)}
+              className={`portal-filter-btn ${showMoreFilters || countyFilter !== 'All Counties' || priorityFilter !== 'All Priorities'
+                ? 'bg-emerald-50 text-[#3e6b2b] border-[#3e6b2b]/40 font-bold'
+                : ''
+                }`}
             >
-              <X className="w-3.5 h-3.5" />
-              <span>Reset filters</span>
+              <Filter className="w-3.5 h-3.5" />
+              <span>More filters</span>
+              {(countyFilter !== 'All Counties' || priorityFilter !== 'All Priorities') && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#3e6b2b]" />
+              )}
             </button>
-          )}
-        </div>
 
-        {/* Right: Source insights button & Board / List toggle pill */}
-        <div className="flex items-center gap-2 self-end lg:self-auto shrink-0">
-          <button
-            type="button"
-            onClick={() => setShowSourceInsightsModal(true)}
-            className="portal-filter-btn"
-          >
-            <span>📊</span>
-            <span>Source insights</span>
-          </button>
+            {/* Source insights button */}
+            <button
+              type="button"
+              onClick={() => setShowSourceInsightsModal(true)}
+              className="portal-filter-btn"
+            >
+              <span>📊</span>
+              <span>Source insights</span>
+            </button>
 
-          {/* Board / List Switcher */}
+            {/* Reset filters */}
+            {isFiltered && (
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="text-xs font-semibold text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-xl hover:bg-rose-50 flex items-center gap-1 transition-colors cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span>Reset filters</span>
+              </button>
+            )}
+          </div>
+
+          {/* Right: Board / List Switcher */}
           <div className="portal-view-switcher">
             <button
               type="button"
@@ -692,121 +871,174 @@ export function ClientIntakePortal() {
             </button>
           </div>
         </div>
+
+        {/* Expandable Secondary Filters Row (County & Priority / Alert status) */}
+        {showMoreFilters && (
+          <div className="p-3 bg-white border border-slate-200/90 rounded-2xl shadow-2xs flex flex-wrap items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-150">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              Additional Filters:
+            </span>
+
+            {/* County filter */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-slate-500 font-medium">County:</span>
+              <select
+                value={countyFilter}
+                onChange={(e) => setCountyFilter(e.target.value)}
+                className="portal-select text-xs py-1"
+              >
+                <option value="All Counties">All Counties</option>
+                <option value="Denver">Denver</option>
+                <option value="Arapahoe">Arapahoe</option>
+                <option value="Jefferson">Jefferson</option>
+                <option value="Douglas">Douglas</option>
+                <option value="Boulder">Boulder</option>
+                <option value="Adams">Adams</option>
+              </select>
+            </div>
+
+            {/* Priority & Follow-up status */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-slate-500 font-medium">Priority / Status:</span>
+              <select
+                value={priorityFilter}
+                onChange={(e) => setPriorityFilter(e.target.value)}
+                className="portal-select text-xs py-1"
+              >
+                <option value="All Priorities">All Priorities</option>
+                <option value="Overdue Only">Overdue Follow-ups Only</option>
+                <option value="Awaiting case manager">Awaiting Case Manager</option>
+                <option value="Docs missing">Docs Missing</option>
+                <option value="Payment at risk">Payment at Risk</option>
+              </select>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ========================================================================= */}
-      {/* 4. MAIN VIEW: EITHER BOARD (KANBAN) OR LIST (TABLE)                      */}
+      {/* 4. MAIN VIEW: BOARD (KANBAN) OR LIST (TABLE)                              */}
       {/* ========================================================================= */}
       {viewMode === 'board' ? (
         /* KANBAN BOARD VIEW */
         <div className="overflow-x-auto pb-4">
           <div className="flex gap-3.5 min-w-[1440px] items-start">
             {INTAKE_STAGES.map((stage) => {
-              const cfg = STAGE_CONFIG[stage];
-              const leadsInStage = columnLeads[stage] || [];
+              const theme = STAGE_THEMES[stage];
+              const leadsInStage = stageGroups[stage] || [];
 
               return (
                 <div
                   key={stage}
                   onDragOver={handleDragOver}
                   onDrop={(e) => handleDrop(e, stage)}
-                  className={`portal-board-column ${cfg.borderColor} ${cfg.bgTint}`}
+                  className={`portal-board-column ${theme.borderColor} ${theme.bgTint}`}
                 >
                   {/* Column Header */}
                   <div className="flex items-center justify-between px-1 py-0.5">
                     <div className="flex items-center gap-1.5 min-w-0">
-                      <span className={`w-2 h-2 rounded-full ${cfg.dotColor} shrink-0 shadow-2xs`} />
+                      <span className={`w-2 h-2 rounded-full ${theme.dotColor} shrink-0 shadow-2xs`} />
                       <span className="text-[11px] font-black tracking-wider text-slate-800 truncate uppercase">
-                        {cfg.label}
+                        {theme.label}
                       </span>
                     </div>
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.2 rounded-full ${cfg.countBg} ${cfg.countText} shrink-0 border border-black/[0.04]`}
-                    >
-                      {leadsInStage.length}
-                    </span>
+
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      <span
+                        className={`text-[10px] font-bold px-2 py-0.2 rounded-full ${theme.countBg} ${theme.countText} border border-black/[0.04]`}
+                      >
+                        {leadsInStage.length}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => handleOpenAddModal(stage)}
+                        title={`Add inquiry to ${stage}`}
+                        className="text-slate-400 hover:text-slate-700 transition-colors cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
 
                   {/* Cards Stack */}
-                  <div className="space-y-2.5 min-h-[120px]">
+                  <div className="space-y-2.5 min-h-[140px]">
                     {leadsInStage.map((lead) => {
                       const completedSteps = lead.intakeStepsCompleted || 1;
                       const totalSteps = lead.intakeTotalSteps || 7;
-                      const progressPct = Math.min(100, Math.round((completedSteps / totalSteps) * 100));
+                      const stepPct = Math.round((completedSteps / totalSteps) * 100);
+                      const leadCounty = getLeadCounty(lead);
 
                       return (
                         <div
                           key={lead.id}
                           draggable
                           onDragStart={(e) => handleDragStart(e, lead.id)}
-                          onClick={() => setSelectedLead(lead)}
+                          onClick={() => {
+                            setSelectedLead(lead);
+                            setDetailActiveTab('overview');
+                          }}
                           className="portal-card-interactive"
                         >
-                          {/* Row 1: Name + CLIENT Pill + Service Pill */}
+                          {/* Row 1: Name + Service Badge */}
                           <div className="flex items-center justify-between gap-1.5">
                             <span className="text-[13px] font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors truncate">
                               {lead.clientName}
                             </span>
-                            <div className="flex items-center gap-1 shrink-0">
-                              <span className="bg-blue-100 text-blue-700 font-black text-[9px] px-1.5 py-0.2 rounded">
-                                CLIENT
-                              </span>
-                              {renderServicePill(lead.requestedService)}
-                            </div>
+                            {renderServiceBadge(lead.requestedService)}
                           </div>
 
-                          {/* Row 2: Source subtitle */}
-                          <p className="text-[11px] text-slate-400 mt-0.5 truncate font-medium">
-                            {lead.sourceDetail || `${lead.relationship} · ${lead.inquirySource}`}
+                          {/* Row 2: Subtitle Meta */}
+                          <p className="text-[11px] text-slate-400 mt-1 truncate">
+                            {lead.requestedService} · {leadCounty} County · via {lead.sourceCategory || lead.inquirySource}
                           </p>
 
-                          {/* Row 3: Alert Badge if present */}
+                          {/* Row 2.5: Alert Badge if present */}
                           {renderAlertBadge(lead.alertBadge)}
 
-                          {/* Row 4: Steps & Progress Bar */}
+                          {/* Row 3: Step & Progress bar */}
                           <div className="mt-2.5">
-                            <div className="flex items-center justify-between text-[10px] mb-1">
-                              <span className="font-semibold text-slate-500">
-                                {completedSteps} of {totalSteps} steps
-                              </span>
-                              <span className="text-slate-400 font-medium">
-                                {lead.intakeStageLabel || 'Needs assessed'}
-                              </span>
-                            </div>
-
-                            <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <p className="text-[10px] font-medium text-slate-500 mb-1">
+                              Step {completedSteps} of {totalSteps} · {lead.intakeStageLabel || 'Inquiry logged'}
+                            </p>
+                            <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
                               <div
-                                className={`h-full rounded-full transition-all duration-300 ${getProgressBarColor(
-                                  lead
-                                )}`}
-                                style={{ width: `${progressPct}%` }}
+                                className={`h-full rounded-full transition-all duration-300 ${lead.isOverdue ? 'bg-rose-500' : 'bg-[#264e1e]'
+                                  }`}
+                                style={{ width: `${stepPct}%` }}
                               />
                             </div>
                           </div>
 
-                          {/* Row 5: Owner Avatar + Follow-Up Date + Days */}
-                          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+                          {/* Row 4: Footer - Owner + Follow-Up Status + Days in Stage */}
+                          <div className="mt-3 pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
                             <div className="flex items-center gap-1.5 min-w-0">
                               <div
-                                className={`w-5 h-5 rounded-full ${lead.ownerAvatarColor || 'bg-emerald-700'
-                                  } text-white font-black text-[9px] flex items-center justify-center shrink-0 shadow-2xs`}
+                                className={`w-5 h-5 rounded-full ${lead.ownerAvatarColor || 'bg-slate-200'
+                                  } text-white font-bold text-[9px] flex items-center justify-center shrink-0 shadow-2xs`}
                               >
                                 {lead.ownerInitials || 'MR'}
                               </div>
-                              <span
-                                className={`text-[11px] truncate ${lead.isOverdue
-                                  ? 'text-rose-600 font-bold'
-                                  : 'text-slate-600 font-medium'
-                                  }`}
-                              >
-                                {lead.isOverdue
-                                  ? lead.followUpDisplay || 'Overdue'
-                                  : `Follow-up ${lead.followUpDisplay || 'Nov 18'}`}
+                              <span className="text-slate-600 font-medium truncate">
+                                {lead.ownerName || lead.assignedStaff}
                               </span>
+
+                              {lead.isOverdue && (
+                                <span className="inline-flex items-center gap-1 text-[10px] text-rose-700 font-semibold ml-1 shrink-0">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                                  <span>Overdue</span>
+                                </span>
+                              )}
+
+                              {!lead.isOverdue && lead.followUpDisplay && (
+                                <span className="inline-flex items-center gap-1 text-[10px] text-blue-700 font-semibold ml-1 shrink-0">
+                                  <Calendar className="w-3 h-3 text-blue-600" />
+                                  <span>{lead.followUpDisplay}</span>
+                                </span>
+                              )}
                             </div>
 
-                            <span className="text-[11px] font-semibold text-slate-400 shrink-0">
-                              {lead.daysInStage ? `${lead.daysInStage}d` : '1d'}
+                            <span className="text-[10px] text-slate-400 font-medium shrink-0 ml-1">
+                              {lead.daysInStage || 1}d in stage
                             </span>
                           </div>
                         </div>
@@ -814,7 +1046,7 @@ export function ClientIntakePortal() {
                     })}
                   </div>
 
-                  {/* Bottom + Add inquiry column button */}
+                  {/* Bottom Add inquiry button */}
                   <button
                     type="button"
                     onClick={() => handleOpenAddModal(stage)}
@@ -829,7 +1061,7 @@ export function ClientIntakePortal() {
           </div>
         </div>
       ) : (
-        /* LIST / TABLE VIEW (Matches Image 2) */
+        /* LIST / TABLE VIEW (Matches Caregiver Intake Table) */
         <div className="portal-table-container">
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
@@ -837,95 +1069,91 @@ export function ClientIntakePortal() {
                 <tr className="portal-table-head">
                   <th className="py-3 px-4">CLIENT NAME</th>
                   <th className="py-3 px-3">SERVICE</th>
+                  <th className="py-3 px-3">PROGRAM / PAYER</th>
+                  <th className="py-3 px-3">STAGE</th>
+                  <th className="py-3 px-4 min-w-[120px]">PROGRESS</th>
                   <th className="py-3 px-3">SOURCE</th>
-                  <th className="py-3 px-3">CURRENT STAGE</th>
-                  <th className="py-3 px-4 min-w-[130px]">INTAKE PROGRESS</th>
-                  <th className="py-3 px-3 min-w-[130px]">NEXT FOLLOW-UP</th>
-                  <th className="py-3 px-3">OWNER</th>
+                  <th className="py-3 px-3">INTAKE OWNER</th>
                   <th className="py-3 px-2 text-center">DAYS</th>
                   <th className="py-3 px-4 text-right">ACTIONS</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-100 text-xs">
                 {filteredLeads.map((lead) => {
+                  let effectiveStage = lead.status;
+                  if (effectiveStage === 'Contact Pending') effectiveStage = 'New Inquiry';
+                  if (effectiveStage === 'Needs Clarification') effectiveStage = 'Needs Discussion';
+                  if (effectiveStage === 'Follow-up Scheduled') effectiveStage = 'Family Decision';
+                  const theme = STAGE_THEMES[effectiveStage] || STAGE_THEMES['New Inquiry'];
                   const completedSteps = lead.intakeStepsCompleted || 1;
                   const totalSteps = lead.intakeTotalSteps || 7;
-                  const progressPct = Math.min(100, Math.round((completedSteps / totalSteps) * 100));
+                  const stepPct = Math.round((completedSteps / totalSteps) * 100);
 
                   return (
                     <tr
                       key={lead.id}
-                      onClick={() => setSelectedLead(lead)}
-                      className="hover:bg-slate-50/90 transition-colors cursor-pointer group"
+                      onClick={() => {
+                        setSelectedLead(lead);
+                        setDetailActiveTab('overview');
+                      }}
+                      className="portal-table-row"
                     >
                       {/* CLIENT NAME */}
                       <td className="py-3 px-4">
-                        <div className="flex items-center gap-1.5">
-                          <span className="font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors">
-                            {lead.clientName}
-                          </span>
-                          <span className="bg-blue-100 text-blue-700 font-black text-[9px] px-1.5 py-0.2 rounded">
-                            CLIENT
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* SERVICE */}
-                      <td className="py-3 px-3">{renderServicePill(lead.requestedService)}</td>
-
-                      {/* SOURCE */}
-                      <td className="py-3 px-3 text-slate-600 font-medium">
-                        {lead.sourceCategory || lead.inquirySource}
-                      </td>
-
-                      {/* CURRENT STAGE */}
-                      <td className="py-3 px-3">
-                        <span className="font-semibold text-slate-800">{lead.status}</span>
-                      </td>
-
-                      {/* INTAKE PROGRESS */}
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <div className="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
-                            <div
-                              className={`h-full rounded-full ${getProgressBarColor(lead)}`}
-                              style={{ width: `${progressPct}%` }}
-                            />
-                          </div>
-                          <span className="text-[11px] font-semibold text-slate-500 font-mono">
-                            {completedSteps}/{totalSteps}
-                          </span>
-                        </div>
-                      </td>
-
-                      {/* NEXT FOLLOW-UP */}
-                      <td className="py-3 px-3">
-                        <span
-                          className={`font-medium ${lead.isOverdue ? 'text-rose-600 font-bold' : 'text-slate-700'
-                            }`}
-                        >
-                          {lead.followUpDisplay || lead.nextFollowUpDate || '—'}
+                        <span className="font-bold text-slate-900 group-hover:text-[#264e1e] transition-colors">
+                          {lead.clientName}
                         </span>
                       </td>
 
-                      {/* OWNER */}
+                      {/* SERVICE */}
+                      <td className="py-3 px-3">{renderServiceBadge(lead.requestedService)}</td>
+
+                      {/* PROGRAM / PAYER */}
+                      <td className="py-3 px-3 text-slate-600 font-medium">Medicaid HCBS Waiver</td>
+
+                      {/* STAGE with colored dot */}
                       <td className="py-3 px-3">
+                        <div className="flex items-center gap-1.5">
+                          <span className={`w-2 h-2 rounded-full ${theme.dotColor} shrink-0`} />
+                          <span className="font-semibold text-slate-800">{lead.status}</span>
+                        </div>
+                      </td>
+
+                      {/* PROGRESS */}
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[11px] font-medium text-slate-500 font-mono">
+                            Step {completedSteps}/{totalSteps}
+                          </span>
+                          <div className="w-14 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div
+                              className={`h-full rounded-full ${lead.isOverdue ? 'bg-rose-500' : 'bg-[#264e1e]'
+                                }`}
+                              style={{ width: `${stepPct}%` }}
+                            />
+                          </div>
+                        </div>
+                      </td>
+
+                      {/* SOURCE */}
+                      <td className="py-3 px-3 text-slate-600">{lead.sourceCategory || lead.inquirySource}</td>
+
+                      {/* INTAKE OWNER */}
+                      <td className="py-3 px-3 text-slate-700 font-semibold">
                         <div className="flex items-center gap-1.5">
                           <div
                             className={`w-5 h-5 rounded-full ${lead.ownerAvatarColor || 'bg-emerald-700'
-                              } text-white font-black text-[9px] flex items-center justify-center shrink-0 shadow-2xs`}
+                              } text-white font-bold text-[9px] flex items-center justify-center shrink-0 shadow-2xs`}
                           >
                             {lead.ownerInitials || 'MR'}
                           </div>
-                          <span className="text-slate-700 font-semibold truncate">
-                            {lead.ownerName || lead.assignedStaff}
-                          </span>
+                          <span>{lead.ownerName || lead.assignedStaff}</span>
                         </div>
                       </td>
 
                       {/* DAYS */}
-                      <td className="py-3 px-2 text-center text-slate-400 font-semibold font-mono text-[11px]">
-                        {lead.daysInStage ? `${lead.daysInStage}d` : '1d'}
+                      <td className="py-3 px-2 text-center text-slate-400 font-medium font-mono text-[11px]">
+                        {lead.daysInStage || 1}d
                       </td>
 
                       {/* ACTIONS */}
@@ -935,6 +1163,7 @@ export function ClientIntakePortal() {
                           onClick={(e) => {
                             e.stopPropagation();
                             setSelectedLead(lead);
+                            setDetailActiveTab('overview');
                           }}
                           className="text-xs font-semibold text-[#3e6b2b] hover:text-[#264e1e] bg-emerald-50/80 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition-colors inline-flex items-center gap-1 cursor-pointer"
                         >
@@ -951,220 +1180,644 @@ export function ClientIntakePortal() {
         </div>
       )}
 
-      {/* Footer Tip matching user reference */}
-      <p className="text-[11px] text-slate-400 italic pt-1">
-        Tip: Drag cards to change stage, click to open.
-      </p>
-
       {/* ========================================================================= */}
-      {/* 5. SLIDE-OVER DETAIL DRAWER FOR CLIENT INTAKE RECORD                      */}
+      {/* 5. DETAIL MODAL (Matching Caregiver Intake Centered Modal Layout)         */}
       {/* ========================================================================= */}
-      {selectedLead && (
-        <div className="fixed inset-0 z-50 flex justify-end">
+      {currentLead && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6">
           <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
             onClick={() => setSelectedLead(null)}
           />
 
-          <div className="relative w-full max-w-xl bg-white h-full shadow-2xl flex flex-col z-10 overflow-hidden animate-in slide-in-from-right duration-200">
-            {/* Drawer Header */}
-            <div className="p-5 border-b border-slate-200 bg-slate-50 flex items-start justify-between">
-              <div>
+          <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-slate-200 z-10 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-98 duration-150">
+            {/* Modal Top Header */}
+            <div className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-white">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+                      {currentLead.clientName}
+                    </h2>
+                    <span className="bg-slate-100 text-slate-700 font-semibold text-xs px-2.5 py-0.5 rounded-full border border-slate-200">
+                      {currentLead.requestedService} · Medicaid HCBS Waiver
+                    </span>
+                    {currentLead.isOverdue && (
+                      <span className="bg-rose-100 text-rose-800 font-bold text-xs px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse" />
+                        <span>Follow-up Overdue</span>
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="text-xs text-slate-500 mt-1">
+                    Primary Contact: <strong className="text-slate-700 font-semibold">{currentLead.primaryContactName} ({currentLead.relationship})</strong> · County: <strong className="text-slate-700 font-semibold">{getLeadCounty(currentLead)}</strong> · Source: {currentLead.sourceCategory || currentLead.inquirySource} · Owner: <strong className="text-slate-800">{currentLead.ownerName || currentLead.assignedStaff}</strong> · <strong className="text-slate-900 font-black">CMA: {currentLead.referralAgency}</strong>
+                  </p>
+                </div>
+
+                <div className="flex items-center gap-2 shrink-0">
+                  <Link
+                    href={`/admin-portal/client-intake/${currentLead.id}`}
+                    className="px-2.5 py-1 text-xs font-semibold text-[#3e6b2b] bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200 transition-colors inline-flex items-center gap-1 cursor-pointer"
+                    title="Open Dedicated Full Page"
+                  >
+                    <span>Full page</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedLead(null)}
+                    className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Stage Dropdown & Action Buttons */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mt-4 pt-4 border-t border-slate-100">
                 <div className="flex items-center gap-2">
-                  <h2 className="text-xl font-black text-slate-900 tracking-tight">
-                    {selectedLead.clientName}
-                  </h2>
-                  <span className="bg-blue-100 text-blue-700 font-black text-[10px] px-2 py-0.5 rounded">
-                    CLIENT
-                  </span>
-                  {renderServicePill(selectedLead.requestedService)}
-                </div>
-                <p className="text-xs text-slate-500 mt-1">
-                  {selectedLead.sourceDetail || `${selectedLead.inquirySource} inquiry`} • Registered {selectedLead.createdAt}
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Link
-                  href={`/admin-portal/client-intake/${selectedLead.id}`}
-                  className="px-2.5 py-1 text-xs font-semibold text-[#3e6b2b] bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200 transition-colors inline-flex items-center gap-1 cursor-pointer"
-                  title="Open Dedicated Full Page"
-                >
-                  <span>Full page</span>
-                  <ArrowRight className="w-3 h-3" />
-                </Link>
-
-                <button
-                  type="button"
-                  onClick={() => setSelectedLead(null)}
-                  className="w-8 h-8 rounded-xl bg-slate-200/80 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-
-            {/* Drawer Scrollable Content */}
-            <div className="flex-1 overflow-y-auto p-5 space-y-6">
-              {/* Stage Progress Selector */}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
-                <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-700 uppercase tracking-wide">
-                    Intake Pipeline Stage
+                    STAGE:
                   </span>
-                  <span className="text-xs font-bold text-[#264e1e] bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200/80">
-                    {selectedLead.status}
-                  </span>
+                  <div className="relative">
+                    <select
+                      value={currentLead.status}
+                      onChange={(e) => {
+                        const newSt = e.target.value as LeadStatus;
+                        updateLeadStatus(currentLead.id, newSt);
+                      }}
+                      className="appearance-none pl-3 pr-8 py-1.5 bg-slate-50/60 hover:bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold text-slate-800 cursor-pointer focus:outline-none shadow-[0_1px_2px_rgba(15,23,42,0.03)]"
+                    >
+                      {INTAKE_STAGES.map((st) => (
+                        <option key={st} value={st}>
+                          {st}
+                        </option>
+                      ))}
+                    </select>
+                    <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 pt-1">
-                  {INTAKE_STAGES.map((st) => (
-                    <button
-                      key={st}
-                      type="button"
-                      onClick={() => {
-                        updateLeadStatus(selectedLead.id, st);
-                        setSelectedLead({ ...selectedLead, status: st });
-                      }}
-                      className={`px-2.5 py-1.5 rounded-xl text-xs font-semibold transition-all text-center cursor-pointer border ${selectedLead.status === st
-                        ? 'bg-[#264e1e] text-white border-[#264e1e] shadow-xs'
-                        : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100 shadow-[0_1px_2px_rgba(15,23,42,0.03)]'
-                        }`}
-                    >
-                      {st}
-                    </button>
-                  ))}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={() => setShowLogConsultationModal(true)}
+                    className="px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-700 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:shadow cursor-pointer transition-all"
+                  >
+                    Log consultation
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      notify(
+                        'Message Sent',
+                        `SMS & Email dispatched to ${currentLead.primaryContactName} (${currentLead.phone}).`,
+                        'info'
+                      );
+                    }}
+                    className="px-3 py-1.5 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-xl text-xs font-semibold text-slate-700 shadow-[0_1px_3px_rgba(15,23,42,0.05)] hover:shadow cursor-pointer transition-all"
+                  >
+                    Send message
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleConvertToActiveClient(currentLead)}
+                    className="px-4 py-1.5 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold shadow-xs cursor-pointer transition-all"
+                  >
+                    Convert &amp; Activate Service
+                  </button>
                 </div>
               </div>
 
-              {/* 7-Step Intake Checklist */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
-                    <CheckCircle2 className="w-4 h-4 text-[#264e1e]" />
-                    <span>7-Step Client Intake Roadmap</span>
-                  </h3>
-                  <span className="text-xs font-bold text-slate-500 font-mono">
-                    {selectedLead.intakeStepsCompleted || 1} of 7 Completed
+              {/* INTAKE STEPPER: STEP X OF 7 */}
+              <div className="mt-4 pt-4 border-t border-slate-100">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wide">
+                    INTAKE STEPPER: STEP {currentLead.intakeStepsCompleted || 1} OF 7
                   </span>
+
+                  {(currentLead.intakeStepsCompleted || 1) < 7 && (
+                    <button
+                      type="button"
+                      onClick={() => handleAdvanceLeadStep(currentLead.id)}
+                      className="inline-flex items-center gap-1.5 lg:gap-4 px-3 py-1 bg-[#f0fdf4] hover:bg-[#dcfce7] text-[#166534] border border-[#bbf7d0] rounded-xl text-xs font-bold transition-all cursor-pointer"
+                    >
+                      <span>Mark complete</span>
+                      <span>✓</span>
+                    </button>
+                  )}
                 </div>
 
-                <div className="space-y-2">
-                  {INTAKE_STEPS_CHECKLIST.map((stepItem) => {
-                    const isDone = (selectedLead.intakeStepsCompleted || 1) >= stepItem.step;
+                {/* 7 Horizontal Stepper Bars */}
+                <div className="grid grid-cols-7 gap-1.5 lg:gap-4">
+                  {INTAKE_STEPS_LABELS.map((stepLabel, idx) => {
+                    const stepNum = idx + 1;
+                    const isCompleted = (currentLead.intakeStepsCompleted || 1) >= stepNum;
+                    const isCurrent = (currentLead.intakeStepsCompleted || 1) === stepNum;
+
                     return (
-                      <div
-                        key={stepItem.step}
-                        className={`p-3 rounded-xl border transition-all flex items-start gap-3 shadow-[0_1px_3px_rgba(15,23,42,0.03)] ring-1 ring-black/[0.01] ${isDone
-                          ? 'bg-emerald-50/60 border-emerald-200'
-                          : 'bg-white border-slate-200/90'
-                          }`}
-                      >
+                      <div key={stepNum} className="space-y-1">
                         <div
-                          className={`w-5 h-5 rounded-full flex items-center justify-center shrink-0 mt-0.5 text-xs font-bold ${isDone
-                            ? 'bg-[#264e1e] text-white'
-                            : 'bg-slate-100 text-slate-400 border border-slate-300'
+                          className={`h-1 rounded-full transition-all duration-300 ${isCompleted ? 'bg-[#264e1e]' : 'bg-slate-200'
                             }`}
+                        />
+                        <p
+                          className={`text-[10px] truncate ${isCurrent
+                            ? 'font-bold text-[#264e1e]'
+                            : isCompleted
+                              ? 'text-slate-700 font-medium'
+                              : 'text-slate-400'
+                            }`}
+                          title={`Step ${stepNum}: ${stepLabel}`}
                         >
-                          {isDone ? <Check className="w-3 h-3 stroke-[3]" /> : stepItem.step}
-                        </div>
-                        <div className="min-w-0 flex-1">
-                          <p
-                            className={`text-xs font-bold ${isDone ? 'text-slate-900' : 'text-slate-600'
-                              }`}
-                          >
-                            Step {stepItem.step}: {stepItem.title}
-                          </p>
-                          <p className="text-[11px] text-slate-500 mt-0.5 leading-relaxed">
-                            {stepItem.desc}
-                          </p>
-                        </div>
+                          {stepLabel}
+                        </p>
                       </div>
                     );
                   })}
                 </div>
               </div>
-
-              {/* Contact Information & CMA Details */}
-              <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Contact & Referral Coordinates
-                </h3>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Primary Contact</span>
-                    <span className="font-bold text-slate-900">{selectedLead.primaryContactName} ({selectedLead.relationship})</span>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Telephone</span>
-                    <a href={`tel:${selectedLead.phone}`} className="font-bold text-blue-600 hover:underline">
-                      {selectedLead.phone}
-                    </a>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Email</span>
-                    <a href={`mailto:${selectedLead.email}`} className="font-bold text-blue-600 hover:underline truncate block">
-                      {selectedLead.email}
-                    </a>
-                  </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Assigned Intake Owner</span>
-                    <span className="font-bold text-slate-900">{selectedLead.ownerName || selectedLead.assignedStaff}</span>
-                  </div>
-                  <div className="sm:col-span-2 pt-2 border-t border-slate-100">
-                    <span className="text-slate-400 block text-[10px] uppercase font-semibold">Case Management Agency (CMA)</span>
-                    <p className="font-bold text-slate-900">{selectedLead.referralAgency}</p>
-                    <p className="text-slate-500 text-[11px] mt-0.5">
-                      Coordinator: {selectedLead.caseManagerName} • {selectedLead.caseManagerEmail}
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Clinical & Intake Notes */}
-              <div className="space-y-2">
-                <h3 className="text-xs font-bold text-slate-400 uppercase tracking-wider">
-                  Case Notes & Follow-Up Log
-                </h3>
-                <div className="p-3.5 bg-white border border-slate-200/90 rounded-xl text-xs text-slate-700 leading-relaxed font-medium shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02]">
-                  {selectedLead.notes}
-                </div>
-              </div>
             </div>
 
-            {/* Drawer Bottom Actions */}
-            <div className="p-4 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-3">
+            {/* Tabs Bar */}
+            <div className="px-6 border-b border-slate-200 bg-white flex items-center gap-6 text-xs font-semibold">
               <button
                 type="button"
-                onClick={() => {
-                  notify('Outbound Call', `Initiating call to ${selectedLead.phone}...`, 'info');
-                }}
-                className="flex items-center gap-2 px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-bold transition-all shadow-2xs cursor-pointer"
+                onClick={() => setDetailActiveTab('overview')}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'overview'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
               >
-                <Phone className="w-3.5 h-3.5 text-blue-600" />
-                <span>Call Family</span>
+                Overview
               </button>
+              <button
+                type="button"
+                onClick={() => setDetailActiveTab('clinical')}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'clinical'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
+              >
+                Needs &amp; Care Plan
+              </button>
+              <button
+                type="button"
+                onClick={() => setDetailActiveTab('authorizations')}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'authorizations'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
+              >
+                Authorization &amp; CMA
+              </button>
+              <button
+                type="button"
+                onClick={() => setDetailActiveTab('communication')}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'communication'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
+              >
+                Communication (2)
+              </button>
+            </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  updateLeadStatus(selectedLead.id, 'Converted');
-                  setSelectedLead({ ...selectedLead, status: 'Converted' });
-                  notify('Client Converted', `${selectedLead.clientName} has been converted into an active client!`, 'success');
-                }}
-                className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer"
-              >
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>Convert to Active Client</span>
-              </button>
+            {/* Modal Body: Active Tab Content */}
+            <div className="flex-1 overflow-y-auto p-6 space-y-4 bg-slate-50/50">
+              {detailActiveTab === 'overview' && (
+                <div className="space-y-4">
+                  {/* Family & Client Information Card */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                      Client &amp; Family Demographics
+                    </h3>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          PRIMARY CONTACT &amp; RELATIONSHIP:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {currentLead.primaryContactName} ({currentLead.relationship})
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          PRIMARY TELEPHONE:
+                        </span>
+                        <a href={`tel:${currentLead.phone}`} className="font-bold text-slate-900 hover:text-blue-600 mt-0.5 block">
+                          {currentLead.phone}
+                        </a>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          EMAIL ADDRESS:
+                        </span>
+                        <a href={`mailto:${currentLead.email}`} className="font-bold text-slate-900 hover:text-blue-600 mt-0.5 block truncate">
+                          {currentLead.email}
+                        </a>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          COUNTY / LOCATION:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {getLeadCounty(currentLead)} County, CO
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          DATE OF BIRTH:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {currentLead.dateOfBirth} (Pediatric / HCBS Waiver)
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          TARGET SERVICE SCHEDULE:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          30–35 hrs/wk (Family Caregiver Model)
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Staff Notes Card */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight">
+                      Intake Staff &amp; Clinical Case Notes
+                    </h3>
+
+                    <div className="p-3.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs text-slate-700 leading-relaxed font-medium">
+                      {currentLead.notes}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {detailActiveTab === 'clinical' && (
+                <div className="space-y-4">
+                  {/* Activities of Daily Living Card */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                      <Award className="w-4 h-4 text-[#264e1e]" />
+                      <span>Activities of Daily Living (ADLs) &amp; Care Needs</span>
+                    </h3>
+
+                    <div className="space-y-2 text-xs">
+                      {[
+                        { title: 'Personal Care & Hygiene', desc: 'Assistance with bathing, dressing, and skin care', status: 'Assessed' },
+                        { title: 'Health Maintenance Activities (HMA)', desc: 'Skilled nurse delegated tasks and medication oversight', status: 'Approved' },
+                        { title: 'Homemaker & Meal Preparation', desc: 'Specialized nutrition and meal setup assistance', status: 'Assessed' },
+                        { title: 'Protective Oversight & Mobility', desc: 'Fall prevention and transfer safety support', status: 'Assessed' },
+                      ].map((item) => (
+                        <div key={item.title} className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                          <div>
+                            <span className="font-bold text-slate-800 block">{item.title}</span>
+                            <span className="text-[11px] text-slate-500">{item.desc}</span>
+                          </div>
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 shrink-0">
+                            {item.status}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Program Scheduling & Caregiver Preference */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                      <Calendar className="w-4 h-4 text-[#264e1e]" />
+                      <span>Service Allocation &amp; Schedule</span>
+                    </h3>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          REQUESTED PROGRAM:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {currentLead.requestedService} (In-Home Support Services)
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          AUTHORIZED WEEKLY HOURS:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          32.0 hrs/week
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          CAREGIVER DESIGNATION:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          Family Caregiver (Designated Household Member)
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          EVV COMPLIANCE STATUS:
+                        </span>
+                        <p className="font-bold text-emerald-700 mt-0.5">
+                          Eligible for Electronic Visit Verification
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {detailActiveTab === 'authorizations' && (
+                <div className="space-y-4">
+                  {/* Case Management Agency Coordinates */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                      <Building2 className="w-4 h-4 text-[#264e1e]" />
+                      <span>Case Management Agency (CMA) Coordinates</span>
+                    </h3>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          CASE MANAGEMENT AGENCY:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {currentLead.referralAgency}
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          ASSIGNED CASE MANAGER:
+                        </span>
+                        <p className="font-bold text-slate-900 mt-0.5">
+                          {currentLead.caseManagerName}
+                        </p>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          CMA PHONE NUMBER:
+                        </span>
+                        <a href={`tel:${currentLead.caseManagerPhone}`} className="font-bold text-slate-900 hover:text-blue-600 mt-0.5 block">
+                          {currentLead.caseManagerPhone}
+                        </a>
+                      </div>
+
+                      <div>
+                        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                          CMA EMAIL ADDRESS:
+                        </span>
+                        <a href={`mailto:${currentLead.caseManagerEmail}`} className="font-bold text-slate-900 hover:text-blue-600 mt-0.5 block truncate">
+                          {currentLead.caseManagerEmail}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Prior Authorization & State Medicaid Verification */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                      <ShieldCheck className="w-4 h-4 text-[#264e1e]" />
+                      <span>Medicaid Benefit &amp; PAR Authorization</span>
+                    </h3>
+
+                    <div className="space-y-2 text-xs">
+                      <div className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <div>
+                          <span className="font-bold text-slate-800 block">Colorado Medicaid Eligibility (Health First Colorado)</span>
+                          <span className="text-[11px] text-slate-500">Active Enrollment verified via State Portal</span>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 shrink-0">
+                          Verified Active
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <div>
+                          <span className="font-bold text-slate-800 block">Prior Authorization Request (PAR)</span>
+                          <span className="text-[11px] text-slate-500">PAR package submitted to Case Management Agency</span>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 shrink-0">
+                          In State Review
+                        </span>
+                      </div>
+
+                      <div className="flex items-center justify-between p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl">
+                        <div>
+                          <span className="font-bold text-slate-800 block">Physician Attestation &amp; Care Orders</span>
+                          <span className="text-[11px] text-slate-500">Signed medical documentation for pediatric IHSS care</span>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 shrink-0">
+                          Received
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {detailActiveTab === 'communication' && (
+                <div className="space-y-4">
+                  {/* Messages Feed */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-4">
+                    <h3 className="text-sm font-bold text-slate-900 tracking-tight flex items-center gap-1.5">
+                      <MessageSquare className="w-4 h-4 text-[#264e1e]" />
+                      <span>Communication History with Family &amp; CMA</span>
+                    </h3>
+
+                    <div className="space-y-3">
+                      <div className="p-3 bg-slate-50 border border-slate-200/80 rounded-xl space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-bold text-slate-800">{currentLead.ownerName || currentLead.assignedStaff} (Staff)</span>
+                          <span className="text-slate-400">Nov 16, 2:15 PM · SMS</span>
+                        </div>
+                        <p className="text-xs text-slate-700">
+                          Hello {currentLead.primaryContactName}, thank you for contacting LiliSare Home Health. We received your inquiry regarding {currentLead.requestedService} care for {currentLead.clientName}. Would you be free for a 10-minute intake consultation this week?
+                        </p>
+                      </div>
+
+                      <div className="p-3 bg-emerald-50/60 border border-emerald-200/70 rounded-xl space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-bold text-emerald-900">{currentLead.primaryContactName} (Family)</span>
+                          <span className="text-slate-400">Nov 16, 2:38 PM · SMS</span>
+                        </div>
+                        <p className="text-xs text-slate-700">
+                          Thank you! Yes, we have our CMA care plan ready from {currentLead.referralAgency}. We are eager to start as family caregivers. Thursday morning works great.
+                        </p>
+                      </div>
+
+                      <div className="p-3 bg-purple-50/60 border border-purple-200/70 rounded-xl space-y-1">
+                        <div className="flex items-center justify-between text-[11px]">
+                          <span className="font-bold text-purple-900">{currentLead.caseManagerName} (CMA Coordinator)</span>
+                          <span className="text-slate-400">Nov 17, 9:20 AM · Email</span>
+                        </div>
+                        <p className="text-xs text-slate-700">
+                          Prior authorization review in progress. We verified active Colorado Medicaid enrollment and sent over the initial assessment file.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Send New Message Box */}
+                  <div className="bg-white rounded-2xl border border-slate-200/90 p-4 shadow-[0_2px_8px_rgba(15,23,42,0.06),0_1px_3px_rgba(15,23,42,0.04)] ring-1 ring-black/[0.02] space-y-3">
+                    <span className="text-xs font-bold text-slate-700 block">Dispatch Message</span>
+                    <textarea
+                      rows={2}
+                      placeholder={`Type SMS or Email to ${currentLead.primaryContactName}...`}
+                      className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30"
+                    />
+                    <div className="flex justify-end">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          notify('Message Sent', `Dispatched SMS to ${currentLead.primaryContactName} (${currentLead.phone}).`, 'success');
+                        }}
+                        className="flex items-center gap-1.5 px-4 py-1.5 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold cursor-pointer"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Send Message</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
       )}
 
       {/* ========================================================================= */}
-      {/* 6. MODAL: + ADD INQUIRY                                                   */}
+      {/* 6. MODAL: LOG INTAKE CONSULTATION                                         */}
+      {/* ========================================================================= */}
+      {showLogConsultationModal && currentLead && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="fixed inset-0 bg-black/50 backdrop-blur-xs transition-opacity"
+            onClick={() => setShowLogConsultationModal(false)}
+          />
+
+          <div className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-100">
+              <h3 className="text-lg font-black text-slate-900 tracking-tight">
+                Log Family Consultation
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowLogConsultationModal(false)}
+                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                notify(
+                  'Consultation Logged',
+                  `Intake call recorded for ${currentLead.clientName} with primary contact ${currentLead.primaryContactName}.`,
+                  'success'
+                );
+                setShowLogConsultationModal(false);
+              }}
+              className="space-y-4 pt-4 text-xs"
+            >
+              <div className="space-y-1">
+                <label className="font-bold text-slate-700">Client</label>
+                <input
+                  type="text"
+                  disabled
+                  value={`${currentLead.clientName} (${currentLead.primaryContactName})`}
+                  className="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-xl text-slate-600 font-semibold"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-700">Date</label>
+                  <input
+                    type="date"
+                    value={consultationDate}
+                    onChange={(e) => setConsultationDate(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-700">Time</label>
+                  <input
+                    type="text"
+                    value={consultationTime}
+                    onChange={(e) => setConsultationTime(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold text-slate-700">Consultation Type</label>
+                <select
+                  value={consultationType}
+                  onChange={(e) => setConsultationType(e.target.value)}
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
+                >
+                  <option value="Initial Phone Consultation">Initial Phone Consultation</option>
+                  <option value="In-Person Home Assessment">In-Person Home Assessment</option>
+                  <option value="CMA Coordinator Joint Call">CMA Coordinator Joint Call</option>
+                  <option value="Care Plan Review">Care Plan Review</option>
+                </select>
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold text-slate-700">Consultation Notes</label>
+                <textarea
+                  rows={3}
+                  value={consultationNotes}
+                  onChange={(e) => setConsultationNotes(e.target.value)}
+                  placeholder="Detail primary care requirements, diagnosis, and current Medicaid status..."
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                />
+              </div>
+
+              <div className="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowLogConsultationModal(false)}
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl font-bold shadow-xs cursor-pointer"
+                >
+                  Save Consultation
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* 7. MODAL: + ADD CLIENT INQUIRY                                            */}
       {/* ========================================================================= */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -1173,7 +1826,7 @@ export function ClientIntakePortal() {
             onClick={() => setShowAddModal(false)}
           />
 
-          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 z-10 animate-in fade-in zoom-in-95 duration-150">
+          <div className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl border border-slate-200 p-6 z-10 animate-in fade-in zoom-in-95 duration-150 max-h-[92vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-4 border-b border-slate-100">
               <div>
                 <h3 className="text-lg font-black text-slate-900 tracking-tight">
@@ -1187,65 +1840,65 @@ export function ClientIntakePortal() {
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleCreateLead} className="space-y-4 pt-4">
+            <form onSubmit={handleCreateLead} className="space-y-4 pt-4 text-xs">
               <div className="grid grid-cols-2 gap-3">
                 <div className="col-span-2 sm:col-span-1 space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Client Full Name *</label>
+                  <label className="font-bold text-slate-700">Client Full Name *</label>
                   <input
                     type="text"
                     required
                     value={newClientName}
                     onChange={(e) => setNewClientName(e.target.value)}
                     placeholder="e.g. Liam Hayes"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30 focus:border-[#264e1e]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30"
                   />
                 </div>
 
                 <div className="col-span-2 sm:col-span-1 space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Primary Contact Name</label>
+                  <label className="font-bold text-slate-700">Primary Contact Name</label>
                   <input
                     type="text"
                     value={newContactName}
                     onChange={(e) => setNewContactName(e.target.value)}
                     placeholder="e.g. Sarah Hayes (Mother)"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30 focus:border-[#264e1e]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Phone</label>
+                  <label className="font-bold text-slate-700">Phone</label>
                   <input
                     type="text"
                     value={newPhone}
                     onChange={(e) => setNewPhone(e.target.value)}
                     placeholder="(303) 555-0100"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30 focus:border-[#264e1e]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Email</label>
+                  <label className="font-bold text-slate-700">Email</label>
                   <input
                     type="email"
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)}
                     placeholder="family@coloradomail.net"
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30 focus:border-[#264e1e]"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Requested Service</label>
+                  <label className="font-bold text-slate-700">Requested Service</label>
                   <select
                     value={newService}
                     onChange={(e) => setNewService(e.target.value as ServiceType)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
                     <option value="IHSS">IHSS</option>
                     <option value="CFC">CFC</option>
@@ -1257,11 +1910,11 @@ export function ClientIntakePortal() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Inquiry Source</label>
+                  <label className="font-bold text-slate-700">Inquiry Source</label>
                   <select
                     value={newSource}
                     onChange={(e) => setNewSource(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
                     <option value="Website">Website</option>
                     <option value="Phone">Phone</option>
@@ -1272,11 +1925,27 @@ export function ClientIntakePortal() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Initial Pipeline Stage</label>
+                  <label className="font-bold text-slate-700">County</label>
                   <select
-                    value={newStage}
-                    onChange={(e) => setNewStage(e.target.value as LeadStatus)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none"
+                    value={newCounty}
+                    onChange={(e) => setNewCounty(e.target.value)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
+                  >
+                    <option value="Denver">Denver</option>
+                    <option value="Arapahoe">Arapahoe</option>
+                    <option value="Jefferson">Jefferson</option>
+                    <option value="Douglas">Douglas</option>
+                    <option value="Boulder">Boulder</option>
+                    <option value="Adams">Adams</option>
+                  </select>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-700">Initial Pipeline Stage</label>
+                  <select
+                    value={addInitialStage}
+                    onChange={(e) => setAddInitialStage(e.target.value as LeadStatus)}
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
                     {INTAKE_STAGES.map((st) => (
                       <option key={st} value={st}>
@@ -1287,11 +1956,11 @@ export function ClientIntakePortal() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-[11px] font-bold text-slate-700">Assigned Intake Staff</label>
+                  <label className="font-bold text-slate-700">Assigned Intake Staff</label>
                   <select
                     value={newOwner}
                     onChange={(e) => setNewOwner(e.target.value)}
-                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800 focus:outline-none"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl font-semibold"
                   >
                     <option value="Maya R.">Maya R.</option>
                     <option value="Jon P.">Jon P.</option>
@@ -1299,16 +1968,27 @@ export function ClientIntakePortal() {
                     <option value="Alicia T.">Alicia T.</option>
                   </select>
                 </div>
+
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-700">Target Schedule</label>
+                  <input
+                    type="text"
+                    value={newSchedule}
+                    onChange={(e) => setNewSchedule(e.target.value)}
+                    placeholder="30–35 hrs/wk"
+                    className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
+                  />
+                </div>
               </div>
 
               <div className="space-y-1">
-                <label className="text-[11px] font-bold text-slate-700">Intake Notes / Clinical Background</label>
+                <label className="font-bold text-slate-700">Intake Notes / Clinical Background</label>
                 <textarea
-                  rows={3}
+                  rows={2}
                   value={newNotes}
                   onChange={(e) => setNewNotes(e.target.value)}
                   placeholder="Detail primary care requirements, diagnosis, and current Medicaid status..."
-                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:ring-1.5 focus:ring-[#264e1e]/30 focus:border-[#264e1e]"
+                  className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl"
                 />
               </div>
 
@@ -1316,13 +1996,13 @@ export function ClientIntakePortal() {
                 <button
                   type="button"
                   onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-bold transition-all"
+                  className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-bold cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs"
+                  className="px-5 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl font-bold shadow-xs cursor-pointer"
                 >
                   Create Inquiry
                 </button>
@@ -1333,7 +2013,7 @@ export function ClientIntakePortal() {
       )}
 
       {/* ========================================================================= */}
-      {/* 7. MODAL: SOURCE INSIGHTS ANALYTICS                                       */}
+      {/* 8. MODAL: SOURCE INSIGHTS ANALYTICS                                       */}
       {/* ========================================================================= */}
       {showSourceInsightsModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -1359,7 +2039,7 @@ export function ClientIntakePortal() {
               <button
                 type="button"
                 onClick={() => setShowSourceInsightsModal(false)}
-                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors"
+                className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>

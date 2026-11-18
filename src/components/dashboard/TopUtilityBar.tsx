@@ -302,7 +302,7 @@ export function TopUtilityBar({
               )}
             </div>
 
-            {/* Action Button Slot (e.g. + Add inquiry / + Add caregiver) */}
+            {/* Action Button Slot (e.g. Add inquiry / + Add caregiver) */}
             {actionButton && (
               <div className="shrink-0">
                 {actionButton}
@@ -388,8 +388,8 @@ export function TopUtilityBar({
                         modalInputRef.current?.focus();
                       }}
                       className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border transition-all cursor-pointer ${isSelected
-                          ? 'bg-[#3e6b2b] text-white border-[#3e6b2b] shadow-xs'
-                          : cat.color
+                        ? 'bg-[#3e6b2b] text-white border-[#3e6b2b] shadow-xs'
+                        : cat.color
                         }`}
                     >
                       <Icon className="w-3.5 h-3.5" />
@@ -440,8 +440,8 @@ export function TopUtilityBar({
                       onClick={() => handleSelectItem(item)}
                       onMouseEnter={() => setSelectedIndex(index)}
                       className={`w-full flex items-center justify-between p-3 px-4 text-left transition-all cursor-pointer ${isSelected
-                          ? 'bg-[#3e6b2b]/10 text-slate-900 font-bold'
-                          : 'hover:bg-slate-50 text-slate-700'
+                        ? 'bg-[#3e6b2b]/10 text-slate-900 font-bold'
+                        : 'hover:bg-slate-50 text-slate-700'
                         }`}
                     >
                       <div className="min-w-0 pr-3">
