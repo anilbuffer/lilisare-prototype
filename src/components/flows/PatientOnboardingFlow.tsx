@@ -501,7 +501,7 @@ export function PatientOnboardingFlow({
                       <div>
                         <input
                           type="text"
-                          placeholder="Name"
+                          placeholder="e.g. David Vance"
                           value={form.emergencyName}
                           onChange={(e) => setForm({ ...form, emergencyName: e.target.value })}
                           className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:border-[#3e6b2b] focus:ring-1 focus:ring-[#3e6b2b] outline-none"
@@ -510,7 +510,7 @@ export function PatientOnboardingFlow({
                       <div>
                         <input
                           type="text"
-                          placeholder="Relationship"
+                          placeholder="e.g. Uncle / Legal Guardian"
                           value={form.emergencyRel}
                           onChange={(e) => setForm({ ...form, emergencyRel: e.target.value })}
                           className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:border-[#3e6b2b] focus:ring-1 focus:ring-[#3e6b2b] outline-none"
@@ -519,7 +519,7 @@ export function PatientOnboardingFlow({
                       <div>
                         <input
                           type="text"
-                          placeholder="Phone"
+                          placeholder="e.g. (303) 555-0144"
                           value={form.emergencyPhone}
                           onChange={(e) => setForm({ ...form, emergencyPhone: e.target.value })}
                           className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs focus:border-[#3e6b2b] focus:ring-1 focus:ring-[#3e6b2b] outline-none"
@@ -743,7 +743,7 @@ export function PatientOnboardingFlow({
                       <div>
                         <input
                           type="text"
-                          placeholder="Full Name"
+                          placeholder="e.g. Carlos Morales"
                           value={form.secondCgName}
                           onChange={(e) => setForm({ ...form, secondCgName: e.target.value })}
                           className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm"
@@ -752,7 +752,7 @@ export function PatientOnboardingFlow({
                       <div>
                         <input
                           type="text"
-                          placeholder="Relationship"
+                          placeholder="e.g. Adult Sibling"
                           value={form.secondCgRel}
                           onChange={(e) => setForm({ ...form, secondCgRel: e.target.value })}
                           className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-sm"

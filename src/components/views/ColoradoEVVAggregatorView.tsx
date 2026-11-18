@@ -104,7 +104,7 @@ export function ColoradoEVVAggregatorView() {
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#00d084] hover:bg-emerald-500 text-slate-950 font-bold text-xs shadow-md transition-all self-start sm:self-auto"
           >
             <RefreshCw className={`w-4 h-4 ${isTransmitting ? 'animate-spin' : ''}`} />
-            {isTransmitting ? 'Transmitting...' : 'Send Live Test Payload'}
+            {isTransmitting ? 'Transmitting...' : 'Transmit Sandata EVV Batch'}
           </button>
         </div>
       </div>
@@ -131,8 +131,8 @@ export function ColoradoEVVAggregatorView() {
                   key={record.id}
                   onClick={() => setSelectedRecordId(record.id)}
                   className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${isSelected
-                      ? 'border-primary bg-primary-50/60 shadow-sm'
-                      : 'border-slate-200/80 hover:border-slate-300 bg-white'
+                    ? 'border-primary bg-primary-50/60 shadow-sm'
+                    : 'border-slate-200/80 hover:border-slate-300 bg-white'
                     }`}
                 >
                   <div className="flex items-start justify-between">
@@ -144,10 +144,10 @@ export function ColoradoEVVAggregatorView() {
                     </div>
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${hasException
-                          ? 'bg-rose-100 text-rose-800'
-                          : isAdjusted
-                            ? 'bg-amber-100 text-amber-800'
-                            : 'bg-emerald-100 text-emerald-800'
+                        ? 'bg-rose-100 text-rose-800'
+                        : isAdjusted
+                          ? 'bg-amber-100 text-amber-800'
+                          : 'bg-emerald-100 text-emerald-800'
                         }`}
                     >
                       {record.evvStateStatus}

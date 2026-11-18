@@ -14,6 +14,10 @@ export interface RoleConfig {
   avatar: string;
   description: string;
   allowedModules: string[];
+  userName?: string;
+  userTitle?: string;
+  badgeLabel?: string;
+  allowedPaths?: string[];
 }
 
 export type ServiceType =

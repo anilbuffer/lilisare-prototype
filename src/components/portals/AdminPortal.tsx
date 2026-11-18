@@ -18,9 +18,35 @@ import {
   SearchItem,
 } from '../dashboard/dashboard-data';
 import { Filter } from 'lucide-react';
+import { CaregiverPortal } from './CaregiverPortal';
+import { ClinicalPortal } from './ClinicalPortal';
+import { EnrollmentPortal } from './EnrollmentPortal';
+import { BillingPortal } from './BillingPortal';
+import { CompliancePortal } from './CompliancePortal';
+import { OnboardingPortal } from './OnboardingPortal';
 
 export function AdminPortal() {
-  const { notify, switchRole, setActiveView } = usePortal();
+  const { notify, switchRole, setActiveView, currentRole } = usePortal();
+
+  // Role-scoped portal views per system requirements
+  if (currentRole === 'caregiver') {
+    return <CaregiverPortal />;
+  }
+  if (currentRole === 'clinical') {
+    return <ClinicalPortal />;
+  }
+  if (currentRole === 'enrollment') {
+    return <EnrollmentPortal />;
+  }
+  if (currentRole === 'billing') {
+    return <BillingPortal />;
+  }
+  if (currentRole === 'compliance') {
+    return <CompliancePortal />;
+  }
+  if (currentRole === 'onboarding') {
+    return <OnboardingPortal />;
+  }
 
   // Branch Selector State: Default 'mountain-lane'
   const [currentBranch, setCurrentBranch] = useState<BranchId>('mountain-lane');

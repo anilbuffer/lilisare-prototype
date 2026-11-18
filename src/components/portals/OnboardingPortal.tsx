@@ -91,7 +91,7 @@ export function OnboardingPortal() {
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs text-slate-600 font-medium">Test Service Rule:</span>
+            <span className="text-xs text-slate-600 font-medium">Simulate Service Program:</span>
             <select
               value={serviceSimulator}
               onChange={(e) => setServiceSimulator(e.target.value as ServiceType)}
@@ -450,7 +450,7 @@ export function OnboardingPortal() {
               </p>
               <div className="mt-2 text-[11px] text-slate-500 flex items-center gap-1">
                 <CheckCircle2 className="w-3.5 h-3.5 text-primary" />
-                <span>Orientation video & compliance test verified</span>
+                <span>Orientation video &amp; compliance modules verified</span>
               </div>
             </div>
 

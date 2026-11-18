@@ -106,10 +106,10 @@ export function HistoricalDataMigrationView() {
             </div>
           </div>
           <button
-            onClick={() => notify('KanTime Ingestion Test', 'PDF attachment extractor running on sample batch.', 'info')}
-            className="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors"
+            onClick={() => notify('KanTime Ingestion Verification', 'PDF attachment extractor running on verification batch.', 'info')}
+            className="w-full py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs transition-colors cursor-pointer"
           >
-            Test Attachment Parser
+            Verify Attachment Parser
           </button>
         </div>
 

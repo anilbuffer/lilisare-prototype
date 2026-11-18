@@ -33,8 +33,53 @@ export function LoginPage() {
   // Role selector state: default 'admin'
   const [selectedRole, setSelectedRole] = useState<UserRole>('admin');
 
+  const roleAccounts: Record<UserRole, { name: string; title: string; email: string; desc: string }> = {
+    admin: {
+      name: 'Sarah Jenkins',
+      title: 'Executive Admin',
+      email: 'sarah.jenkins@lilisare.health',
+      desc: 'Full agency operations across Mountain Lane & Colorado Home Health',
+    },
+    onboarding: {
+      name: 'Danielle Brooks',
+      title: 'Onboarding Lead',
+      email: 'danielle.brooks@lilisare.health',
+      desc: 'Caregiver intake pipeline, 15/20 packets, CBI checks, ADP provisioning',
+    },
+    enrollment: {
+      name: 'Maya Ramirez',
+      title: 'Enrollment Specialist',
+      email: 'maya.ramirez@lilisare.health',
+      desc: 'Client inquiry pipeline, CMA directory, case manager correspondence',
+    },
+    clinical: {
+      name: 'Rebecca Stern, BSN, RN',
+      title: 'Clinical Supervisor',
+      email: 'rebecca.stern@lilisare.health',
+      desc: '60-day in-home nurse evaluations, Form 485, AI care note audits',
+    },
+    compliance: {
+      name: 'Marcus Vance',
+      title: 'Compliance Officer',
+      email: 'marcus.vance@lilisare.health',
+      desc: 'Credential lifecycles, 30/7-day renewal alerts, 7-year audit vault',
+    },
+    billing: {
+      name: 'Alicia Torres',
+      title: 'Medicaid Billing Specialist',
+      email: 'alicia.torres@lilisare.health',
+      desc: 'Dual-NPI claims routing, 837P batch engine, commercial denial letters',
+    },
+    caregiver: {
+      name: 'Elena Morales',
+      title: 'Family Caregiver',
+      email: 'elena.morales@coloradomail.net',
+      desc: 'GPS-verified EVV shift clock in/out, time self-correction, AI notes',
+    },
+  };
+
   // Autofilled credentials per role
-  const [email, setEmail] = useState('lisa.admin@lilisare.health');
+  const [email, setEmail] = useState(roleAccounts.admin.email);
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,19 +87,8 @@ export function LoginPage() {
   // Switch role and update autofilled credentials
   const handleRoleSelect = (role: UserRole) => {
     setSelectedRole(role);
-    if (role === 'admin') {
-      setEmail('lisa.admin@lilisare.health');
-      setPassword('password123');
-    } else if (role === 'clinical') {
-      setEmail('sarah.rn@lilisare.health');
-      setPassword('password123');
-    } else if (role === 'caregiver') {
-      setEmail('elena.caregiver@coloradomail.net');
-      setPassword('password123');
-    } else {
-      setEmail('family.carlos@coloradomail.net');
-      setPassword('password123');
-    }
+    setEmail(roleAccounts[role].email);
+    setPassword('password123');
   };
 
   // Sign In submit handler
@@ -68,27 +102,14 @@ export function LoginPage() {
       router.push('/admin-portal/dashboard');
       notify(
         'Signed In Successfully',
-        selectedRole === 'admin'
-          ? 'Welcome to LiliSphere! Agency Admin operational dashboard loaded for Mountain Lane Branch.'
-          : `Welcome to LiliSphere! Switched to ${selectedRole.toUpperCase()} portal perspective.`,
+        `Welcome to LiliSphere! Authenticated as ${roleAccounts[selectedRole].name} (${roleAccounts[selectedRole].title}).`,
         'success'
       );
     }, 300);
   };
 
   const getPortalTitle = () => {
-    switch (selectedRole) {
-      case 'admin':
-        return 'Agency Admin Portal';
-      case 'clinical':
-        return 'Clinical Care Portal';
-      case 'caregiver':
-        return 'Caregiver EVV Portal';
-      case 'enrollment':
-        return 'Client & Family Portal';
-      default:
-        return 'LiliSphere Portal';
-    }
+    return `${roleAccounts[selectedRole].title} Console`;
   };
 
   return (
@@ -160,56 +181,67 @@ export function LoginPage() {
             </h2>
           </div>
 
-          {/* Role Selector Tabs */}
-          <div>
-            <div className="grid grid-cols-4 gap-1 p-1 bg-slate-100 rounded-xl border border-slate-200/70 shadow-inner">
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('admin')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'admin'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 font-medium'
-                  }`}
-              >
-                <Building2 className={`w-3.5 h-3.5 ${selectedRole === 'admin' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
-                <span className="text-[10px] leading-none">Admin</span>
-              </button>
+          {/* Role Persona Selector */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                Select Persona to Simulate
+              </label>
+              <span className="text-[10px] font-bold text-[#3e6b2b] bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                7 Roles Configured
+              </span>
+            </div>
 
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('clinical')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'clinical'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 font-medium'
-                  }`}
-              >
-                <Stethoscope className={`w-3.5 h-3.5 ${selectedRole === 'clinical' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
-                <span className="text-[10px] leading-none">Clinical</span>
-              </button>
+            <div className="grid grid-cols-4 sm:grid-cols-7 gap-1 p-1 bg-slate-100 rounded-2xl border border-slate-200/70 shadow-inner">
+              {[
+                { id: 'admin' as UserRole, label: 'Admin', icon: Building2 },
+                { id: 'onboarding' as UserRole, label: 'Onboard', icon: Award },
+                { id: 'enrollment' as UserRole, label: 'Intake', icon: Users },
+                { id: 'clinical' as UserRole, label: 'Clinical', icon: Stethoscope },
+                { id: 'compliance' as UserRole, label: 'Comply', icon: ShieldCheck },
+                { id: 'billing' as UserRole, label: 'Billing', icon: Activity },
+                { id: 'caregiver' as UserRole, label: 'Caregiver', icon: HeartHandshake },
+              ].map((item) => {
+                const IconComponent = item.icon;
+                const isSelected = selectedRole === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => handleRoleSelect(item.id)}
+                    className={`py-2 px-1 rounded-xl text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${
+                      isSelected
+                        ? 'bg-white text-slate-900 shadow-xs ring-1 ring-[#3e6b2b]/30'
+                        : 'text-slate-500 hover:text-slate-900 font-medium'
+                    }`}
+                  >
+                    <IconComponent
+                      className={`w-3.5 h-3.5 ${
+                        isSelected ? 'text-[#3e6b2b]' : 'text-slate-400'
+                      }`}
+                    />
+                    <span className="text-[10px] leading-none truncate w-full">{item.label}</span>
+                  </button>
+                );
+              })}
+            </div>
 
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('caregiver')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'caregiver'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 font-medium'
-                  }`}
-              >
-                <HeartHandshake className={`w-3.5 h-3.5 ${selectedRole === 'caregiver' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
-                <span className="text-[10px] leading-none">Caregiver</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleRoleSelect('enrollment')}
-                className={`py-2 px-1 rounded-lg text-xs font-bold transition-all text-center cursor-pointer flex flex-col items-center gap-1 ${selectedRole === 'enrollment'
-                  ? 'bg-white text-slate-900 shadow-xs'
-                  : 'text-slate-500 hover:text-slate-900 font-medium'
-                  }`}
-              >
-                <Users className={`w-3.5 h-3.5 ${selectedRole === 'enrollment' ? 'text-[#3e6b2b]' : 'text-slate-400'}`} />
-                <span className="text-[10px] leading-none">Family</span>
-              </button>
+            {/* Persona Callout Card */}
+            <div className="p-3 bg-slate-50 rounded-xl border border-slate-200/80 text-xs flex items-start gap-2.5">
+              <div className="p-1.5 rounded-lg bg-emerald-100/80 text-[#3e6b2b] shrink-0 mt-0.5">
+                <ShieldCheck className="w-4 h-4" />
+              </div>
+              <div className="min-w-0">
+                <p className="font-bold text-slate-900 leading-tight">
+                  {roleAccounts[selectedRole].name}{' '}
+                  <span className="font-normal text-slate-500">
+                    ({roleAccounts[selectedRole].title})
+                  </span>
+                </p>
+                <p className="text-[11px] text-slate-500 mt-0.5 leading-snug">
+                  {roleAccounts[selectedRole].desc}
+                </p>
+              </div>
             </div>
           </div>
 

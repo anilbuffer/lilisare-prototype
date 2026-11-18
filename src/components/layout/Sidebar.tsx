@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
@@ -25,6 +25,8 @@ import {
   Settings,
   LogOut,
   User,
+  FileText,
+  Sparkles,
 } from 'lucide-react';
 
 interface SidebarProps {
@@ -35,7 +37,7 @@ interface SidebarProps {
 export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}) {
   const pathname = usePathname() || '';
   const router = useRouter();
-  const { switchRole, notify, applications, isSidebarCollapsed } = usePortal();
+  const { switchRole, notify, applications, isSidebarCollapsed, currentRole, currentRoleConfig } = usePortal();
 
   const pendingApplicationsCount = applications.filter(
     (a) => a.status === 'Pending Review' || a.status === 'In Verification'
@@ -73,122 +75,477 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
     return null;
   }
 
-  const workItems = [
-    {
-      id: 'today',
-      label: 'Today',
-      href: '/admin-portal/dashboard',
-      icon: Calendar,
-      isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
-    },
-    {
-      id: 'client-intake',
-      label: 'Client Intake',
-      href: '/admin-portal/client-intake',
-      icon: Layers,
-      isActive:
-        pathname === '/admin-portal/client-intake' ||
-        pathname === '/admin-portal/intake-pipeline' ||
-        pathname.startsWith('/admin-portal/client-intake'),
-    },
-    {
-      id: 'caregiver-intake',
-      label: 'Caregiver Intake',
-      href: '/admin-portal/caregiver-intake',
-      icon: UserCheck,
-      badge: pendingApplicationsCount > 0 ? String(pendingApplicationsCount) : undefined,
-      isActive:
-        pathname === '/admin-portal/caregiver-intake' ||
-        pathname.startsWith('/admin-portal/caregiver-intake'),
-    },
-    {
-      id: 'onboarding',
-      label: 'Onboarding',
-      href: '/admin-portal/onboarding',
-      icon: FileCheck2,
-      badge: '24',
-      isActive:
-        pathname === '/admin-portal/onboarding' ||
-        pathname.startsWith('/admin-portal/onboarding'),
-    },
-    {
-      id: 'ca-emails',
-      label: 'CA Emails',
-      href: '/admin-portal/ca-emails',
-      icon: Mail,
-      badge: '7',
-      isActive:
-        pathname === '/admin-portal/ca-emails' ||
-        pathname === '/admin-portal/cm-emails' ||
-        pathname.startsWith('/admin-portal/ca-emails') ||
-        pathname.startsWith('/admin-portal/cm-emails'),
-    },
-  ];
+  interface NavItem {
+    id: string;
+    label: string;
+    href: string;
+    icon: any;
+    badge?: string;
+    isActive: boolean;
+  }
 
-  const peopleItems = [
-    {
-      id: 'clients',
-      label: 'Clients',
-      href: '/admin-portal/clients',
-      icon: Users,
-      isActive: pathname === '/admin-portal/clients',
-    },
-    {
-      id: 'caregivers',
-      label: 'Caregivers',
-      href: '/admin-portal/caregivers',
-      icon: HeartHandshake,
-      isActive: pathname === '/admin-portal/caregivers',
-    },
-    {
-      id: 'screening-center',
-      label: 'Screening Center',
-      href: '/admin-portal/screening-center',
-      icon: ShieldCheck,
-      isActive: pathname === '/admin-portal/screening-center',
-    },
-  ];
+  interface NavSection {
+    title: string;
+    items: NavItem[];
+  }
 
-  const scheduleItems = [
-    {
-      id: 'scheduling-evv',
-      label: 'Scheduling and EVV',
-      href: '/admin-portal/scheduling-evv',
-      icon: Clock,
-      isActive: pathname === '/admin-portal/scheduling-evv',
-    },
-    {
-      id: 'compliance',
-      label: 'Compliance',
-      href: '/admin-portal/compliance',
-      icon: CheckSquare,
-      isActive: pathname === '/admin-portal/compliance',
-    },
-  ];
+  const navSections: NavSection[] = useMemo(() => {
+    // 1. Enrollment Specialist
+    if (currentRole === 'enrollment') {
+      return [
+        {
+          title: 'INTAKE & REFERRALS',
+          items: [
+            {
+              id: 'today',
+              label: 'Today',
+              href: '/admin-portal/dashboard',
+              icon: Calendar,
+              isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+            },
+            {
+              id: 'client-intake',
+              label: 'Client Intake',
+              href: '/admin-portal/client-intake',
+              icon: Layers,
+              isActive: pathname.startsWith('/admin-portal/client-intake') || pathname.startsWith('/admin-portal/intake-pipeline'),
+            },
+            {
+              id: 'cm-emails',
+              label: 'CM Emails',
+              href: '/admin-portal/cm-emails',
+              icon: Mail,
+              badge: '7',
+              isActive: pathname.startsWith('/admin-portal/cm-emails') || pathname.startsWith('/admin-portal/ca-emails'),
+            },
+          ],
+        },
+        {
+          title: 'DIRECTORIES',
+          items: [
+            {
+              id: 'clients',
+              label: 'Clients',
+              href: '/admin-portal/clients',
+              icon: Users,
+              isActive: pathname === '/admin-portal/clients',
+            },
+          ],
+        },
+      ];
+    }
 
-  const businessItems = [
-    {
-      id: 'billing',
-      label: 'Billing',
-      href: '/admin-portal/billing',
-      icon: DollarSign,
-      isActive: pathname === '/admin-portal/billing',
-    },
-    {
-      id: 'client-profitability',
-      label: 'Client Profitability',
-      href: '/admin-portal/client-profitability',
-      icon: TrendingUp,
-      isActive: pathname === '/admin-portal/client-profitability',
-    },
-    {
-      id: 'reports',
-      label: 'Reports',
-      href: '/admin-portal/reports',
-      icon: BarChart3,
-      isActive: pathname === '/admin-portal/reports',
-    },
-  ];
+    // 2. Caregiver Onboarding Lead
+    if (currentRole === 'onboarding') {
+      return [
+        {
+          title: 'ONBOARDING PIPELINE',
+          items: [
+            {
+              id: 'today',
+              label: 'Today',
+              href: '/admin-portal/dashboard',
+              icon: Calendar,
+              isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+            },
+            {
+              id: 'caregiver-intake',
+              label: 'Caregiver Intake',
+              href: '/admin-portal/caregiver-intake',
+              icon: UserCheck,
+              badge: pendingApplicationsCount > 0 ? String(pendingApplicationsCount) : undefined,
+              isActive: pathname.startsWith('/admin-portal/caregiver-intake'),
+            },
+            {
+              id: 'onboarding',
+              label: 'Onboarding Queue',
+              href: '/admin-portal/onboarding',
+              icon: FileCheck2,
+              badge: '24',
+              isActive: pathname.startsWith('/admin-portal/onboarding'),
+            },
+          ],
+        },
+        {
+          title: 'CREDENTIALING & SCREENING',
+          items: [
+            {
+              id: 'caregivers',
+              label: 'Caregivers',
+              href: '/admin-portal/caregivers',
+              icon: HeartHandshake,
+              isActive: pathname === '/admin-portal/caregivers',
+            },
+            {
+              id: 'screening-center',
+              label: 'Screening Center',
+              href: '/admin-portal/screening-center',
+              icon: ShieldCheck,
+              badge: '3',
+              isActive: pathname === '/admin-portal/screening-center',
+            },
+          ],
+        },
+      ];
+    }
+
+    // 3. RN Clinical Supervisor
+    if (currentRole === 'clinical') {
+      return [
+        {
+          title: 'CLINICAL OVERSIGHT',
+          items: [
+            {
+              id: 'today',
+              label: 'Today',
+              href: '/admin-portal/dashboard',
+              icon: Calendar,
+              isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+            },
+            {
+              id: 'note-audit',
+              label: 'Note Audit',
+              href: '/admin-portal/note-audit',
+              icon: FileText,
+              badge: '24',
+              isActive: pathname === '/admin-portal/note-audit',
+            },
+            {
+              id: 'compliance',
+              label: 'Supervisory Visits',
+              href: '/admin-portal/compliance',
+              icon: CheckSquare,
+              isActive: pathname === '/admin-portal/compliance',
+            },
+            {
+              id: 'scheduling-evv',
+              label: 'Shift Monitoring',
+              href: '/admin-portal/scheduling-evv',
+              icon: Clock,
+              isActive: pathname === '/admin-portal/scheduling-evv',
+            },
+          ],
+        },
+        {
+          title: 'PATIENT & STAFF ROSTER',
+          items: [
+            {
+              id: 'clients',
+              label: 'Clients',
+              href: '/admin-portal/clients',
+              icon: Users,
+              isActive: pathname === '/admin-portal/clients',
+            },
+            {
+              id: 'caregivers',
+              label: 'Caregivers',
+              href: '/admin-portal/caregivers',
+              icon: HeartHandshake,
+              isActive: pathname === '/admin-portal/caregivers',
+            },
+          ],
+        },
+      ];
+    }
+
+    // 4. Compliance Officer
+    if (currentRole === 'compliance') {
+      return [
+        {
+          title: 'STATE QA & COMPLIANCE',
+          items: [
+            {
+              id: 'today',
+              label: 'Today',
+              href: '/admin-portal/dashboard',
+              icon: Calendar,
+              isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+            },
+            {
+              id: 'compliance',
+              label: 'Credential Expirations',
+              href: '/admin-portal/compliance',
+              icon: CheckSquare,
+              badge: '41',
+              isActive: pathname === '/admin-portal/compliance',
+            },
+            {
+              id: 'screening-center',
+              label: 'Screening Center',
+              href: '/admin-portal/screening-center',
+              icon: ShieldCheck,
+              badge: '3',
+              isActive: pathname === '/admin-portal/screening-center',
+            },
+          ],
+        },
+        {
+          title: 'AUDIT VAULT & LOGS',
+          items: [
+            {
+              id: 'note-audit',
+              label: 'Note Audits',
+              href: '/admin-portal/note-audit',
+              icon: FileText,
+              isActive: pathname === '/admin-portal/note-audit',
+            },
+            {
+              id: 'reports',
+              label: '7-Year Audit Vault',
+              href: '/admin-portal/reports',
+              icon: BarChart3,
+              isActive: pathname === '/admin-portal/reports',
+            },
+          ],
+        },
+        {
+          title: 'RECORDS DIRECTORY',
+          items: [
+            {
+              id: 'caregivers',
+              label: 'Caregivers',
+              href: '/admin-portal/caregivers',
+              icon: HeartHandshake,
+              isActive: pathname === '/admin-portal/caregivers',
+            },
+            {
+              id: 'clients',
+              label: 'Clients',
+              href: '/admin-portal/clients',
+              icon: Users,
+              isActive: pathname === '/admin-portal/clients',
+            },
+          ],
+        },
+      ];
+    }
+
+    // 5. Medicaid Billing Specialist
+    if (currentRole === 'billing') {
+      return [
+        {
+          title: 'REVENUE CYCLE & CLAIMS',
+          items: [
+            {
+              id: 'today',
+              label: 'Today',
+              href: '/admin-portal/dashboard',
+              icon: Calendar,
+              isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+            },
+            {
+              id: 'billing',
+              label: 'Billing & Claims',
+              href: '/admin-portal/billing',
+              icon: DollarSign,
+              badge: '18',
+              isActive: pathname === '/admin-portal/billing',
+            },
+          ],
+        },
+        {
+          title: 'FINANCIAL OPERATIONS',
+          items: [
+            {
+              id: 'scheduling-evv',
+              label: 'EVV Reconciliation',
+              href: '/admin-portal/scheduling-evv',
+              icon: Clock,
+              isActive: pathname === '/admin-portal/scheduling-evv',
+            },
+            {
+              id: 'client-profitability',
+              label: 'Client Profitability',
+              href: '/admin-portal/client-profitability',
+              icon: TrendingUp,
+              isActive: pathname === '/admin-portal/client-profitability',
+            },
+            {
+              id: 'reports',
+              label: 'Remittance Reports',
+              href: '/admin-portal/reports',
+              icon: BarChart3,
+              isActive: pathname === '/admin-portal/reports',
+            },
+          ],
+        },
+        {
+          title: 'CLIENT ACCOUNTS',
+          items: [
+            {
+              id: 'clients',
+              label: 'Clients',
+              href: '/admin-portal/clients',
+              icon: Users,
+              isActive: pathname === '/admin-portal/clients',
+            },
+          ],
+        },
+      ];
+    }
+
+    // 6. Family Caregiver (Elena Morales)
+    if (currentRole === 'caregiver') {
+      return [
+        {
+          title: 'MY VISITS & TIME',
+          items: [
+            {
+              id: 'today',
+              label: "Today's Shift & EVV",
+              href: '/admin-portal/dashboard',
+              icon: Calendar,
+              isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+            },
+            {
+              id: 'scheduling-evv',
+              label: 'My Schedule & Hours',
+              href: '/admin-portal/scheduling-evv',
+              icon: Clock,
+              isActive: pathname === '/admin-portal/scheduling-evv',
+            },
+          ],
+        },
+        {
+          title: 'MY CREDENTIALS',
+          items: [
+            {
+              id: 'compliance',
+              label: 'Certifications & Training',
+              href: '/admin-portal/compliance',
+              icon: ShieldCheck,
+              isActive: pathname === '/admin-portal/compliance',
+            },
+          ],
+        },
+      ];
+    }
+
+    // 7. System Executive Admin (Full Access)
+    return [
+      {
+        title: 'WORK',
+        items: [
+          {
+            id: 'today',
+            label: 'Today',
+            href: '/admin-portal/dashboard',
+            icon: Calendar,
+            isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
+          },
+          {
+            id: 'client-intake',
+            label: 'Client Intake',
+            href: '/admin-portal/client-intake',
+            icon: Layers,
+            isActive: pathname.startsWith('/admin-portal/client-intake') || pathname.startsWith('/admin-portal/intake-pipeline'),
+          },
+          {
+            id: 'caregiver-intake',
+            label: 'Caregiver Intake',
+            href: '/admin-portal/caregiver-intake',
+            icon: UserCheck,
+            badge: pendingApplicationsCount > 0 ? String(pendingApplicationsCount) : undefined,
+            isActive: pathname.startsWith('/admin-portal/caregiver-intake'),
+          },
+          {
+            id: 'onboarding',
+            label: 'Onboarding',
+            href: '/admin-portal/onboarding',
+            icon: FileCheck2,
+            badge: '24',
+            isActive: pathname.startsWith('/admin-portal/onboarding'),
+          },
+          {
+            id: 'ca-emails',
+            label: 'CM Emails',
+            href: '/admin-portal/cm-emails',
+            icon: Mail,
+            badge: '7',
+            isActive: pathname.startsWith('/admin-portal/cm-emails') || pathname.startsWith('/admin-portal/ca-emails'),
+          },
+        ],
+      },
+      {
+        title: 'PEOPLE',
+        items: [
+          {
+            id: 'clients',
+            label: 'Clients',
+            href: '/admin-portal/clients',
+            icon: Users,
+            isActive: pathname === '/admin-portal/clients',
+          },
+          {
+            id: 'caregivers',
+            label: 'Caregivers',
+            href: '/admin-portal/caregivers',
+            icon: HeartHandshake,
+            isActive: pathname === '/admin-portal/caregivers',
+          },
+          {
+            id: 'screening-center',
+            label: 'Screening Center',
+            href: '/admin-portal/screening-center',
+            icon: ShieldCheck,
+            isActive: pathname === '/admin-portal/screening-center',
+          },
+        ],
+      },
+      {
+        title: 'SCHEDULE & COMPLIANCE',
+        items: [
+          {
+            id: 'scheduling-evv',
+            label: 'Scheduling and EVV',
+            href: '/admin-portal/scheduling-evv',
+            icon: Clock,
+            isActive: pathname === '/admin-portal/scheduling-evv',
+          },
+          {
+            id: 'compliance',
+            label: 'Compliance',
+            href: '/admin-portal/compliance',
+            icon: CheckSquare,
+            isActive: pathname === '/admin-portal/compliance',
+          },
+          {
+            id: 'note-audit',
+            label: 'Note Audit',
+            href: '/admin-portal/note-audit',
+            icon: FileText,
+            isActive: pathname === '/admin-portal/note-audit',
+          },
+        ],
+      },
+      {
+        title: 'BUSINESS',
+        items: [
+          {
+            id: 'billing',
+            label: 'Billing',
+            href: '/admin-portal/billing',
+            icon: DollarSign,
+            isActive: pathname === '/admin-portal/billing',
+          },
+          {
+            id: 'client-profitability',
+            label: 'Client Profitability',
+            href: '/admin-portal/client-profitability',
+            icon: TrendingUp,
+            isActive: pathname === '/admin-portal/client-profitability',
+          },
+          {
+            id: 'reports',
+            label: 'Reports',
+            href: '/admin-portal/reports',
+            icon: BarChart3,
+            isActive: pathname === '/admin-portal/reports',
+          },
+        ],
+      },
+    ];
+  }, [currentRole, pathname, pendingApplicationsCount]);
 
   const renderNavContent = (isMobile: boolean) => (
     <div className="flex flex-col h-full overflow-hidden select-none w-full">
@@ -198,7 +555,6 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
           <Link
             href="/admin-portal/dashboard"
             onClick={() => {
-              switchRole('admin');
               if (isMobile) onCloseMobile?.();
             }}
             className={`${isSidebarCollapsed && !isMobile ? '' : 'w-full'} cursor-pointer group block`}
@@ -228,176 +584,55 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
         </div>
       </div>
 
-      {/* 2. SCROLLABLE MIDDLE MENU NAVIGATION (Only this menu list scrolls with ultra-thin scrollbar on the right) */}
+      {/* 2. SCROLLABLE MIDDLE MENU NAVIGATION (Filtered dynamically per role) */}
       <nav className={`flex-1 overflow-y-auto overflow-x-hidden min-h-0 space-y-4 sidebar-thin-scroll relative z-10 py-3 ${isSidebarCollapsed && !isMobile ? 'px-2' : 'px-3.5 pr-2'
         }`}>
-        {/* ======================================================== */}
-        {/* GROUP 1: WORK                                            */}
-        {/* ======================================================== */}
-        <div className="space-y-1">
-          <div className={`px-3 pb-1 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/90">
-              WORK
-            </span>
+        {navSections.map((section) => (
+          <div key={section.title} className="space-y-1">
+            <div className={`px-3 pb-1 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
+              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/90">
+                {section.title}
+              </span>
+            </div>
+
+            {section.items.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <Link
+                  key={item.id}
+                  href={item.href}
+                  title={item.label}
+                  onClick={() => {
+                    if (isMobile) onCloseMobile?.();
+                  }}
+                  className={`w-full flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs transition-all text-left cursor-pointer group ${item.isActive
+                    ? 'font-bold bg-white text-slate-900 shadow-sm'
+                    : 'font-medium text-emerald-50/90 hover:text-white hover:bg-white/10'
+                    }`}
+                >
+                  <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'gap-2.5'} min-w-0`}>
+                    <IconComponent
+                      className={`w-4 h-4 shrink-0 transition-colors ${item.isActive ? 'text-[#3e6b2b]' : 'text-emerald-200 group-hover:text-white'
+                        }`}
+                    />
+                    <span className={`text-[13px] truncate ${isSidebarCollapsed && !isMobile ? 'hidden' : 'inline'}`}>{item.label}</span>
+                  </div>
+                  {item.isActive && (!isSidebarCollapsed || isMobile) && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse shrink-0" />
+                  )}
+                  {item.badge && !item.isActive && (!isSidebarCollapsed || isMobile) && (
+                    <span className="px-1.5 py-0.5 rounded-full bg-[#F2B632] text-slate-950 font-black text-[10px] leading-none shrink-0">
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
           </div>
-
-          {workItems.map((item) => {
-            const IconComponent = item.icon;
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                title={item.label}
-                onClick={() => {
-                  if (isMobile) onCloseMobile?.();
-                }}
-                className={`w-full flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs transition-all text-left cursor-pointer group ${item.isActive
-                  ? 'font-bold bg-white text-slate-900 shadow-sm'
-                  : 'font-medium text-emerald-50/90 hover:text-white hover:bg-white/10'
-                  }`}
-              >
-                <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'gap-2.5'} min-w-0`}>
-                  <IconComponent
-                    className={`w-4 h-4 shrink-0 transition-colors ${item.isActive ? 'text-[#3e6b2b]' : 'text-emerald-200 group-hover:text-white'
-                      }`}
-                  />
-                  <span className={`text-[13px] truncate ${isSidebarCollapsed && !isMobile ? 'hidden' : 'inline'}`}>{item.label}</span>
-                </div>
-                {item.isActive && (!isSidebarCollapsed || isMobile) && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse shrink-0" />
-                )}
-                {item.badge && !item.isActive && (!isSidebarCollapsed || isMobile) && (
-                  <span className="px-1.5 py-0.5 rounded-full bg-[#F2B632] text-slate-950 font-black text-[10px] leading-none shrink-0">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* ======================================================== */}
-        {/* GROUP 2: PEOPLE                                          */}
-        {/* ======================================================== */}
-        <div className="pt-1 space-y-1">
-          <div className={`px-3 pb-1 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/90">
-              PEOPLE
-            </span>
-          </div>
-
-          {peopleItems.map((item) => {
-            const IconComponent = item.icon;
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                title={item.label}
-                onClick={() => {
-                  if (isMobile) onCloseMobile?.();
-                }}
-                className={`w-full flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs transition-all text-left cursor-pointer group ${item.isActive
-                  ? 'font-bold bg-white text-slate-900 shadow-sm'
-                  : 'font-medium text-emerald-50/90 hover:text-white hover:bg-white/10'
-                  }`}
-              >
-                <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'gap-2.5'} min-w-0`}>
-                  <IconComponent
-                    className={`w-4 h-4 shrink-0 transition-colors ${item.isActive ? 'text-[#3e6b2b]' : 'text-emerald-200 group-hover:text-white'
-                      }`}
-                  />
-                  <span className={`text-[13px] truncate ${isSidebarCollapsed && !isMobile ? 'hidden' : 'inline'}`}>{item.label}</span>
-                </div>
-                {item.isActive && (!isSidebarCollapsed || isMobile) && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse shrink-0" />
-                )}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* ======================================================== */}
-        {/* GROUP 3: SCHEDULE                                        */}
-        {/* ======================================================== */}
-        <div className="pt-1 space-y-1">
-          <div className={`px-3 pb-1 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/90">
-              SCHEDULE
-            </span>
-          </div>
-
-          {scheduleItems.map((item) => {
-            const IconComponent = item.icon;
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                title={item.label}
-                onClick={() => {
-                  if (isMobile) onCloseMobile?.();
-                }}
-                className={`w-full flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs transition-all text-left cursor-pointer group ${item.isActive
-                  ? 'font-bold bg-white text-slate-900 shadow-sm'
-                  : 'font-medium text-emerald-50/90 hover:text-white hover:bg-white/10'
-                  }`}
-              >
-                <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'gap-2.5'} min-w-0`}>
-                  <IconComponent
-                    className={`w-4 h-4 shrink-0 transition-colors ${item.isActive ? 'text-[#3e6b2b]' : 'text-emerald-200 group-hover:text-white'
-                      }`}
-                  />
-                  <span className={`text-[13px] truncate ${isSidebarCollapsed && !isMobile ? 'hidden' : 'inline'}`}>{item.label}</span>
-                </div>
-                {item.isActive && (!isSidebarCollapsed || isMobile) && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse shrink-0" />
-                )}
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* ======================================================== */}
-        {/* GROUP 4: BUSINESS                                        */}
-        {/* ======================================================== */}
-        <div className="pt-1 space-y-1">
-          <div className={`px-3 pb-1 ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-200/90">
-              BUSINESS
-            </span>
-          </div>
-
-          {businessItems.map((item) => {
-            const IconComponent = item.icon;
-            return (
-              <Link
-                key={item.id}
-                href={item.href}
-                title={item.label}
-                onClick={() => {
-                  if (isMobile) onCloseMobile?.();
-                }}
-                className={`w-full flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center px-2 py-2.5' : 'justify-between px-3 py-2'} rounded-xl text-xs transition-all text-left cursor-pointer group ${item.isActive
-                  ? 'font-bold bg-white text-slate-900 shadow-sm'
-                  : 'font-medium text-emerald-50/90 hover:text-white hover:bg-white/10'
-                  }`}
-              >
-                <div className={`flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'gap-2.5'} min-w-0`}>
-                  <IconComponent
-                    className={`w-4 h-4 shrink-0 transition-colors ${item.isActive ? 'text-[#3e6b2b]' : 'text-emerald-200 group-hover:text-white'
-                      }`}
-                  />
-                  <span className={`text-[13px] truncate ${isSidebarCollapsed && !isMobile ? 'hidden' : 'inline'}`}>{item.label}</span>
-                </div>
-                {item.isActive && (!isSidebarCollapsed || isMobile) && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#00d084] animate-pulse shrink-0" />
-                )}
-              </Link>
-            );
-          })}
-        </div>
+        ))}
       </nav>
 
-      {/* 3. FIXED BOTTOM FOOTER (HIPAA Badge + Sarah Jenkins Profile Dropup) */}
+      {/* 3. FIXED BOTTOM FOOTER (HIPAA Badge + Persona Profile Dropup) */}
       <div className="shrink-0 p-3 pt-2 border-t border-white/10 space-y-2 relative z-20" ref={userMenuRef}>
         {/* HIPAA COMPLIANT BADGE */}
         <div className={isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}>
@@ -416,10 +651,36 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
         {isUserMenuOpen && (
           <div
             className={`absolute bottom-full mb-2 bg-[#203a13]/95 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-1.5 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150 ${isSidebarCollapsed && !isMobile
-              ? 'left-2 w-48'
+              ? 'left-2 w-52'
               : 'left-3 right-3'
               }`}
           >
+            {/* Persona Info Header */}
+            <div className="px-3 py-2 border-b border-white/10 mb-1">
+              <p className="text-xs font-bold text-white truncate">
+                {currentRoleConfig.userName || currentRoleConfig.label}
+              </p>
+              <p className="text-[10px] text-emerald-200/90 font-medium">
+                {currentRoleConfig.department}
+              </p>
+            </div>
+
+            {/* Switch Role shortcut */}
+            {currentRole !== 'admin' && (
+              <button
+                type="button"
+                onClick={() => {
+                  setIsUserMenuOpen(false);
+                  switchRole('admin');
+                  router.push('/admin-portal/dashboard');
+                }}
+                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold text-emerald-200 hover:text-white hover:bg-white/10 transition-colors text-left cursor-pointer group"
+              >
+                <Sparkles className="w-4 h-4 text-emerald-300" />
+                <span>Switch to Admin Mode</span>
+              </button>
+            )}
+
             {/* Settings Item */}
             <button
               type="button"
@@ -459,15 +720,21 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
           onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
           className={`w-full p-2 rounded-2xl border border-white/20 bg-black/20 hover:bg-black/30 transition-all flex items-center ${isSidebarCollapsed && !isMobile ? 'justify-center' : 'justify-between gap-2.5'
             } cursor-pointer group active:scale-[0.99]`}
-          title="Sarah Jenkins • Admin Profile"
+          title={`${currentRoleConfig.userName || currentRoleConfig.label} • ${currentRoleConfig.userTitle || currentRoleConfig.badgeLabel}`}
         >
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-8 h-8 rounded-full bg-white/10 border border-white/20 flex items-center justify-center text-white shrink-0 group-hover:bg-white/15 transition-colors">
-              <User className="w-4 h-4 text-emerald-100" />
-            </div>
+            <img
+              src={currentRoleConfig.avatar}
+              alt={currentRoleConfig.userName || currentRoleConfig.label}
+              className="w-8 h-8 rounded-full object-cover border border-white/25 shrink-0 group-hover:ring-1 group-hover:ring-white/40 transition-all"
+            />
             <div className={`min-w-0 text-left ${isSidebarCollapsed && !isMobile ? 'hidden' : 'block'}`}>
-              <p className="text-xs font-bold text-white truncate leading-tight">Sarah Jenkins</p>
-              <p className="text-[10px] font-bold text-emerald-200/90 tracking-wider mt-0.5 uppercase">ADMIN</p>
+              <p className="text-xs font-bold text-white truncate leading-tight">
+                {currentRoleConfig.userName || currentRoleConfig.label}
+              </p>
+              <p className="text-[10px] font-bold text-emerald-200/90 tracking-wider mt-0.5 uppercase truncate">
+                {currentRoleConfig.badgeLabel || currentRoleConfig.userTitle || currentRole.toUpperCase()}
+              </p>
             </div>
           </div>
           <ChevronUp
