@@ -2,6 +2,9 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
+    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
@@ -60,8 +63,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-roboto)", "'Roboto'", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "sans-serif"],
-        roboto: ["var(--font-roboto)", "'Roboto'", "sans-serif"],
+        sans: ["'Roboto'", "sans-serif"],
+        roboto: ["'Roboto'", "sans-serif"],
       },
       boxShadow: {
         subtle: "0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px 0 rgba(0, 0, 0, 0.03)",

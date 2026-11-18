@@ -24,7 +24,7 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-slate-50 flex flex-col antialiased">
+      <body className="min-h-screen bg-slate-50 flex flex-col antialiased font-roboto">
         <PortalProvider>
           <AppContentWrapper>
             {children}

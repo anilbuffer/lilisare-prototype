@@ -10,6 +10,8 @@ import {
   EVVRecord,
   ComplianceVisit,
   BillingClaim,
+  RegistrationApplication,
+  StepReviewStatus,
 } from '../types';
 import {
   SYSTEM_ROLES,
@@ -19,6 +21,7 @@ import {
   MOCK_EVV_RECORDS,
   MOCK_COMPLIANCE_VISITS,
   MOCK_BILLING_CLAIMS,
+  MOCK_REGISTRATION_APPLICATIONS,
 } from '../mock-data';
 
 interface NotificationToast {
@@ -58,6 +61,27 @@ interface PortalContextType {
   runBackgroundCheck: (caregiverId: string, checkId: string) => void;
   activateCaregiver: (caregiverId: string) => void;
   
+  // Registration Applications & Agency Verification
+  applications: RegistrationApplication[];
+  submitRegistrationApplication: (appData: {
+    type: 'Caregiver' | 'Patient';
+    fullName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+    linkedEntityName: string;
+    serviceOrClassification: string;
+    payload: Record<string, any>;
+    customSteps?: RegistrationApplication['steps'];
+  }) => string;
+  updateApplicationStepStatus: (appId: string, stepId: string, status: StepReviewStatus, notes?: string) => void;
+  approveApplication: (appId: string, decisionNotes?: string) => void;
+  declineApplication: (appId: string, reason: string) => void;
+  reopenApplication: (appId: string) => void;
+
   // Clients
   clients: Client[];
   
@@ -93,6 +117,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
   const [evvRecords, setEvvRecords] = useState<EVVRecord[]>(MOCK_EVV_RECORDS);
   const [complianceVisits, setComplianceVisits] = useState<ComplianceVisit[]>(MOCK_COMPLIANCE_VISITS);
   const [billingClaims, setBillingClaims] = useState<BillingClaim[]>(MOCK_BILLING_CLAIMS);
+  const [applications, setApplications] = useState<RegistrationApplication[]>(MOCK_REGISTRATION_APPLICATIONS);
   const [notifications, setNotifications] = useState<NotificationToast[]>([]);
 
   const currentRoleConfig = SYSTEM_ROLES.find((r) => r.id === currentRole) || SYSTEM_ROLES[0];
@@ -192,6 +217,282 @@ export function PortalProvider({ children }: { children: ReactNode }) {
       })
     );
     notify('Caregiver Activated', 'Caregiver is now certified for authorized shift scheduling and EVV clock-in.', 'success');
+  };
+
+  const submitRegistrationApplication = (appData: {
+    type: 'Caregiver' | 'Patient';
+    fullName: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+    linkedEntityName: string;
+    serviceOrClassification: string;
+    payload: Record<string, any>;
+    customSteps?: RegistrationApplication['steps'];
+  }): string => {
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+    const prefix = appData.type === 'Caregiver' ? 'LS-CG' : 'LS-PT';
+    const appNumber = `${prefix}-2026-${randomNum}`;
+    const id = `app-${Date.now()}`;
+
+    const defaultSteps: RegistrationApplication['steps'] = appData.type === 'Caregiver' ? [
+      {
+        id: 'step-1',
+        name: 'Personal Profile & Colorado Residency',
+        category: 'Identity',
+        status: 'Verified',
+        details: `${appData.city}, ${appData.state} address confirmed. Phone: ${appData.phone}.`,
+        verifiedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        verifiedBy: 'System Auto-Check',
+      },
+      {
+        id: 'step-2',
+        name: 'Classification & Position Selection',
+        category: 'Payroll & Consent',
+        status: 'Verified',
+        details: `Classification: ${appData.serviceOrClassification}. Linked: ${appData.linkedEntityName}.`,
+        verifiedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        verifiedBy: 'System Auto-Check',
+      },
+      {
+        id: 'step-3',
+        name: 'Identification & Form I-9 Document Verification',
+        category: 'Documentation',
+        status: 'Pending',
+        details: 'State Driver License and Social Security Card uploaded. Awaiting visual audit by Agency Admin.',
+      },
+      {
+        id: 'step-4',
+        name: 'Colorado CBI Criminal History & CAPS Clearance',
+        category: 'Compliance & Background',
+        status: 'Pending',
+        details: 'Automated CBI fingerprint request queued with Colorado Department of Public Safety.',
+      },
+      {
+        id: 'step-5',
+        name: 'Orientation Attestation & Direct Deposit Setup',
+        category: 'Payroll & Consent',
+        status: 'Pending',
+        details: 'Attestation of family care policies and banking details submitted.',
+      },
+    ] : [
+      {
+        id: 'step-1',
+        name: 'Client Demographics & Guardianship',
+        category: 'Identity',
+        status: 'Verified',
+        details: `Residence: ${appData.address}, ${appData.city}, CO. Primary Contact / Guardian: ${appData.linkedEntityName}.`,
+        verifiedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        verifiedBy: 'System Auto-Check',
+      },
+      {
+        id: 'step-2',
+        name: 'Colorado Medicaid Waiver & Eligibility',
+        category: 'Documentation',
+        status: 'Pending',
+        details: `Program: ${appData.serviceOrClassification}. Medicaid ID verification against Colorado HCPF portal pending.`,
+      },
+      {
+        id: 'step-3',
+        name: 'Primary Family Caregiver Assignment',
+        category: 'Compliance & Background',
+        status: 'Verified',
+        details: `Designated caregiver: ${appData.linkedEntityName}. Family attestation verified.`,
+        verifiedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        verifiedBy: 'System Auto-Check',
+      },
+      {
+        id: 'step-4',
+        name: 'Case Management Agency (CMA) Alignment',
+        category: 'Waiver & Clinical',
+        status: 'Pending',
+        details: 'Communication open with designated Colorado Case Management Agency.',
+      },
+      {
+        id: 'step-5',
+        name: 'Service Plan & Prior Authorization (PAR)',
+        category: 'Waiver & Clinical',
+        status: 'Pending',
+        details: 'Awaiting clinical supervisor sign-off on authorized hours & care tasks.',
+      },
+    ];
+
+    const newApp: RegistrationApplication = {
+      id,
+      applicationNumber: appNumber,
+      type: appData.type,
+      fullName: appData.fullName,
+      email: appData.email,
+      phone: appData.phone,
+      address: appData.address,
+      city: appData.city,
+      state: appData.state,
+      zip: appData.zip,
+      submittedAt: new Date().toLocaleString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+      status: 'Pending Review',
+      linkedEntityName: appData.linkedEntityName,
+      serviceOrClassification: appData.serviceOrClassification,
+      steps: appData.customSteps || defaultSteps,
+      payload: appData.payload,
+    };
+
+    setApplications((prev) => [newApp, ...prev]);
+
+    notify(
+      'Application Submitted to Agency',
+      `${appData.fullName}'s registration (${appNumber}) is now pending Agency Admin verification.`,
+      'info'
+    );
+
+    return appNumber;
+  };
+
+  const updateApplicationStepStatus = (
+    appId: string,
+    stepId: string,
+    status: StepReviewStatus,
+    notes?: string
+  ) => {
+    setApplications((prev) =>
+      prev.map((app) => {
+        if (app.id !== appId) return app;
+        const updatedSteps = app.steps.map((st) => {
+          if (st.id !== stepId) return st;
+          return {
+            ...st,
+            status,
+            notes: notes !== undefined ? notes : st.notes,
+            verifiedAt: status === 'Verified' ? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : undefined,
+            verifiedBy: status === 'Verified' ? 'Danielle M. (Agency Intake Director)' : undefined,
+          };
+        });
+
+        // Compute updated application overall status
+        const allVerified = updatedSteps.every((s) => s.status === 'Verified');
+        let newAppStatus = app.status;
+        if (app.status !== 'Approved' && app.status !== 'Declined') {
+          if (allVerified) {
+            newAppStatus = 'In Verification';
+          } else {
+            newAppStatus = 'Pending Review';
+          }
+        }
+
+        return {
+          ...app,
+          status: newAppStatus,
+          steps: updatedSteps,
+        };
+      })
+    );
+
+    notify(
+      'Step Verification Updated',
+      `Verification item marked as "${status}".`,
+      status === 'Verified' ? 'success' : status === 'Flagged' ? 'warning' : 'info'
+    );
+  };
+
+  const approveApplication = (appId: string, decisionNotes?: string) => {
+    const reviewer = 'Danielle M. (Agency Intake Director)';
+    const reviewTime = new Date().toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    let targetApp: RegistrationApplication | undefined;
+
+    setApplications((prev) =>
+      prev.map((app) => {
+        if (app.id !== appId) return app;
+        targetApp = app;
+        const allVerifiedSteps = app.steps.map((st) => ({
+          ...st,
+          status: 'Verified' as StepReviewStatus,
+          verifiedAt: st.verifiedAt || reviewTime,
+          verifiedBy: st.verifiedBy || reviewer,
+        }));
+        return {
+          ...app,
+          status: 'Approved',
+          reviewedAt: reviewTime,
+          reviewedBy: reviewer,
+          decisionReason: decisionNotes || 'All identity credentials, documents, state waiver criteria, and background checks cleared and approved by Agency Admin.',
+          steps: allVerifiedSteps,
+        };
+      })
+    );
+
+    if (targetApp) {
+      notify(
+        'Application Approved! 🎉',
+        `${(targetApp as RegistrationApplication).fullName}'s ${(targetApp as RegistrationApplication).type} registration has been approved and activated.`,
+        'success'
+      );
+    }
+  };
+
+  const declineApplication = (appId: string, reason: string) => {
+    const reviewer = 'Danielle M. (Agency Intake Director)';
+    const reviewTime = new Date().toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+
+    let targetApp: RegistrationApplication | undefined;
+
+    setApplications((prev) =>
+      prev.map((app) => {
+        if (app.id !== appId) return app;
+        targetApp = app;
+        return {
+          ...app,
+          status: 'Declined',
+          reviewedAt: reviewTime,
+          reviewedBy: reviewer,
+          decisionReason: reason || 'Application requires document correction or failed state compliance criteria.',
+        };
+      })
+    );
+
+    if (targetApp) {
+      notify(
+        'Application Declined / Action Required',
+        `Registration for ${(targetApp as RegistrationApplication).fullName} marked as declined. Reason logged.`,
+        'error'
+      );
+    }
+  };
+
+  const reopenApplication = (appId: string) => {
+    setApplications((prev) =>
+      prev.map((app) => {
+        if (app.id !== appId) return app;
+        return {
+          ...app,
+          status: 'Pending Review',
+          decisionReason: undefined,
+          reviewedAt: undefined,
+          reviewedBy: undefined,
+        };
+      })
+    );
+    notify('Application Reopened', 'Status reset to Pending Review for re-evaluation.', 'info');
   };
 
   const submitClockIn = (caregiverId: string, clientId: string) => {
@@ -308,6 +609,12 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         updateCaregiverDocStatus,
         runBackgroundCheck,
         activateCaregiver,
+        applications,
+        submitRegistrationApplication,
+        updateApplicationStepStatus,
+        approveApplication,
+        declineApplication,
+        reopenApplication,
         clients,
         evvRecords,
         submitClockIn,

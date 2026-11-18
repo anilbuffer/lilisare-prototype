@@ -244,3 +244,41 @@ export interface BillingClaim {
   adjudicationDate?: string;
   notes?: string;
 }
+
+export type ApplicationType = 'Caregiver' | 'Patient';
+export type ApplicationConfirmationStatus = 'Pending Review' | 'In Verification' | 'Approved' | 'Declined';
+export type StepReviewStatus = 'Pending' | 'Verified' | 'Flagged';
+
+export interface VerificationAuditStep {
+  id: string;
+  name: string;
+  category: 'Identity' | 'Documentation' | 'Compliance & Background' | 'Waiver & Clinical' | 'Payroll & Consent';
+  status: StepReviewStatus;
+  details: string;
+  verifiedAt?: string;
+  verifiedBy?: string;
+  notes?: string;
+}
+
+export interface RegistrationApplication {
+  id: string;
+  applicationNumber: string;
+  type: ApplicationType;
+  fullName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  submittedAt: string;
+  status: ApplicationConfirmationStatus;
+  reviewedAt?: string;
+  reviewedBy?: string;
+  decisionReason?: string;
+  linkedEntityName: string;
+  serviceOrClassification: string;
+  steps: VerificationAuditStep[];
+  payload: Record<string, any>;
+}
+
