@@ -245,19 +245,19 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
           <img
             src="/images/lilisare-watermark.png"
             alt=""
-            className="absolute -right-16 bottom-20 w-80 max-w-none opacity-20 pointer-events-none transform -rotate-12"
+            className="absolute -right-16 bottom-20 w-80 max-w-none opacity-10 pointer-events-none transform -rotate-12"
           />
           <img
             src="/images/lilisare-watermark-white.png"
             alt=""
-            className="absolute -left-16 top-1/4 w-72 max-w-none opacity-10 pointer-events-none transform rotate-6"
+            className="absolute -left-16 top-1/4 w-72 max-w-none opacity-5 pointer-events-none transform rotate-6"
           />
         </div>
 
         {/* Top Branding & Step Progress */}
         <div className="space-y-6 relative z-10">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0 shadow-sm">
+            <div className="w-10 h-10 lg:w-14 lg:h-14 rounded-xl bg-white p-1.5 flex items-center justify-center shrink-0 shadow-sm">
               <img src="/images/lilisare-icon.png" alt="LiliSare" className="h-full w-full object-contain" />
             </div>
             <div>
@@ -297,19 +297,19 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
                   key={title}
                   onClick={() => setStep(stepNum)}
                   className={`p-2.5 rounded-xl text-xs transition-all cursor-pointer flex items-center justify-between ${isCurrent
-                      ? 'bg-white text-slate-900 font-bold shadow-md'
-                      : isCompleted
-                        ? 'text-emerald-100 hover:bg-white/10 font-medium'
-                        : 'text-white/60 hover:bg-white/5 font-medium'
+                    ? 'bg-white text-slate-900 font-bold shadow-md'
+                    : isCompleted
+                      ? 'text-emerald-100 hover:bg-white/10 font-medium'
+                      : 'text-white/60 hover:bg-white/5 font-medium'
                     }`}
                 >
                   <div className="flex items-center gap-2.5 min-w-0">
                     <span
                       className={`w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-bold shrink-0 ${isCurrent
-                          ? 'bg-[#3e6b2b] text-white'
-                          : isCompleted
-                            ? 'bg-white/20 text-[#00d084]'
-                            : 'bg-black/20 text-emerald-100/70'
+                        ? 'bg-[#3e6b2b] text-white'
+                        : isCompleted
+                          ? 'bg-white/20 text-[#00d084]'
+                          : 'bg-black/20 text-emerald-100/70'
                         }`}
                     >
                       {isCompleted ? '✓' : stepNum}
