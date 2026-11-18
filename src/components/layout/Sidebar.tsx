@@ -14,7 +14,6 @@ import {
   ChevronsLeft,
   ChevronsRight,
   ChevronDown,
-  ChevronUp,
   X,
   ShieldCheck,
   LogOut,
@@ -493,8 +492,8 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
           >
             <div
               className={`bg-white rounded-2xl ${isSidebarCollapsed && !isMobile
-                  ? 'p-2 w-10 h-10 flex items-center justify-center'
-                  : 'w-full py-2 px-3 flex items-center justify-center'
+                ? 'p-2 w-10 h-10 flex items-center justify-center'
+                : 'w-full py-2 px-3 flex items-center justify-center'
                 } shadow-sm border border-white/20 group-hover:scale-[1.01] transition-transform`}
             >
               <img
@@ -560,21 +559,18 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
           const GroupIcon = group.icon;
 
           return (
-            <div key={group.id} className="pt-1.5">
-              {/* Group Header (Static, always open, matching reference screenshot) */}
+            <div key={group.id} className="pt-2">
+              {/* Group Header (Clean Open Section Header, Not an Accordion) */}
               {isSidebarCollapsed && !isMobile ? (
                 <div className="flex justify-center py-2" title={group.title}>
                   <GroupIcon className="w-4 h-4 text-white shrink-0" />
                 </div>
               ) : (
-                <div className="flex items-center justify-between px-2 py-1 select-none">
-                  <div className="flex items-center gap-2.5 min-w-0">
-                    <GroupIcon className="w-4 h-4 text-white shrink-0" />
-                    <span className="text-[13px] sm:text-[14px] font-bold text-white tracking-normal truncate">
-                      {group.title}
-                    </span>
-                  </div>
-                  <ChevronUp className="w-3.5 h-3.5 text-white/70 shrink-0" />
+                <div className="flex items-center gap-2.5 px-2.5 py-1.5 select-none">
+                  <GroupIcon className="w-4 h-4 text-white/90 shrink-0" />
+                  <span className="text-[13px] sm:text-[14px] font-bold text-white tracking-normal truncate">
+                    {group.title}
+                  </span>
                 </div>
               )}
 
@@ -589,8 +585,8 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
                         if (isMobile) onCloseMobile?.();
                       }}
                       className={`w-full flex items-center justify-between px-2.5 py-1.5 rounded-lg text-[13px] transition-colors cursor-pointer ${item.isActive
-                          ? 'text-white font-bold bg-white/15'
-                          : 'text-white/90 hover:text-white hover:bg-white/10 font-normal'
+                        ? 'text-white font-bold bg-white/15'
+                        : 'text-white/90 hover:text-white hover:bg-white/10 font-normal'
                         }`}
                     >
                       <span className="truncate">{item.label}</span>
@@ -614,8 +610,8 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
         {isUserMenuOpen && (
           <div
             className={`absolute bottom-full mb-2 bg-[#25461b]/98 backdrop-blur-md rounded-2xl border border-white/20 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-bottom-2 duration-150 ${isSidebarCollapsed && !isMobile
-                ? 'left-2 w-80 sm:w-96'
-                : 'left-2 w-[calc(100%-1rem)] sm:w-96 sm:left-2'
+              ? 'left-2 w-80 sm:w-96'
+              : 'left-2 w-[calc(100%-1rem)] sm:w-96 sm:left-2'
               }`}
           >
             {/* Persona Info Header */}
