@@ -33,14 +33,20 @@ import { GLOBAL_SEARCH_ITEMS, SearchItem } from './dashboard-data';
 import { usePortal } from '@/lib/store/portal-context';
 
 interface TopUtilityBarProps {
-  onSelectSearchItem: (item: SearchItem) => void;
-  onOpenNotificationsModal: () => void;
-  onOpenProfileModal: (tab?: string) => void;
+  title?: string;
+  subtitle?: string;
+  actionButton?: React.ReactNode;
+  onSelectSearchItem?: (item: SearchItem) => void;
+  onOpenNotificationsModal?: () => void;
+  onOpenProfileModal?: (tab?: string) => void;
   onOpenAIBriefing?: () => void;
   onTrackCaregivers?: () => void;
 }
 
 export function TopUtilityBar({
+  title = 'Dashboard',
+  subtitle,
+  actionButton,
   onSelectSearchItem,
   onOpenNotificationsModal,
   onOpenProfileModal,
@@ -134,7 +140,17 @@ export function TopUtilityBar({
   };
 
   const handleSelectItem = (item: SearchItem) => {
-    onSelectSearchItem(item);
+    if (onSelectSearchItem) {
+      onSelectSearchItem(item);
+    } else {
+      if (item.type === 'client') {
+        router.push('/admin-portal/client-intake');
+      } else if (item.type === 'caregiver') {
+        router.push('/admin-portal/caregiver-intake');
+      } else {
+        router.push('/admin-portal/dashboard');
+      }
+    }
     setIsSearchOpen(false);
     setSearchQuery('');
     setSelectedCategory(null);
@@ -177,61 +193,70 @@ export function TopUtilityBar({
 
   return (
     <>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-        {/* Left: Circular Sidebar Toggle Button + Page Title (Exact Reference Match) */}
-        <div className="flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={toggleSidebar}
-            className="w-7 h-7 rounded-full bg-[#3e6b2b] hover:bg-[#345b24] text-white flex items-center justify-center shadow-xs transition-transform active:scale-95 cursor-pointer shrink-0"
-            title="Toggle Sidebar"
-          >
-            <Columns2 className="w-3.5 h-3.5 text-white" />
-          </button>
-          <h1 className="text-xl sm:text-2xl font-black text-[#0f172a] tracking-tight">
-            Dashboard
-          </h1>
-        </div>
-
-        {/* Right: Pill Search Bar Trigger & Circular Notification Bell */}
-        <div className="flex items-center gap-2.5 flex-1 justify-end max-w-xl">
-          <button
-            type="button"
-            onClick={() => {
-              setIsSearchOpen(true);
-              setSearchQuery('');
-            }}
-            className="relative flex-1 max-w-sm sm:max-w-md bg-white border border-slate-200/90 rounded-full py-2 pl-4 pr-3 flex items-center justify-between shadow-2xs hover:border-[#3e6b2b]/40 hover:shadow-xs transition-all cursor-pointer group text-left"
-          >
-            <div className="flex items-center gap-2.5 min-w-0">
-              <Search className="w-4 h-4 text-slate-400 group-hover:text-[#3e6b2b] transition-colors shrink-0" />
-              <span className="text-xs text-slate-400 font-medium truncate">
-                Search caregiver notes...
-              </span>
-            </div>
-            <div className="flex items-center gap-1.5 shrink-0">
-              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-[#3e6b2b] border border-emerald-200/80 hidden sm:inline-flex items-center gap-1">
-                <Sparkles className="w-2.5 h-2.5 text-[#3e6b2b]" />
-                GLOBAL
-              </span>
-              <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-500 bg-slate-50 border border-slate-200 rounded-md shadow-2xs font-semibold">
-                ⌘K
-              </kbd>
-            </div>
-          </button>
-
-          {/* Notification Bell (Circular Pill with Red Dot Badge) */}
-          <div className="relative" ref={notifContainerRef}>
+      {/* Shared Fixed-on-Scroll Top Bar */}
+      <div className="sticky top-0 z-30 bg-[#f4f7f6]/95 backdrop-blur-md -mt-3.5 sm:-mt-6 lg:-mt-7 xl:-mt-8 -mx-3.5 sm:-mx-6 lg:-mx-7 xl:-mx-8 px-3.5 sm:px-6 lg:px-7 xl:px-8 pt-3.5 pb-3 border-b border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.02)] transition-all">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          {/* Left: Circular Sidebar Toggle Button + Page Title & Optional Subtitle */}
+          <div className="flex items-center gap-2.5">
             <button
-              onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
-              aria-label="Notifications"
-              className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-200/90 shadow-2xs flex items-center justify-center text-slate-600 hover:text-slate-900 transition-all cursor-pointer relative active:scale-95"
+              type="button"
+              onClick={toggleSidebar}
+              className="w-7 h-7 rounded-full bg-[#3e6b2b] hover:bg-[#345b24] text-white flex items-center justify-center shadow-xs transition-transform active:scale-95 cursor-pointer shrink-0"
+              title="Toggle Sidebar"
             >
-              <Bell className="w-4 h-4" />
-              {unreadCount > 0 && (
-                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white" />
-              )}
+              <Columns2 className="w-3.5 h-3.5 text-white" />
             </button>
+            <div>
+              <h1 className="text-xl sm:text-2xl font-black text-[#0f172a] tracking-tight">
+                {title}
+              </h1>
+              {subtitle && (
+                <p className="text-xs text-slate-500 font-normal mt-0.5 hidden xl:block">
+                  {subtitle}
+                </p>
+              )}
+            </div>
+          </div>
+
+          {/* Right: Pill Search Bar Trigger & Circular Notification Bell & Action Button */}
+          <div className="flex items-center gap-2.5 flex-1 justify-end max-w-2xl">
+            <button
+              type="button"
+              onClick={() => {
+                setIsSearchOpen(true);
+                setSearchQuery('');
+              }}
+              className="relative flex-1 max-w-xs sm:max-w-sm bg-white border border-slate-200/90 rounded-full py-1.5 sm:py-2 pl-4 pr-3 flex items-center justify-between shadow-2xs hover:border-[#3e6b2b]/40 hover:shadow-xs transition-all cursor-pointer group text-left"
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#3e6b2b] transition-colors shrink-0" />
+                <span className="text-xs text-slate-400 font-medium truncate">
+                  Search notes, staff, clients...
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-50 text-[#3e6b2b] border border-emerald-200/80 hidden sm:inline-flex items-center gap-1">
+                  <Sparkles className="w-2.5 h-2.5 text-[#3e6b2b]" />
+                  GLOBAL
+                </span>
+                <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-mono text-slate-500 bg-slate-50 border border-slate-200 rounded-md shadow-2xs font-semibold">
+                  ⌘K
+                </kbd>
+              </div>
+            </button>
+
+            {/* Notification Bell (Circular Pill with Red Dot Badge) */}
+            <div className="relative" ref={notifContainerRef}>
+              <button
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                aria-label="Notifications"
+                className="w-9 h-9 rounded-full bg-white hover:bg-slate-50 border border-slate-200/90 shadow-2xs flex items-center justify-center text-slate-600 hover:text-slate-900 transition-all cursor-pointer relative active:scale-95"
+              >
+                <Bell className="w-4 h-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white" />
+                )}
+              </button>
 
             {isNotificationsOpen && (
               <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-2xl shadow-xl border border-slate-200 z-50 overflow-hidden animate-in fade-in zoom-in-98 duration-150">
@@ -273,7 +298,7 @@ export function TopUtilityBar({
                   <button
                     onClick={() => {
                       setIsNotificationsOpen(false);
-                      onOpenNotificationsModal();
+                      if (onOpenNotificationsModal) onOpenNotificationsModal();
                     }}
                     className="text-xs font-semibold text-[#3e6b2b] hover:underline cursor-pointer"
                   >
@@ -283,8 +308,16 @@ export function TopUtilityBar({
               </div>
             )}
           </div>
+
+          {/* Action Button Slot (e.g. + Add inquiry / + Add caregiver) */}
+          {actionButton && (
+            <div className="shrink-0">
+              {actionButton}
+            </div>
+          )}
         </div>
       </div>
+    </div>
 
       {/* Global Command Center Search Modal (Exact Match to Attached Reference Screenshot) */}
       {isSearchOpen && (

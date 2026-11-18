@@ -1,8 +1,11 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { Lead, LeadStatus, ServiceType } from '@/lib/types';
+import { TopUtilityBar } from '../dashboard/TopUtilityBar';
 import {
   Search,
   Plus,
@@ -19,6 +22,7 @@ import {
   ArrowRight,
   Sparkles,
   User,
+  Users,
   Check,
   ChevronDown,
   Layers,
@@ -151,10 +155,29 @@ export function ClientIntakePortal() {
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState('');
+  const [stageFilter, setStageFilter] = useState('All Stages');
   const [ownerFilter, setOwnerFilter] = useState('All Owners');
   const [serviceFilter, setServiceFilter] = useState('All Services');
   const [sourceFilter, setSourceFilter] = useState('All Sources');
   const [overdueOnly, setOverdueOnly] = useState(false);
+
+  // Check if any filter is actively applied
+  const isFiltered =
+    searchQuery.trim() !== '' ||
+    stageFilter !== 'All Stages' ||
+    ownerFilter !== 'All Owners' ||
+    serviceFilter !== 'All Services' ||
+    sourceFilter !== 'All Sources' ||
+    overdueOnly;
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setStageFilter('All Stages');
+    setOwnerFilter('All Owners');
+    setServiceFilter('All Services');
+    setSourceFilter('All Sources');
+    setOverdueOnly(false);
+  };
 
   // Modals & Drawers
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
@@ -179,39 +202,54 @@ export function ClientIntakePortal() {
   // Filtered Leads
   const filteredLeads = useMemo(() => {
     return leads.filter((lead) => {
-      // Search by client name
+      // 1. Stage filter
+      if (stageFilter !== 'All Stages') {
+        let currentLeadStage = lead.status;
+        if (currentLeadStage === 'Contact Pending') currentLeadStage = 'New Inquiry';
+        if (currentLeadStage === 'Needs Clarification') currentLeadStage = 'Needs Discussion';
+        if (currentLeadStage === 'Follow-up Scheduled') currentLeadStage = 'Family Decision';
+        if (currentLeadStage !== stageFilter) return false;
+      }
+
+      // 2. Comprehensive Search across name, contact, phone, email, agency, staff, notes
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase();
         const matchesName = lead.clientName.toLowerCase().includes(query);
         const matchesContact = lead.primaryContactName.toLowerCase().includes(query);
-        if (!matchesName && !matchesContact) return false;
+        const matchesPhone = lead.phone ? lead.phone.toLowerCase().includes(query) : false;
+        const matchesEmail = lead.email ? lead.email.toLowerCase().includes(query) : false;
+        const matchesAgency = lead.referralAgency ? lead.referralAgency.toLowerCase().includes(query) : false;
+        const matchesService = lead.requestedService ? lead.requestedService.toLowerCase().includes(query) : false;
+        const matchesStaff = (lead.assignedStaff || lead.ownerName || '').toLowerCase().includes(query);
+        const matchesNotes = lead.notes ? lead.notes.toLowerCase().includes(query) : false;
+        if (!matchesName && !matchesContact && !matchesPhone && !matchesEmail && !matchesAgency && !matchesService && !matchesStaff && !matchesNotes) return false;
       }
 
-      // Owner filter
+      // 3. Owner filter
       if (ownerFilter !== 'All Owners') {
         const leadOwner = lead.ownerName || lead.assignedStaff;
         if (leadOwner !== ownerFilter) return false;
       }
 
-      // Service filter
+      // 4. Service filter
       if (serviceFilter !== 'All Services') {
         if (lead.requestedService !== serviceFilter) return false;
       }
 
-      // Source filter
+      // 5. Source filter
       if (sourceFilter !== 'All Sources') {
         const cat = lead.sourceCategory || lead.inquirySource;
         if (!cat.toLowerCase().includes(sourceFilter.toLowerCase())) return false;
       }
 
-      // Overdue filter
+      // 6. Overdue filter
       if (overdueOnly) {
         if (!lead.isOverdue) return false;
       }
 
       return true;
     });
-  }, [leads, searchQuery, ownerFilter, serviceFilter, sourceFilter, overdueOnly]);
+  }, [leads, searchQuery, stageFilter, ownerFilter, serviceFilter, sourceFilter, overdueOnly]);
 
   // Key Metrics
   const totalOpen = useMemo(() => {
@@ -387,103 +425,169 @@ export function ClientIntakePortal() {
   return (
     <div className="space-y-4 pb-12 select-none">
       {/* ========================================================================= */}
-      {/* 1. TOP HEADER                                                             */}
+      {/* 1. SHARED FIXED DASHBOARD HEADER                                          */}
       {/* ========================================================================= */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#0f172a] tracking-tight">
-            Client Intake
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal">
-            Track family and client inquiries from first call to conversion. Caregiver hiring is handled in Onboarding.
-          </p>
-        </div>
+      <TopUtilityBar
+        title="Client Intake"
+        subtitle="Track family and client inquiries from first call to conversion. Caregiver hiring is handled in Onboarding."
+        actionButton={
+          <button
+            type="button"
+            onClick={() => handleOpenAddModal('New Inquiry')}
+            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+          >
+            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>Add inquiry</span>
+          </button>
+        }
+      />
 
+      {/* ========================================================================= */}
+      {/* 2. STANDARDIZED STATS CARDS (Matching Dashboard KpiCards Layout & Style)   */}
+      {/* ========================================================================= */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 lg:gap-5">
+        {/* 1. TOTAL OPEN */}
         <button
           type="button"
-          onClick={() => handleOpenAddModal('New Inquiry')}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-98 self-start sm:self-auto"
+          onClick={() => {
+            setStageFilter('All Stages');
+            setOverdueOnly(false);
+          }}
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-blue-400 hover:-translate-y-0.5 relative overflow-hidden"
         >
-          <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>Add inquiry</span>
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                TOTAL OPEN
+              </span>
+              <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-200/70 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Users className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {totalOpen}
+            </div>
+          </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-500">
+              Active intake inquiries
+            </span>
+          </div>
         </button>
-      </div>
 
-      {/* ========================================================================= */}
-      {/* 2. FOUR KPI CARDS (Matches Image 1 & 2)                                   */}
-      {/* ========================================================================= */}
-      <div className="portal-kpi-container">
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
-          {/* 1. TOTAL OPEN */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              TOTAL OPEN
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
-                {totalOpen}
+        {/* 2. OVERDUE FOLLOW-UPS */}
+        <button
+          type="button"
+          onClick={() => setOverdueOnly(!overdueOnly)}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
+            overdueOnly ? 'border-rose-500 ring-2 ring-rose-200' : 'border-slate-200/80'
+          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-rose-400 hover:-translate-y-0.5 relative overflow-hidden`}
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                OVERDUE FOLLOW-UPS
               </span>
+              <div className="w-8 h-8 rounded-full bg-rose-50 border border-rose-200/70 text-rose-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <AlertCircle className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-rose-600 tracking-tight">
+              {overdueFollowUps}
             </div>
           </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-bold text-rose-600 flex items-center gap-1">
+              <span>Action required today</span>
+              {overdueOnly && <span className="text-[10px] bg-rose-100 px-1.5 py-0.5 rounded">Active</span>}
+            </span>
+          </div>
+        </button>
 
-          {/* 2. OVERDUE FOLLOW-UPS */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              OVERDUE FOLLOW-UPS
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
-              <span className="text-2xl font-black text-rose-600 tracking-tight">
-                {overdueFollowUps}
+        {/* 3. CONVERTED THIS MONTH */}
+        <button
+          type="button"
+          onClick={() => setStageFilter(stageFilter === 'Converted' ? 'All Stages' : 'Converted')}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
+            stageFilter === 'Converted' ? 'border-[#3e6b2b] ring-2 ring-emerald-200' : 'border-slate-200/80'
+          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden`}
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                CONVERTED THIS MONTH
               </span>
+              <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200/70 text-[#3e6b2b] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {convertedThisMonth}
             </div>
           </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-bold text-emerald-700">
+              +2 vs last month
+            </span>
+          </div>
+        </button>
 
-          {/* 3. CONVERTED THIS MONTH */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              CONVERTED THIS MONTH
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
-                {convertedThisMonth}
+        {/* 4. AVG DAYS TO CONVERT */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left group flex flex-col justify-between hover:border-amber-400 relative overflow-hidden">
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                AVG DAYS TO CONVERT
               </span>
+              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 text-amber-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Clock className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {avgDaysToConvert}
             </div>
           </div>
-
-          {/* 4. AVG DAYS TO CONVERT */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              AVG DAYS TO CONVERT
-            </p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-              <span className="text-2xl font-black text-slate-900 tracking-tight">
-                {avgDaysToConvert}
-              </span>
-            </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-amber-800">
+              Within 14d SLA target
+            </span>
           </div>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. FILTER BAR WITH SEARCH, DROPDOWNS & BOARD / LIST SWITCHER              */}
+      {/* 3. OPTIMIZED FILTER BAR WITH SEARCH, STAGE DROPDOWN & VIEW SWITCHER       */}
       {/* ========================================================================= */}
       <div className="portal-filter-bar">
         {/* Left: Search & Dropdown Filters */}
         <div className="flex flex-wrap items-center gap-2 flex-1">
-          {/* Search by Client Name */}
+          {/* Search across name, contact, phone, email, notes */}
           <div className="relative min-w-[210px] flex-1 sm:flex-initial">
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Filter by client name..."
+              placeholder="Filter by name, phone, email..."
               className="portal-input"
             />
+          </div>
+
+          {/* Stage Dropdown Filter */}
+          <div className="relative">
+            <select
+              value={stageFilter}
+              onChange={(e) => setStageFilter(e.target.value)}
+              className="portal-select"
+            >
+              <option value="All Stages">All Stages</option>
+              {INTAKE_STAGES.map((st) => (
+                <option key={st} value={st}>
+                  {st}
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
           </div>
 
           {/* All Owners Dropdown */}
@@ -543,10 +647,22 @@ export function ClientIntakePortal() {
               type="checkbox"
               checked={overdueOnly}
               onChange={(e) => setOverdueOnly(e.target.checked)}
-              className="w-3.5 h-3.5 rounded text-[#264e1e] focus:ring-[#264e1e] border-slate-300"
+              className="w-3.5 h-3.5 rounded border-slate-300 text-[#264e1e] focus:ring-[#264e1e] cursor-pointer"
             />
             <span>Overdue follow-ups only</span>
           </label>
+
+          {/* Reset Filters Control */}
+          {isFiltered && (
+            <button
+              type="button"
+              onClick={handleClearFilters}
+              className="text-xs font-semibold text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-xl hover:bg-rose-50 flex items-center gap-1 transition-colors cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>Reset filters</span>
+            </button>
+          )}
         </div>
 
         {/* Right: Source insights button & Board / List toggle pill */}
@@ -816,10 +932,17 @@ export function ClientIntakePortal() {
 
                       {/* ACTIONS */}
                       <td className="py-3 px-4 text-right">
-                        <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-800 transition-colors inline-flex items-center gap-1">
-                          <span>View chart</span>
-                          <span className="group-hover:translate-x-0.5 transition-transform">→</span>
-                        </span>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedLead(lead);
+                          }}
+                          className="text-xs font-semibold text-[#3e6b2b] hover:text-[#264e1e] bg-emerald-50/80 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition-colors inline-flex items-center gap-1 cursor-pointer"
+                        >
+                          <span>View details</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
                       </td>
                     </tr>
                   );
@@ -863,13 +986,24 @@ export function ClientIntakePortal() {
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setSelectedLead(null)}
-                className="w-8 h-8 rounded-xl bg-slate-200/80 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-2">
+                <Link
+                  href={`/admin-portal/client-intake/${selectedLead.id}`}
+                  className="px-2.5 py-1 text-xs font-semibold text-[#3e6b2b] bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200 transition-colors inline-flex items-center gap-1 cursor-pointer"
+                  title="Open Dedicated Full Page"
+                >
+                  <span>Full page</span>
+                  <ArrowRight className="w-3 h-3" />
+                </Link>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedLead(null)}
+                  className="w-8 h-8 rounded-xl bg-slate-200/80 hover:bg-slate-300 flex items-center justify-center text-slate-600 transition-colors cursor-pointer"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
             {/* Drawer Scrollable Content */}

@@ -1,9 +1,11 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
 import { CaregiverApplicant, CaregiverIntakeStage } from '@/lib/types';
+import { TopUtilityBar } from '../dashboard/TopUtilityBar';
 import {
   Search,
   Plus,
@@ -19,6 +21,7 @@ import {
   ArrowRight,
   Sparkles,
   User,
+  Users,
   Check,
   ChevronDown,
   FileText,
@@ -136,9 +139,32 @@ export function CaregiverIntakePortal() {
 
   // Filters
   const [searchQuery, setSearchQuery] = useState('');
+  const [stageFilter, setStageFilter] = useState('All Stages');
   const [recruiterFilter, setRecruiterFilter] = useState('All Recruiters');
   const [classificationFilter, setClassificationFilter] = useState('All Classifications');
   const [sourceFilter, setSourceFilter] = useState('All Sources');
+  const [countyFilter, setCountyFilter] = useState('All Counties');
+  const [cbiFilter, setCbiFilter] = useState('All CBI');
+  const [showMoreFilters, setShowMoreFilters] = useState(false);
+
+  const isFiltered =
+    searchQuery.trim() !== '' ||
+    stageFilter !== 'All Stages' ||
+    recruiterFilter !== 'All Recruiters' ||
+    classificationFilter !== 'All Classifications' ||
+    sourceFilter !== 'All Sources' ||
+    countyFilter !== 'All Counties' ||
+    cbiFilter !== 'All CBI';
+
+  const handleClearFilters = () => {
+    setSearchQuery('');
+    setStageFilter('All Stages');
+    setRecruiterFilter('All Recruiters');
+    setClassificationFilter('All Classifications');
+    setSourceFilter('All Sources');
+    setCountyFilter('All Counties');
+    setCbiFilter('All CBI');
+  };
 
   // Selected applicant for detail modal (Image 3)
   const [selectedApplicant, setSelectedApplicant] = useState<CaregiverApplicant | null>(null);
@@ -171,33 +197,54 @@ export function CaregiverIntakePortal() {
   // Filtered applicants
   const filteredApplicants = useMemo(() => {
     return caregiverApplicants.filter((app) => {
-      // Search query
+      // 1. Stage filter
+      if (stageFilter !== 'All Stages') {
+        if (app.stage !== stageFilter) return false;
+      }
+
+      // 2. Comprehensive Search query
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         const matchesName = app.name.toLowerCase().includes(q);
         const matchesRole = app.role.toLowerCase().includes(q);
         const matchesCounty = app.county.toLowerCase().includes(q);
-        if (!matchesName && !matchesRole && !matchesCounty) return false;
+        const matchesPhone = app.phone ? app.phone.toLowerCase().includes(q) : false;
+        const matchesEmail = app.email ? app.email.toLowerCase().includes(q) : false;
+        const matchesRecruiter = app.recruiter.toLowerCase().includes(q);
+        const matchesSource = app.source.toLowerCase().includes(q);
+        const matchesNotes = app.notes ? app.notes.toLowerCase().includes(q) : false;
+        if (!matchesName && !matchesRole && !matchesCounty && !matchesPhone && !matchesEmail && !matchesRecruiter && !matchesSource && !matchesNotes) return false;
       }
 
-      // Recruiter filter
+      // 3. Recruiter filter
       if (recruiterFilter !== 'All Recruiters') {
         if (app.recruiter !== recruiterFilter) return false;
       }
 
-      // Classification filter
+      // 4. Classification filter
       if (classificationFilter !== 'All Classifications') {
         if (app.classificationType !== classificationFilter) return false;
       }
 
-      // Source filter
+      // 5. Source filter
       if (sourceFilter !== 'All Sources') {
         if (app.source !== sourceFilter) return false;
       }
 
+      // 6. County filter
+      if (countyFilter !== 'All Counties') {
+        if (app.county !== countyFilter) return false;
+      }
+
+      // 7. CBI filter
+      if (cbiFilter !== 'All CBI') {
+        if (cbiFilter === 'Pending' && !app.cbiPending) return false;
+        if (cbiFilter === 'Cleared' && app.cbiPending) return false;
+      }
+
       return true;
     });
-  }, [caregiverApplicants, searchQuery, recruiterFilter, classificationFilter, sourceFilter]);
+  }, [caregiverApplicants, searchQuery, stageFilter, recruiterFilter, classificationFilter, sourceFilter, countyFilter, cbiFilter]);
 
   // Key Metrics matching Image 1 & Image 2:
   // Open applicants: 6
@@ -348,190 +395,335 @@ export function CaregiverIntakePortal() {
   return (
     <div className="space-y-4 pb-12 select-none">
       {/* ========================================================================= */}
-      {/* 1. TOP HEADER                                                             */}
+      {/* 1. SHARED FIXED DASHBOARD HEADER                                          */}
       {/* ========================================================================= */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-black text-[#0f172a] tracking-tight">
-            Caregiver Intake
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 mt-0.5 font-normal">
-            Track caregiver inquiries and applicants from first contact to hiring and onboarding handoff.
-          </p>
-        </div>
+      <TopUtilityBar
+        title="Caregiver Intake"
+        subtitle="Track caregiver inquiries and applicants from first contact to hiring and onboarding handoff."
+        actionButton={
+          <button
+            type="button"
+            onClick={() => handleOpenAddModal('New Application')}
+            className="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-full text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
+          >
+            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+            <span>Add caregiver inquiry</span>
+          </button>
+        }
+      />
 
+      {/* ========================================================================= */}
+      {/* 2. STANDARDIZED STATS CARDS (Matching Dashboard KpiCards Layout & Style)   */}
+      {/* ========================================================================= */}
+      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
+        {/* 1. Open applicants */}
         <button
           type="button"
-          onClick={() => handleOpenAddModal('New Application')}
-          className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-xl text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-98 self-start sm:self-auto"
+          onClick={() => {
+            setStageFilter('All Stages');
+            setCountyFilter('All Counties');
+            setCbiFilter('All CBI');
+          }}
+          className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden"
         >
-          <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>+ Add caregiver inquiry</span>
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                OPEN APPLICANTS
+              </span>
+              <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200/70 text-emerald-700 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Users className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {openApplicantsCount}
+            </div>
+          </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-slate-500">
+              Active recruiting pipeline
+            </span>
+          </div>
         </button>
-      </div>
 
-      {/* ========================================================================= */}
-      {/* 2. FIVE KPI CARDS (Matches Image 1 & 2)                                   */}
-      {/* ========================================================================= */}
-      <div className="portal-kpi-container">
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 divide-y sm:divide-y-0 sm:divide-x divide-slate-100">
-          {/* 1. Open applicants */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Open applicants</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-600 shrink-0" />
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
-                {openApplicantsCount}
-              </p>
+        {/* 2. Phone screens */}
+        <button
+          type="button"
+          onClick={() => setStageFilter(stageFilter === 'Phone Screened' ? 'All Stages' : 'Phone Screened')}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
+            stageFilter === 'Phone Screened' ? 'border-blue-500 ring-2 ring-blue-200' : 'border-slate-200/80'
+          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-blue-400 hover:-translate-y-0.5 relative overflow-hidden`}
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                PHONE SCREENS
+              </span>
+              <div className="w-8 h-8 rounded-full bg-blue-50 border border-blue-200/70 text-blue-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Phone className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {phoneScreensCount}
             </div>
           </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-blue-700">
+              Pending recruiter review
+            </span>
+          </div>
+        </button>
 
-          {/* 2. Phone screens */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Phone screens</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-blue-600 shrink-0" />
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
-                {phoneScreensCount}
-              </p>
+        {/* 3. Interviews booked */}
+        <button
+          type="button"
+          onClick={() => setStageFilter(stageFilter === 'Interview Scheduled' ? 'All Stages' : 'Interview Scheduled')}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
+            stageFilter === 'Interview Scheduled' ? 'border-amber-500 ring-2 ring-amber-200' : 'border-slate-200/80'
+          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-amber-400 hover:-translate-y-0.5 relative overflow-hidden`}
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                INTERVIEWS BOOKED
+              </span>
+              <div className="w-8 h-8 rounded-full bg-amber-50 border border-amber-200/70 text-amber-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Calendar className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {interviewsBookedCount}
             </div>
           </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-amber-800">
+              Scheduled this week
+            </span>
+          </div>
+        </button>
 
-          {/* 3. Interviews booked */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Interviews booked</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
-                {interviewsBookedCount}
-              </p>
+        {/* 4. Hired this month */}
+        <button
+          type="button"
+          onClick={() => setStageFilter(stageFilter === 'Hired (→ Onboarding)' ? 'All Stages' : 'Hired (→ Onboarding)')}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border ${
+            stageFilter === 'Hired (→ Onboarding)' ? 'border-[#3e6b2b] ring-2 ring-emerald-200' : 'border-slate-200/80'
+          } shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between hover:border-[#3e6b2b] hover:-translate-y-0.5 relative overflow-hidden`}
+        >
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                HIRED THIS MONTH
+              </span>
+              <div className="w-8 h-8 rounded-full bg-emerald-50 border border-emerald-200/70 text-[#3e6b2b] flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <CheckCircle2 className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {hiredThisMonthCount}
             </div>
           </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-bold text-emerald-700">
+              Ready for onboarding handoff
+            </span>
+          </div>
+        </button>
 
-          {/* 4. Hired this month */}
-          <div className="portal-kpi-cell">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Hired this month</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-emerald-700 shrink-0" />
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
-                {hiredThisMonthCount}
-              </p>
+        {/* 5. Avg days to hire */}
+        <div className="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left group flex flex-col justify-between hover:border-purple-400 relative overflow-hidden">
+          <div>
+            <div className="flex items-center justify-between gap-1.5 mb-2">
+              <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+                AVG DAYS TO HIRE
+              </span>
+              <div className="w-8 h-8 rounded-full bg-purple-50 border border-purple-200/70 text-purple-600 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                <Clock className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
+              {avgDaysToHire}
             </div>
           </div>
-
-          {/* 5. Avg days to hire */}
-          <div className="portal-kpi-cell col-span-2 sm:col-span-1">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Avg days to hire</p>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="w-2 h-2 rounded-full bg-purple-600 shrink-0" />
-              <p className="text-2xl font-black text-slate-900 tracking-tight">
-                {avgDaysToHire}
-              </p>
-            </div>
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between">
+            <span className="text-xs font-semibold text-purple-700">
+              Target &lt; 12 days
+            </span>
           </div>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* 3. FILTER BAR WITH SEARCH, DROPDOWNS & BOARD / LIST SWITCHER              */}
+      {/* 3. OPTIMIZED FILTER BAR WITH STAGE SELECTOR & FUNCTIONAL MORE FILTERS      */}
       {/* ========================================================================= */}
-      <div className="portal-filter-bar">
-        {/* Left: Search & Filter Dropdowns */}
-        <div className="flex flex-wrap items-center gap-2 flex-1">
-          {/* Search applicants */}
-          <div className="relative min-w-[210px] flex-1 sm:flex-initial">
-            <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search applicants..."
-              className="portal-input"
-            />
-          </div>
+      <div className="space-y-2">
+        <div className="portal-filter-bar">
+          {/* Left: Search & Filter Dropdowns */}
+          <div className="flex flex-wrap items-center gap-2 flex-1">
+            {/* Search applicants */}
+            <div className="relative min-w-[210px] flex-1 sm:flex-initial">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search by name, role, email..."
+                className="portal-input"
+              />
+            </div>
 
-          {/* All Recruiters */}
-          <div className="relative">
-            <select
-              value={recruiterFilter}
-              onChange={(e) => setRecruiterFilter(e.target.value)}
-              className="portal-select"
+            {/* Stage Dropdown Filter */}
+            <div className="relative">
+              <select
+                value={stageFilter}
+                onChange={(e) => setStageFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Stages">All Stages</option>
+                {CAREGIVER_STAGES.map((st) => (
+                  <option key={st} value={st}>
+                    {st}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            {/* All Recruiters */}
+            <div className="relative">
+              <select
+                value={recruiterFilter}
+                onChange={(e) => setRecruiterFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Recruiters">All Recruiters</option>
+                <option value="Alicia T.">Alicia T.</option>
+                <option value="Maya R.">Maya R.</option>
+                <option value="Jon P.">Jon P.</option>
+                <option value="Sam K.">Sam K.</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            {/* All Classifications */}
+            <div className="relative">
+              <select
+                value={classificationFilter}
+                onChange={(e) => setClassificationFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Classifications">All Classifications</option>
+                <option value="Employee">Employee</option>
+                <option value="1099">1099</option>
+                <option value="Both">Both</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            {/* All Sources */}
+            <div className="relative">
+              <select
+                value={sourceFilter}
+                onChange={(e) => setSourceFilter(e.target.value)}
+                className="portal-select"
+              >
+                <option value="All Sources">All Sources</option>
+                <option value="Indeed">Indeed</option>
+                <option value="Referral">Referral</option>
+                <option value="Website">Website</option>
+                <option value="Job Fair">Job Fair</option>
+                <option value="Phone Call">Phone Call</option>
+              </select>
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
+
+            {/* More filters Toggle Button */}
+            <button
+              type="button"
+              onClick={() => setShowMoreFilters(!showMoreFilters)}
+              className={`portal-filter-btn ${
+                showMoreFilters || countyFilter !== 'All Counties' || cbiFilter !== 'All CBI'
+                  ? 'bg-emerald-50 text-[#3e6b2b] border-[#3e6b2b]/40 font-bold'
+                  : ''
+              }`}
             >
-              <option value="All Recruiters">All Recruiters</option>
-              <option value="Alicia T.">Alicia T.</option>
-              <option value="Maya R.">Maya R.</option>
-              <option value="Jon P.">Jon P.</option>
-              <option value="Sam K.">Sam K.</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <Filter className="w-3.5 h-3.5" />
+              <span>More filters</span>
+              {(countyFilter !== 'All Counties' || cbiFilter !== 'All CBI') && (
+                <span className="w-1.5 h-1.5 rounded-full bg-[#3e6b2b]" />
+              )}
+            </button>
+
+            {/* Reset filters */}
+            {isFiltered && (
+              <button
+                type="button"
+                onClick={handleClearFilters}
+                className="text-xs font-semibold text-rose-600 hover:text-rose-700 px-2.5 py-1.5 rounded-xl hover:bg-rose-50 flex items-center gap-1 transition-colors cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span>Reset filters</span>
+              </button>
+            )}
           </div>
 
-          {/* All Classifications */}
-          <div className="relative">
-            <select
-              value={classificationFilter}
-              onChange={(e) => setClassificationFilter(e.target.value)}
-              className="portal-select"
+          {/* Right: Board / List Switcher */}
+          <div className="portal-view-switcher">
+            <button
+              type="button"
+              onClick={() => setViewMode('board')}
+              className={viewMode === 'board' ? 'portal-view-switcher-btn-active' : 'portal-view-switcher-btn-inactive'}
             >
-              <option value="All Classifications">All Classifications</option>
-              <option value="Employee">Employee</option>
-              <option value="1099">1099</option>
-              <option value="Both">Both</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
-          </div>
-
-          {/* All Sources */}
-          <div className="relative">
-            <select
-              value={sourceFilter}
-              onChange={(e) => setSourceFilter(e.target.value)}
-              className="portal-select"
+              Board
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('list')}
+              className={viewMode === 'list' ? 'portal-view-switcher-btn-active' : 'portal-view-switcher-btn-inactive'}
             >
-              <option value="All Sources">All Sources</option>
-              <option value="Indeed">Indeed</option>
-              <option value="Referral">Referral</option>
-              <option value="Website">Website</option>
-              <option value="Job Fair">Job Fair</option>
-              <option value="Phone Call">Phone Call</option>
-            </select>
-            <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              List
+            </button>
           </div>
-
-          {/* More filters */}
-          <button
-            type="button"
-            onClick={() => {
-              setSearchQuery('');
-              setRecruiterFilter('All Recruiters');
-              setClassificationFilter('All Classifications');
-              setSourceFilter('All Sources');
-              notify('Filters Reset', 'Showing all caregiver applications.', 'info');
-            }}
-            className="portal-filter-btn"
-          >
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
-            <span>More filters</span>
-          </button>
         </div>
 
-        {/* Right: Board / List Switcher */}
-        <div className="portal-view-switcher">
-          <button
-            type="button"
-            onClick={() => setViewMode('board')}
-            className={viewMode === 'board' ? 'portal-view-switcher-btn-active' : 'portal-view-switcher-btn-inactive'}
-          >
-            Board
-          </button>
-          <button
-            type="button"
-            onClick={() => setViewMode('list')}
-            className={viewMode === 'list' ? 'portal-view-switcher-btn-active' : 'portal-view-switcher-btn-inactive'}
-          >
-            List
-          </button>
-        </div>
+        {/* Expandable Secondary Filters Row (County & CBI status) */}
+        {showMoreFilters && (
+          <div className="p-3 bg-white border border-slate-200/90 rounded-2xl shadow-2xs flex flex-wrap items-center gap-3 animate-in fade-in slide-in-from-top-1 duration-150">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">
+              Additional Filters:
+            </span>
+
+            {/* County filter */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-slate-500 font-medium">County:</span>
+              <select
+                value={countyFilter}
+                onChange={(e) => setCountyFilter(e.target.value)}
+                className="portal-select text-xs py-1"
+              >
+                <option value="All Counties">All Counties</option>
+                <option value="Denver">Denver</option>
+                <option value="Arapahoe">Arapahoe</option>
+                <option value="Jefferson">Jefferson</option>
+                <option value="Douglas">Douglas</option>
+              </select>
+            </div>
+
+            {/* CBI Background Check Filter */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-xs text-slate-500 font-medium">CBI Check:</span>
+              <select
+                value={cbiFilter}
+                onChange={(e) => setCbiFilter(e.target.value)}
+                className="portal-select text-xs py-1"
+              >
+                <option value="All CBI">All CBI Statuses</option>
+                <option value="Pending">CBI Pending</option>
+                <option value="Cleared">CBI Cleared</option>
+              </select>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* ========================================================================= */}
@@ -756,9 +948,10 @@ export function CaregiverIntakePortal() {
                             setSelectedApplicant(app);
                             setDetailActiveTab('overview');
                           }}
-                          className="portal-table-action-btn"
+                          className="text-xs font-semibold text-[#3e6b2b] hover:text-[#264e1e] bg-emerald-50/80 hover:bg-emerald-100 px-2.5 py-1 rounded-lg transition-colors inline-flex items-center gap-1 cursor-pointer"
                         >
-                          Open
+                          <span>View details</span>
+                          <ArrowRight className="w-3 h-3" />
                         </button>
                       </td>
                     </tr>
@@ -780,7 +973,7 @@ export function CaregiverIntakePortal() {
             onClick={() => setSelectedApplicant(null)}
           />
 
-          <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl border border-slate-200 z-10 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-98 duration-150">
+          <div className="relative w-full max-w-5xl bg-white rounded-3xl shadow-2xl border border-slate-200 z-10 overflow-hidden flex flex-col max-h-[92vh] animate-in fade-in zoom-in-98 duration-150">
             {/* Modal Top Header (Image 3) */}
             <div className="p-5 sm:p-6 pb-4 border-b border-slate-100 bg-white">
               <div className="flex items-start justify-between gap-4">
@@ -799,13 +992,24 @@ export function CaregiverIntakePortal() {
                   </p>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={() => setSelectedApplicant(null)}
-                  className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
-                >
-                  <X className="w-4 h-4" />
-                </button>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Link
+                    href={`/admin-portal/caregiver-intake/${currentApplicant.id}`}
+                    className="px-2.5 py-1 text-xs font-semibold text-[#3e6b2b] bg-emerald-50 hover:bg-emerald-100 rounded-xl border border-emerald-200 transition-colors inline-flex items-center gap-1 cursor-pointer"
+                    title="Open Dedicated Full Page"
+                  >
+                    <span>Full page</span>
+                    <ArrowRight className="w-3 h-3" />
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => setSelectedApplicant(null)}
+                    className="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-500 transition-colors cursor-pointer shrink-0"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
               </div>
 
               {/* Stage Dropdown & Action Buttons (Image 3) */}
@@ -872,7 +1076,7 @@ export function CaregiverIntakePortal() {
                   <button
                     type="button"
                     onClick={() => advanceApplicantStep(currentApplicant.id)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#f0fdf4] hover:bg-[#dcfce7] text-[#166534] border border-[#bbf7d0] rounded-xl text-xs font-bold transition-all cursor-pointer"
+                    className="inline-flex items-center gap-1.5 lg:gap-4 px-3 py-1 bg-[#f0fdf4] hover:bg-[#dcfce7] text-[#166534] border border-[#bbf7d0] rounded-xl text-xs font-bold transition-all cursor-pointer"
                   >
                     <span>Mark complete</span>
                     <span>✓</span>
@@ -880,7 +1084,7 @@ export function CaregiverIntakePortal() {
                 </div>
 
                 {/* 7 Horizontal Stepper Bars */}
-                <div className="grid grid-cols-7 gap-1.5">
+                <div className="grid grid-cols-7 gap-1.5 lg:gap-4">
                   {HIRING_STEPS_LABELS.map((stepLabel, idx) => {
                     const stepNum = idx + 1;
                     const isCompleted = currentApplicant.currentStep >= stepNum;
@@ -889,18 +1093,16 @@ export function CaregiverIntakePortal() {
                     return (
                       <div key={stepNum} className="space-y-1">
                         <div
-                          className={`h-1 rounded-full transition-all duration-300 ${
-                            isCompleted ? 'bg-[#264e1e]' : 'bg-slate-200'
-                          }`}
+                          className={`h-1 rounded-full transition-all duration-300 ${isCompleted ? 'bg-[#264e1e]' : 'bg-slate-200'
+                            }`}
                         />
                         <p
-                          className={`text-[10px] truncate ${
-                            isCurrent
-                              ? 'font-bold text-[#264e1e]'
-                              : isCompleted
+                          className={`text-[10px] truncate ${isCurrent
+                            ? 'font-bold text-[#264e1e]'
+                            : isCompleted
                               ? 'text-slate-700 font-medium'
                               : 'text-slate-400'
-                          }`}
+                            }`}
                           title={`Step ${stepNum}: ${stepLabel}`}
                         >
                           {stepLabel}
@@ -917,44 +1119,40 @@ export function CaregiverIntakePortal() {
               <button
                 type="button"
                 onClick={() => setDetailActiveTab('overview')}
-                className={`py-3 transition-colors border-b-2 cursor-pointer ${
-                  detailActiveTab === 'overview'
-                    ? 'border-[#264e1e] text-[#264e1e] font-bold'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
-                }`}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'overview'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 Overview
               </button>
               <button
                 type="button"
                 onClick={() => setDetailActiveTab('credentials')}
-                className={`py-3 transition-colors border-b-2 cursor-pointer ${
-                  detailActiveTab === 'credentials'
-                    ? 'border-[#264e1e] text-[#264e1e] font-bold'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
-                }`}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'credentials'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 Experience &amp; Credentials
               </button>
               <button
                 type="button"
                 onClick={() => setDetailActiveTab('compensation')}
-                className={`py-3 transition-colors border-b-2 cursor-pointer ${
-                  detailActiveTab === 'compensation'
-                    ? 'border-[#264e1e] text-[#264e1e] font-bold'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
-                }`}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'compensation'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 Compensation &amp; Packet
               </button>
               <button
                 type="button"
                 onClick={() => setDetailActiveTab('communication')}
-                className={`py-3 transition-colors border-b-2 cursor-pointer ${
-                  detailActiveTab === 'communication'
-                    ? 'border-[#264e1e] text-[#264e1e] font-bold'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
-                }`}
+                className={`py-3 transition-colors border-b-2 cursor-pointer ${detailActiveTab === 'communication'
+                  ? 'border-[#264e1e] text-[#264e1e] font-bold'
+                  : 'border-transparent text-slate-500 hover:text-slate-800'
+                  }`}
               >
                 Communication (1)
               </button>

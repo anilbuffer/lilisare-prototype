@@ -56,6 +56,7 @@ interface PortalContextType {
   // Leads / Intake
   leads: Lead[];
   updateLeadStatus: (leadId: string, status: Lead['status']) => void;
+  updateLead: (leadId: string, updates: Partial<Lead>) => void;
   addLead: (lead: Omit<Lead, 'id' | 'communicationCount' | 'lastContactDate' | 'createdAt'>) => void;
   
   // Caregiver Intake Pipeline
@@ -175,6 +176,12 @@ export function PortalProvider({ children }: { children: ReactNode }) {
       prev.map((l) => (l.id === leadId ? { ...l, status, lastContactDate: '2026-11-17' } : l))
     );
     notify('Lead Pipeline Updated', `Lead status progressed to "${status}"`, 'success');
+  };
+
+  const updateLead = (leadId: string, updates: Partial<Lead>) => {
+    setLeads((prev) =>
+      prev.map((l) => (l.id === leadId ? { ...l, ...updates } : l))
+    );
   };
 
   const addLead = (newLeadData: Omit<Lead, 'id' | 'communicationCount' | 'lastContactDate' | 'createdAt'>) => {
@@ -693,6 +700,7 @@ export function PortalProvider({ children }: { children: ReactNode }) {
         roles: SYSTEM_ROLES,
         leads,
         updateLeadStatus,
+        updateLead,
         addLead,
         caregiverApplicants,
         updateCaregiverApplicantStage,
