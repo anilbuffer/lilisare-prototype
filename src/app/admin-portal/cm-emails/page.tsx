@@ -84,7 +84,7 @@ export default function CMEmailsPage() {
         <div>
           <div className="flex items-center gap-2">
             <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-              Case Manager Communications
+              Case Agency &amp; Manager Communications (CA Emails)
             </h1>
             <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200">
               7 Active Inquiries

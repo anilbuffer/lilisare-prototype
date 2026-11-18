@@ -33,9 +33,15 @@ import {
 
 interface AgencyApprovalsCenterProps {
   initialSelectedId?: string;
+  defaultTypeFilter?: 'All' | 'Caregiver' | 'Patient';
+  title?: string;
 }
 
-export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCenterProps) {
+export function AgencyApprovalsCenter({
+  initialSelectedId,
+  defaultTypeFilter = 'All',
+  title,
+}: AgencyApprovalsCenterProps) {
   const {
     applications,
     updateApplicationStepStatus,
@@ -45,20 +51,20 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
     notify,
   } = usePortal();
 
-  const [typeFilter, setTypeFilter] = useState<'All' | 'Caregiver' | 'Patient'>('All');
+  const [typeFilter, setTypeFilter] = useState<'All' | 'Caregiver' | 'Patient'>(defaultTypeFilter);
   const [statusFilter, setStatusFilter] = useState<'All' | ApplicationConfirmationStatus>('All');
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   // Selected application for detail audit modal
   const [selectedAppId, setSelectedAppId] = useState<string | null>(
     initialSelectedId || applications[0]?.id || null
   );
-  
+
   // Rejection modal state
   const [isDeclineModalOpen, setIsDeclineModalOpen] = useState(false);
   const [declineReason, setDeclineReason] = useState('');
   const [adminDecisionNote, setAdminDecisionNote] = useState('');
-  
+
   // Flag step note modal state
   const [flaggingStepId, setFlaggingStepId] = useState<string | null>(null);
   const [flagNote, setFlagNote] = useState('');
@@ -130,7 +136,7 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
             Agency Admin Verification &amp; Approval Gateway • Colorado Home Health
           </div>
           <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-            Registration Approvals &amp; Step Verification
+            {title || 'Registration Approvals & Step Verification'}
           </h1>
           <p className="text-slate-200 text-sm mt-2 leading-relaxed">
             Review incoming Caregiver and Patient intake applications. Verify identity, documents, Colorado CBI background clearances, and Medicaid waiver authorizations before granting active status.
@@ -196,26 +202,23 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider w-10 shrink-0">Role:</span>
               <button
                 onClick={() => setTypeFilter('All')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer ${
-                  typeFilter === 'All' ? 'bg-primary text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors cursor-pointer ${typeFilter === 'All' ? 'bg-primary text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
               >
                 All
               </button>
               <button
                 onClick={() => setTypeFilter('Caregiver')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                  typeFilter === 'Caregiver' ? 'bg-primary text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer ${typeFilter === 'Caregiver' ? 'bg-primary text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
               >
                 <HeartHandshake className="w-3 h-3" />
                 Caregivers
               </button>
               <button
                 onClick={() => setTypeFilter('Patient')}
-                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer ${
-                  typeFilter === 'Patient' ? 'bg-primary text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors flex items-center gap-1 cursor-pointer ${typeFilter === 'Patient' ? 'bg-primary text-white font-bold' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
               >
                 <User className="w-3 h-3" />
                 Patients
@@ -229,11 +232,10 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
                 <button
                   key={st}
                   onClick={() => setStatusFilter(st)}
-                  className={`px-2 py-0.5 rounded-md text-[11px] font-medium whitespace-nowrap transition-colors cursor-pointer ${
-                    statusFilter === st
+                  className={`px-2 py-0.5 rounded-md text-[11px] font-medium whitespace-nowrap transition-colors cursor-pointer ${statusFilter === st
                       ? 'bg-slate-800 text-white font-bold'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                  }`}
+                    }`}
                 >
                   {st}
                 </button>
@@ -268,18 +270,16 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
                         document.getElementById('verification-audit-panel')?.scrollIntoView({ behavior: 'smooth' });
                       }
                     }}
-                    className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
-                      isSelected
+                    className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${isSelected
                         ? 'border-primary bg-primary-50/50 shadow-sm ring-1 ring-primary/30'
                         : 'border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex items-center gap-2">
                         <div
-                          className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${
-                            app.type === 'Caregiver' ? 'bg-emerald-100 text-emerald-800' : 'bg-sky-100 text-sky-800'
-                          }`}
+                          className={`w-7 h-7 rounded-lg flex items-center justify-center shrink-0 text-xs font-bold ${app.type === 'Caregiver' ? 'bg-emerald-100 text-emerald-800' : 'bg-sky-100 text-sky-800'
+                            }`}
                         >
                           {app.type === 'Caregiver' ? <HeartHandshake className="w-4 h-4" /> : <User className="w-4 h-4" />}
                         </div>
@@ -314,13 +314,12 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
                     <div className="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                       <div className="flex-1 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-300 ${
-                            app.status === 'Approved'
+                          className={`h-full rounded-full transition-all duration-300 ${app.status === 'Approved'
                               ? 'bg-emerald-500'
                               : app.status === 'Declined'
-                              ? 'bg-rose-500'
-                              : 'bg-primary'
-                          }`}
+                                ? 'bg-rose-500'
+                                : 'bg-primary'
+                            }`}
                           style={{ width: `${progressPercent}%` }}
                         />
                       </div>
@@ -343,11 +342,10 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
               <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-start gap-3">
                   <div
-                    className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${
-                      activeApp.type === 'Caregiver'
+                    className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${activeApp.type === 'Caregiver'
                         ? 'bg-emerald-600 text-white shadow-sm'
                         : 'bg-sky-600 text-white shadow-sm'
-                    }`}
+                      }`}
                   >
                     {activeApp.type === 'Caregiver' ? (
                       <HeartHandshake className="w-6 h-6" />
@@ -362,15 +360,14 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
                         {activeApp.applicationNumber}
                       </span>
                       <span
-                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
-                          activeApp.status === 'Approved'
+                        className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${activeApp.status === 'Approved'
                             ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
                             : activeApp.status === 'Declined'
-                            ? 'bg-rose-100 text-rose-800 border-rose-300'
-                            : activeApp.status === 'In Verification'
-                            ? 'bg-sky-100 text-sky-800 border-sky-300'
-                            : 'bg-amber-100 text-amber-800 border-amber-300'
-                        }`}
+                              ? 'bg-rose-100 text-rose-800 border-rose-300'
+                              : activeApp.status === 'In Verification'
+                                ? 'bg-sky-100 text-sky-800 border-sky-300'
+                                : 'bg-amber-100 text-amber-800 border-amber-300'
+                          }`}
                       >
                         ● {activeApp.status}
                       </span>
@@ -482,24 +479,22 @@ export function AgencyApprovalsCenter({ initialSelectedId }: AgencyApprovalsCent
                     return (
                       <div
                         key={st.id}
-                        className={`p-4 rounded-xl border transition-all ${
-                          isVerified
+                        className={`p-4 rounded-xl border transition-all ${isVerified
                             ? 'bg-emerald-50/40 border-emerald-200'
                             : isFlagged
-                            ? 'bg-amber-50/50 border-amber-200 ring-1 ring-amber-300/40'
-                            : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
-                        }`}
+                              ? 'bg-amber-50/50 border-amber-200 ring-1 ring-amber-300/40'
+                              : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                          }`}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-3">
                             <span
-                              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${
-                                isVerified
+                              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${isVerified
                                   ? 'bg-emerald-600 text-white'
                                   : isFlagged
-                                  ? 'bg-amber-500 text-white'
-                                  : 'bg-slate-200 text-slate-600'
-                              }`}
+                                    ? 'bg-amber-500 text-white'
+                                    : 'bg-slate-200 text-slate-600'
+                                }`}
                             >
                               {isVerified ? <Check className="w-3.5 h-3.5" /> : isFlagged ? '!' : index + 1}
                             </span>

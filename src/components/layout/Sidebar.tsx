@@ -82,35 +82,46 @@ export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}
       isActive: pathname === '/admin-portal/dashboard' || pathname === '/admin-portal',
     },
     {
-      id: 'intake-pipeline',
-      label: 'Intake Pipeline',
-      href: '/admin-portal/intake-pipeline',
+      id: 'client-intake',
+      label: 'Client Intake',
+      href: '/admin-portal/client-intake',
       icon: Layers,
-      isActive: pathname === '/admin-portal/intake-pipeline',
+      isActive:
+        pathname === '/admin-portal/client-intake' ||
+        pathname === '/admin-portal/intake-pipeline' ||
+        pathname.startsWith('/admin-portal/client-intake'),
+    },
+    {
+      id: 'caregiver-intake',
+      label: 'Caregiver Intake',
+      href: '/admin-portal/caregiver-intake',
+      icon: UserCheck,
+      badge: pendingApplicationsCount > 0 ? String(pendingApplicationsCount) : undefined,
+      isActive:
+        pathname === '/admin-portal/caregiver-intake' ||
+        pathname.startsWith('/admin-portal/caregiver-intake'),
     },
     {
       id: 'onboarding',
-      label: 'Onboarding & Approvals',
+      label: 'Onboarding',
       href: '/admin-portal/onboarding',
-      icon: UserCheck,
-      badge: pendingApplicationsCount > 0 ? String(pendingApplicationsCount) : undefined,
-      isActive: pathname === '/admin-portal/onboarding',
-    },
-    {
-      id: 'note-audit',
-      label: 'Note Audit',
-      href: '/admin-portal/note-audit',
       icon: FileCheck2,
       badge: '24',
-      isActive: pathname === '/admin-portal/note-audit',
+      isActive:
+        pathname === '/admin-portal/onboarding' ||
+        pathname.startsWith('/admin-portal/onboarding'),
     },
     {
-      id: 'cm-emails',
-      label: 'CM Emails',
-      href: '/admin-portal/cm-emails',
+      id: 'ca-emails',
+      label: 'CA Emails',
+      href: '/admin-portal/ca-emails',
       icon: Mail,
       badge: '7',
-      isActive: pathname === '/admin-portal/cm-emails',
+      isActive:
+        pathname === '/admin-portal/ca-emails' ||
+        pathname === '/admin-portal/cm-emails' ||
+        pathname.startsWith('/admin-portal/ca-emails') ||
+        pathname.startsWith('/admin-portal/cm-emails'),
     },
   ];
 

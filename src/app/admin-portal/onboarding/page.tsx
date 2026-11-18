@@ -14,7 +14,7 @@ function OnboardingContent() {
 
   const { applications } = usePortal();
   const [activeTab, setActiveTab] = useState<'approvals' | 'credentialing'>(
-    urlTab === 'credentialing' ? 'credentialing' : 'approvals'
+    urlTab === 'approvals' ? 'approvals' : 'credentialing'
   );
 
   const pendingApprovalsCount = applications.filter(
