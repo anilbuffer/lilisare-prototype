@@ -9,8 +9,8 @@ import { ShieldCheck, UserCheck, Sparkles } from 'lucide-react';
 
 function OnboardingContent() {
   const searchParams = useSearchParams();
-  const urlTab = searchParams.get('tab');
-  const initialAppId = searchParams.get('appId') || undefined;
+  const urlTab = searchParams?.get('tab');
+  const initialAppId = searchParams?.get('appId') || undefined;
 
   const { applications } = usePortal();
   const [activeTab, setActiveTab] = useState<'approvals' | 'credentialing'>(

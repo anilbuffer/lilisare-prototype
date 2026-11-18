@@ -33,7 +33,7 @@ interface SidebarProps {
 }
 
 export function Sidebar({ mobileOpen = false, onCloseMobile }: SidebarProps = {}) {
-  const pathname = usePathname();
+  const pathname = usePathname() || '';
   const router = useRouter();
   const { switchRole, notify, applications, isSidebarCollapsed } = usePortal();
 

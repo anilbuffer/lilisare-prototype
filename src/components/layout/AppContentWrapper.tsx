@@ -8,7 +8,7 @@ import { Sidebar } from './Sidebar';
 import { Menu } from 'lucide-react';
 
 export function AppContentWrapper({ children }: { children: ReactNode }) {
-  const pathname = usePathname();
+  const pathname = usePathname() || '';
   const { activeView, applications } = usePortal();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 

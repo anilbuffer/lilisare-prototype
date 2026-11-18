@@ -8,7 +8,7 @@ import { CaregiverOnboardingFlow } from '@/components/flows/CaregiverOnboardingF
 function RegistrationContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const type = searchParams.get('type');
+  const type = searchParams?.get('type');
 
   if (type === 'caregiver') {
     return (
