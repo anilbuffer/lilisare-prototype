@@ -74,7 +74,7 @@ export function CaregiverPortal() {
               <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400" />
               Family Caregiver Self-Service Mobile Portal
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               Welcome back, Elena!
             </h1>
             <p className="text-slate-200 text-xs sm:text-sm mt-1">
@@ -234,11 +234,10 @@ export function CaregiverPortal() {
           <button
             onClick={handleSimulateDictate}
             disabled={isRecording}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
-              isRecording
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${isRecording
                 ? 'bg-rose-600 text-white animate-pulse'
                 : 'bg-primary-50 text-primary-800 hover:bg-primary-100 border border-primary-200'
-            }`}
+              }`}
           >
             <Mic className="w-3.5 h-3.5" />
             {isRecording ? 'Listening...' : 'Dictate with AI'}

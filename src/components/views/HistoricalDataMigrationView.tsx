@@ -29,7 +29,7 @@ export function HistoricalDataMigrationView() {
               <Archive className="w-3.5 h-3.5 text-secondary" />
               Historical Records Consolidation & Vendor Sunset
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               7-Year State Audit Archive Vault
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">

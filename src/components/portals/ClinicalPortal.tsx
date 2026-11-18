@@ -20,7 +20,7 @@ export function ClinicalPortal() {
             <Stethoscope className="w-3.5 h-3.5 text-teal-300" />
             Registered Nurse Oversight & Care Plan Compliance
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
             Clinical RN Supervisory Console
           </h1>
           <p className="text-teal-100 text-xs sm:text-sm mt-1 leading-relaxed">
@@ -56,11 +56,10 @@ export function ClinicalPortal() {
                 <div
                   key={visit.id}
                   onClick={() => setSelectedVisitId(visit.id)}
-                  className={`p-4 rounded-xl border cursor-pointer transition-all ${
-                    isSelected
+                  className={`p-4 rounded-xl border cursor-pointer transition-all ${isSelected
                       ? 'border-primary bg-primary-50/40 shadow-sm'
                       : 'border-slate-200/80 hover:border-slate-300 bg-white'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
@@ -70,13 +69,12 @@ export function ClinicalPortal() {
                       </p>
                     </div>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        isCompleted
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isCompleted
                           ? 'bg-emerald-100 text-emerald-800'
                           : isOverdue
-                          ? 'bg-rose-100 text-rose-800 animate-pulse'
-                          : 'bg-amber-100 text-amber-800'
-                      }`}
+                            ? 'bg-rose-100 text-rose-800 animate-pulse'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
                     >
                       {visit.status}
                     </span>
@@ -109,11 +107,10 @@ export function ClinicalPortal() {
               <button
                 onClick={() => markVisitCompleted(selectedVisit.id, visitNotes)}
                 disabled={selectedVisit.status === 'Completed'}
-                className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${
-                  selectedVisit.status === 'Completed'
+                className={`px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all ${selectedVisit.status === 'Completed'
                     ? 'bg-slate-200 text-slate-500 cursor-not-allowed'
                     : 'bg-primary hover:bg-primary-600 text-white shadow-md'
-                }`}
+                  }`}
               >
                 <CheckCircle2 className="w-4 h-4" />
                 {selectedVisit.status === 'Completed' ? 'Visit Completed & Signed' : 'Sign & Complete RN Visit'}

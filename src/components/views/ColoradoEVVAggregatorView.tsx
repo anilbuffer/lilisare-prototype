@@ -56,12 +56,12 @@ export function ColoradoEVVAggregatorView() {
       },
       ExceptionResolution: selectedRecord.caregiverSelfCorrection
         ? {
-            HasCaregiverAdjustment: true,
-            RequestedTime: selectedRecord.caregiverSelfCorrection.requestedTime,
-            Reason: selectedRecord.caregiverSelfCorrection.reason,
-            ApprovalStatus: selectedRecord.caregiverSelfCorrection.status,
-            ReviewedBy: selectedRecord.caregiverSelfCorrection.reviewedBy || 'Danielle Brooks (QA)',
-          }
+          HasCaregiverAdjustment: true,
+          RequestedTime: selectedRecord.caregiverSelfCorrection.requestedTime,
+          Reason: selectedRecord.caregiverSelfCorrection.reason,
+          ApprovalStatus: selectedRecord.caregiverSelfCorrection.status,
+          ReviewedBy: selectedRecord.caregiverSelfCorrection.reviewedBy || 'Danielle Brooks (QA)',
+        }
         : null,
       AuditLog: {
         Hash: 'sha256-e8f9a01c34b82d77a',
@@ -90,7 +90,7 @@ export function ColoradoEVVAggregatorView() {
               <Radio className="w-3.5 h-3.5 text-[#00d084] animate-pulse" />
               Colorado State EVV Aggregator Prototype (Sandata / HCPF Standard REST)
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               Electronic Visit Verification (EVV) Hub
             </h1>
             <p className="text-emerald-100 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
@@ -130,11 +130,10 @@ export function ColoradoEVVAggregatorView() {
                 <div
                   key={record.id}
                   onClick={() => setSelectedRecordId(record.id)}
-                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
-                    isSelected
+                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${isSelected
                       ? 'border-primary bg-primary-50/60 shadow-sm'
                       : 'border-slate-200/80 hover:border-slate-300 bg-white'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
@@ -144,13 +143,12 @@ export function ColoradoEVVAggregatorView() {
                       </p>
                     </div>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        hasException
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${hasException
                           ? 'bg-rose-100 text-rose-800'
                           : isAdjusted
-                          ? 'bg-amber-100 text-amber-800'
-                          : 'bg-emerald-100 text-emerald-800'
-                      }`}
+                            ? 'bg-amber-100 text-amber-800'
+                            : 'bg-emerald-100 text-emerald-800'
+                        }`}
                     >
                       {record.evvStateStatus}
                     </span>

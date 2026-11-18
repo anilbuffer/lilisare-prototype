@@ -135,7 +135,7 @@ export function AgencyApprovalsCenter({
             <Sparkles className="w-3.5 h-3.5 text-secondary" />
             Agency Admin Verification &amp; Approval Gateway • Colorado Home Health
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             {title || 'Registration Approvals & Step Verification'}
           </h1>
           <p className="text-slate-200 text-sm mt-2 leading-relaxed">
@@ -233,8 +233,8 @@ export function AgencyApprovalsCenter({
                   key={st}
                   onClick={() => setStatusFilter(st)}
                   className={`px-2 py-0.5 rounded-md text-[11px] font-medium whitespace-nowrap transition-colors cursor-pointer ${statusFilter === st
-                      ? 'bg-slate-800 text-white font-bold'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    ? 'bg-slate-800 text-white font-bold'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                     }`}
                 >
                   {st}
@@ -271,8 +271,8 @@ export function AgencyApprovalsCenter({
                       }
                     }}
                     className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${isSelected
-                        ? 'border-primary bg-primary-50/50 shadow-sm ring-1 ring-primary/30'
-                        : 'border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70'
+                      ? 'border-primary bg-primary-50/50 shadow-sm ring-1 ring-primary/30'
+                      : 'border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-2">
@@ -315,10 +315,10 @@ export function AgencyApprovalsCenter({
                       <div className="flex-1 bg-slate-100 h-1.5 rounded-full overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all duration-300 ${app.status === 'Approved'
-                              ? 'bg-emerald-500'
-                              : app.status === 'Declined'
-                                ? 'bg-rose-500'
-                                : 'bg-primary'
+                            ? 'bg-emerald-500'
+                            : app.status === 'Declined'
+                              ? 'bg-rose-500'
+                              : 'bg-primary'
                             }`}
                           style={{ width: `${progressPercent}%` }}
                         />
@@ -343,8 +343,8 @@ export function AgencyApprovalsCenter({
                 <div className="flex items-start gap-3">
                   <div
                     className={`w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 ${activeApp.type === 'Caregiver'
-                        ? 'bg-emerald-600 text-white shadow-sm'
-                        : 'bg-sky-600 text-white shadow-sm'
+                      ? 'bg-emerald-600 text-white shadow-sm'
+                      : 'bg-sky-600 text-white shadow-sm'
                       }`}
                   >
                     {activeApp.type === 'Caregiver' ? (
@@ -361,12 +361,12 @@ export function AgencyApprovalsCenter({
                       </span>
                       <span
                         className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${activeApp.status === 'Approved'
-                            ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-                            : activeApp.status === 'Declined'
-                              ? 'bg-rose-100 text-rose-800 border-rose-300'
-                              : activeApp.status === 'In Verification'
-                                ? 'bg-sky-100 text-sky-800 border-sky-300'
-                                : 'bg-amber-100 text-amber-800 border-amber-300'
+                          ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
+                          : activeApp.status === 'Declined'
+                            ? 'bg-rose-100 text-rose-800 border-rose-300'
+                            : activeApp.status === 'In Verification'
+                              ? 'bg-sky-100 text-sky-800 border-sky-300'
+                              : 'bg-amber-100 text-amber-800 border-amber-300'
                           }`}
                       >
                         ● {activeApp.status}
@@ -480,20 +480,20 @@ export function AgencyApprovalsCenter({
                       <div
                         key={st.id}
                         className={`p-4 rounded-xl border transition-all ${isVerified
-                            ? 'bg-emerald-50/40 border-emerald-200'
-                            : isFlagged
-                              ? 'bg-amber-50/50 border-amber-200 ring-1 ring-amber-300/40'
-                              : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
+                          ? 'bg-emerald-50/40 border-emerald-200'
+                          : isFlagged
+                            ? 'bg-amber-50/50 border-amber-200 ring-1 ring-amber-300/40'
+                            : 'bg-slate-50/70 border-slate-200 hover:border-slate-300'
                           }`}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex items-start gap-3">
                             <span
                               className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${isVerified
-                                  ? 'bg-emerald-600 text-white'
-                                  : isFlagged
-                                    ? 'bg-amber-500 text-white'
-                                    : 'bg-slate-200 text-slate-600'
+                                ? 'bg-emerald-600 text-white'
+                                : isFlagged
+                                  ? 'bg-amber-500 text-white'
+                                  : 'bg-slate-200 text-slate-600'
                                 }`}
                             >
                               {isVerified ? <Check className="w-3.5 h-3.5" /> : isFlagged ? '!' : index + 1}

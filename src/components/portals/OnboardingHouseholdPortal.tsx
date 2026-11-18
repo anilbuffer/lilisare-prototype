@@ -547,12 +547,9 @@ export function OnboardingHouseholdPortal() {
       {/* ========================================================================= */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight">
             Onboarding
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Households: one client and their linked caregiver(s)
-          </p>
         </div>
         <button
           type="button"
@@ -560,7 +557,7 @@ export function OnboardingHouseholdPortal() {
           className="flex items-center gap-1.5 px-4 py-2 bg-[#264e1e] hover:bg-[#1e3e18] text-white rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer active:scale-95 shrink-0"
         >
           <Plus className="w-4 h-4 stroke-[2.5]" />
-          <span>+ Start household</span>
+          <span>Start household</span>
         </button>
       </div>
 

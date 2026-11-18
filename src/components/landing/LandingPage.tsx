@@ -714,7 +714,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                 <span className="text-[11px] font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full inline-block border border-emerald-100">
                   Real Family Experience
                 </span>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+                <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                   Support Designed for Real Households
                 </h3>
                 <p className="text-sm text-slate-600 leading-relaxed font-normal">
@@ -1018,7 +1018,7 @@ export function LandingPage({ onStartOnboarding, onExplorePortal }: LandingPageP
                     {servicesList[activeServiceTab].badge}
                   </span>
 
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-slate-900 leading-tight">
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
                     {servicesList[activeServiceTab].title}
                   </h3>
 

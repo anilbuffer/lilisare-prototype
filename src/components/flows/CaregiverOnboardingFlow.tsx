@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { usePortal } from '@/lib/store/portal-context';
-import { CaregiverClassification } from '@/lib/types';
+import { CaregiverClassification, CaregiverApplicant, CaregiverIntakeStage } from '@/lib/types';
 import { DocumentUploadItem, UploadedFileMeta } from '@/components/ui/DocumentUploadItem';
 import {
   Check,
@@ -26,9 +26,18 @@ import {
 interface CaregiverRegisterWizardProps {
   onBackToHome?: () => void;
   onSwitchToPatient?: () => void;
+  onClose?: () => void;
+  initialStage?: CaregiverIntakeStage;
+  onApplicantCreated?: (applicant: Partial<CaregiverApplicant>) => void;
 }
 
-export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: CaregiverRegisterWizardProps) {
+export function CaregiverOnboardingFlow({
+  onBackToHome,
+  onSwitchToPatient,
+  onClose,
+  initialStage,
+  onApplicantCreated,
+}: CaregiverRegisterWizardProps) {
   const router = useRouter();
   const { notify, setActiveView, submitRegistrationApplication } = usePortal();
   const [step, setStep] = useState<number>(1);
@@ -211,12 +220,36 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
       serviceOrClassification: `${form.classification} • IHSS Family Caregiver`,
       payload: { ...form },
     });
+    if (onApplicantCreated) {
+      onApplicantCreated({
+        name: `${form.firstName} ${form.lastName}`,
+        role: form.relationship && form.relationship !== 'Non-Family' ? 'IHSS' : 'CNA',
+        classificationType: form.classification.includes('1099') ? '1099' : 'Employee',
+        stage: initialStage || 'New Application',
+        currentStep: 1,
+        totalSteps: 7,
+        stepLabel: 'Application logged',
+        source: 'Website',
+        county: form.city ? `${form.city} County` : 'Denver County',
+        recruiter: 'Alicia T.',
+        recruiterInitials: 'AT',
+        daysInStage: 0,
+        phone: form.phone,
+        email: form.email,
+        targetSchedule: 'Full-Time (30-40 hrs/wk)',
+        targetRate: '$21.50 - $24.00/hr',
+        appliedDate: 'Today',
+        cbiPending: true,
+      });
+    }
     setSubmittedAppNumber(appNumber);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const exitWizard = () => {
-    if (onBackToHome) {
+    if (onClose) {
+      onClose();
+    } else if (onBackToHome) {
       onBackToHome();
     } else {
       setActiveView('landing');
@@ -237,7 +270,19 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
   ];
 
   return (
-    <div className="min-h-screen flex w-full bg-[#f4f7f6] text-slate-900 antialiased select-none">
+    <div className="min-h-screen flex w-full bg-[#f4f7f6] text-slate-900 antialiased select-none relative">
+      {/* Floating Close Button for Modal Mode */}
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          className="fixed top-4 right-4 z-50 px-3.5 py-2 rounded-xl bg-white/95 hover:bg-white text-slate-700 hover:text-slate-900 shadow-md border border-slate-200 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-bold active:scale-95"
+          title="Close and return to portal"
+        >
+          <X className="w-4 h-4" />
+          <span>Close</span>
+        </button>
+      )}
       {/* LEFT SIDEBAR: Warm Organic LiliSare Forest Gradient Pane (Matching Reference Screenshot) */}
       <aside className="w-64 lg:w-72 h-screen sticky top-0 shrink-0 bg-gradient-to-b from-[#55823a] via-[#436c2a] to-[#2b4919] text-white flex flex-col justify-between p-6 border-r border-[#243e15] shadow-xl z-20 hidden md:flex relative overflow-hidden">
         {/* Ambient Branded Watermark Emblem (Exact Official LiliSare Lotus & Heart Line Art) */}
@@ -785,7 +830,7 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
                     <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                     Confirmation Status: Pending Agency Admin Verification
                   </span>
-                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+                  <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
                     Registration Application Submitted!
                   </h1>
                   <p className="text-sm text-slate-500 mt-2 max-w-lg mx-auto leading-relaxed">
@@ -863,7 +908,7 @@ export function CaregiverOnboardingFlow({ onBackToHome, onSwitchToPatient }: Car
                     onClick={exitWizard}
                     className="w-full sm:w-auto px-5 py-3 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-all cursor-pointer"
                   >
-                    <span>Return to Home</span>
+                    <span>{onClose ? 'Return to Caregiver Intake' : 'Return to Home'}</span>
                   </button>
                 </div>
               </div>

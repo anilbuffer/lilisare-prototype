@@ -18,7 +18,7 @@ export function BillingPortal() {
             <DollarSign className="w-3.5 h-3.5 text-secondary" />
             Revenue Cycle & Medicaid NPI Claims Management
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
             Medicaid Billing & Claims Center
           </h1>
           <p className="text-emerald-100 text-xs sm:text-sm mt-1 leading-relaxed">
@@ -90,13 +90,12 @@ export function BillingPortal() {
                   </td>
                   <td className="py-3.5 px-3">
                     <span
-                      className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${
-                        claim.status === 'Adjudicated - Paid'
+                      className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${claim.status === 'Adjudicated - Paid'
                           ? 'bg-emerald-100 text-emerald-800'
                           : claim.status === 'Transmitted to State'
-                          ? 'bg-sky-100 text-sky-800'
-                          : 'bg-amber-100 text-amber-800'
-                      }`}
+                            ? 'bg-sky-100 text-sky-800'
+                            : 'bg-amber-100 text-amber-800'
+                        }`}
                     >
                       {claim.status}
                     </span>

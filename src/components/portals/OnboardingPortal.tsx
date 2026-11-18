@@ -49,7 +49,7 @@ export function OnboardingPortal() {
             <Sparkles className="w-3.5 h-3.5 text-secondary" />
             Two-Person Onboarding Command Center • Scaling 3x–4x Target
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-white">
             Caregiver & Family Onboarding
           </h1>
           <p className="text-slate-200 text-sm mt-2 leading-relaxed">
@@ -141,10 +141,10 @@ export function OnboardingPortal() {
               {serviceSimulator === 'CNA'
                 ? 'RN Initial + 60-Day Onsite Visit'
                 : serviceSimulator === 'HMA'
-                ? 'RN Initial + Quarterly Virtual RN'
-                : serviceSimulator === 'IHSS'
-                ? 'Quarterly Oversight (Non-RN eligible)'
-                : 'Annual In-Home Visit'}
+                  ? 'RN Initial + Quarterly Virtual RN'
+                  : serviceSimulator === 'IHSS'
+                    ? 'Quarterly Oversight (Non-RN eligible)'
+                    : 'Annual In-Home Visit'}
             </p>
             <p className="text-[11px] text-slate-500 mt-1">Enforced by system scheduling rules</p>
           </div>
@@ -180,41 +180,37 @@ export function OnboardingPortal() {
             <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
               <button
                 onClick={() => setFilterClass('all')}
-                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                  filterClass === 'all'
+                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${filterClass === 'all'
                     ? 'bg-primary text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 All
               </button>
               <button
                 onClick={() => setFilterClass('Employee (W-2)')}
-                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                  filterClass === 'Employee (W-2)'
+                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${filterClass === 'Employee (W-2)'
                     ? 'bg-primary text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 W-2 Employees
               </button>
               <button
                 onClick={() => setFilterClass('Independent Contractor (1099)')}
-                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                  filterClass === 'Independent Contractor (1099)'
+                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${filterClass === 'Independent Contractor (1099)'
                     ? 'bg-primary text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 1099 Contractors
               </button>
               <button
                 onClick={() => setFilterClass('Dual (Employee + Contractor)')}
-                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${
-                  filterClass === 'Dual (Employee + Contractor)'
+                className={`px-2.5 py-1 rounded-lg font-medium whitespace-nowrap transition-colors ${filterClass === 'Dual (Employee + Contractor)'
                     ? 'bg-primary text-white'
                     : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                }`}
+                  }`}
               >
                 Dual Classification
               </button>
@@ -231,11 +227,10 @@ export function OnboardingPortal() {
                 <div
                   key={cg.id}
                   onClick={() => setSelectedCaregiverId(cg.id)}
-                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
-                    isSelected
+                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${isSelected
                       ? 'border-primary bg-primary-50/50 shadow-sm'
                       : 'border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>
@@ -245,11 +240,10 @@ export function OnboardingPortal() {
                       </p>
                     </div>
                     <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        isActivated
+                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isActivated
                           ? 'bg-emerald-100 text-emerald-800'
                           : 'bg-amber-100 text-amber-800'
-                      }`}
+                        }`}
                     >
                       {isActivated ? 'Activated' : cg.onboardingStage}
                     </span>
@@ -265,9 +259,8 @@ export function OnboardingPortal() {
                   {/* Progress bar */}
                   <div className="w-full h-1.5 bg-slate-200 rounded-full mt-1.5 overflow-hidden">
                     <div
-                      className={`h-full transition-all duration-300 ${
-                        cg.onboardingProgress === 100 ? 'bg-[#00d084]' : 'bg-[#F2B632]'
-                      }`}
+                      className={`h-full transition-all duration-300 ${cg.onboardingProgress === 100 ? 'bg-[#00d084]' : 'bg-[#F2B632]'
+                        }`}
                       style={{ width: `${cg.onboardingProgress}%` }}
                     />
                   </div>
@@ -364,11 +357,10 @@ export function OnboardingPortal() {
 
                     <div className="flex items-center gap-2 shrink-0">
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                          isVerified
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isVerified
                             ? 'bg-emerald-100 text-emerald-800'
                             : 'bg-amber-100 text-amber-800'
-                        }`}
+                          }`}
                       >
                         {doc.status}
                       </span>
@@ -405,9 +397,8 @@ export function OnboardingPortal() {
                     <div className="flex items-start justify-between gap-2">
                       <p className="text-xs font-bold text-slate-900 leading-snug">{bg.name}</p>
                       <span
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${
-                          isPassed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
-                        }`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full shrink-0 ${isPassed ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'
+                          }`}
                       >
                         {bg.status}
                       </span>

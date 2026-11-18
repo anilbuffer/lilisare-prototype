@@ -219,7 +219,7 @@ export function TopUtilityBar({
                 setIsSearchOpen(true);
                 setSearchQuery('');
               }}
-              className="relative flex-1 max-w-xs sm:max-w-sm bg-white border border-slate-200/90 rounded-full py-1.5 sm:py-2 pl-4 pr-3 flex items-center justify-between shadow-2xs hover:border-[#3e6b2b]/40 hover:shadow-xs transition-all cursor-pointer group text-left"
+              className="relative flex-1 max-w-xs sm:max-w-lg bg-white border border-slate-200/90 rounded-full py-1.5 sm:py-2 pl-4 pr-3 flex items-center justify-between shadow-2xs hover:border-[#3e6b2b]/40 hover:shadow-xs transition-all cursor-pointer group text-left"
             >
               <div className="flex items-center gap-2 min-w-0">
                 <Search className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#3e6b2b] transition-colors shrink-0" />

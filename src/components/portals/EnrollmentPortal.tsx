@@ -93,7 +93,7 @@ export function EnrollmentPortal() {
               <Inbox className="w-3.5 h-3.5 text-secondary" />
               Unified Intake Pipeline & Case Manager Coordination
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
               Client & Referral Intake
             </h1>
             <p className="text-slate-200 text-xs sm:text-sm mt-1 max-w-2xl leading-relaxed">
@@ -171,11 +171,10 @@ export function EnrollmentPortal() {
                 <div
                   key={lead.id}
                   onClick={() => setSelectedLeadId(lead.id)}
-                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${
-                    isSelected
+                  className={`p-3.5 rounded-xl border text-left cursor-pointer transition-all ${isSelected
                       ? 'border-primary bg-primary-50/50 shadow-sm'
                       : 'border-slate-200/80 hover:border-slate-300 hover:bg-slate-50/70'
-                  }`}
+                    }`}
                 >
                   <div className="flex items-start justify-between">
                     <div>

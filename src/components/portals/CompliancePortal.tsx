@@ -16,7 +16,7 @@ export function CompliancePortal() {
             <ShieldCheck className="w-3.5 h-3.5 text-amber-300" />
             State Audit Readiness & Credential Lifecycles
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
             Compliance & State QA Dashboard
           </h1>
           <p className="text-amber-100 text-xs sm:text-sm mt-1 leading-relaxed">

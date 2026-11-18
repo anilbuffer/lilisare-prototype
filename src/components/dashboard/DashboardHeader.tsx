@@ -18,12 +18,12 @@ export function DashboardHeader({ branchData }: DashboardHeaderProps) {
           <span className="text-slate-400">•</span>
           <span className="text-slate-600 font-mono text-[10px]">{branchData.code}</span>
         </div>
-        
+
         {/* Page Title: 28-32px ExtraBold */}
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-[#0f172a] tracking-tight">
+        <h1 className="text-xl sm:text-2xl font-bold text-[#0f172a] tracking-tight">
           Good morning, Lisa!
         </h1>
-        
+
         {/* Subheading: Tuesday, November 17, 2026 • Overview */}
         <div className="flex flex-wrap items-center gap-2 mt-1 text-xs text-[#64748b]">
           <span className="font-medium text-slate-700">Tuesday, November 17, 2026</span>
