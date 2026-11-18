@@ -3,13 +3,13 @@
 import React from 'react';
 import {
   AlertTriangle,
-  ShieldAlert,
   AlertCircle,
   Clock,
   FileText,
   Home,
   GraduationCap,
   FileCheck2,
+  ShieldCheck,
 } from 'lucide-react';
 import { BranchData } from './dashboard-data';
 
@@ -24,18 +24,17 @@ export function NeedsAttentionSection({
   onOpenAttentionDrawer,
   onViewAllTasks,
 }: NeedsAttentionSectionProps) {
-  // 7 priority items matching the design mockups exactly
+  // 7 brand priority items matching reference screenshot exactly
   const items = [
     {
       id: 'att-training',
       description: '9 caregivers overdue on orientation & mandatory training',
       status: 'Overdue',
       actionLabel: 'Resolve in Training',
-      contextType: 'orientation-training',
+      contextType: 'expired-credentials',
       icon: GraduationCap,
-      iconColor: 'text-[#e04f32]',
-      iconBg: 'bg-rose-50 border border-rose-200/60',
-      badgeClass: 'bg-rose-50 text-rose-700 border border-rose-200/80 font-bold',
+      iconColor: 'text-slate-800',
+      badgeClass: 'bg-[#fff1f1] text-[#e04f32]',
     },
     {
       id: 'att-unapproved',
@@ -45,8 +44,7 @@ export function NeedsAttentionSection({
       contextType: 'unapproved-shifts',
       icon: AlertTriangle,
       iconColor: 'text-[#e04f32]',
-      iconBg: 'bg-rose-50 border border-rose-200/60',
-      badgeClass: 'bg-rose-50 text-rose-700 border border-rose-200/80 font-bold',
+      badgeClass: 'bg-[#fff1f1] text-[#e04f32]',
     },
     {
       id: 'att-screening',
@@ -54,10 +52,9 @@ export function NeedsAttentionSection({
       status: 'Action required',
       actionLabel: 'Review',
       contextType: 'screening-flags',
-      icon: ShieldAlert,
+      icon: ShieldCheck,
       iconColor: 'text-[#e04f32]',
-      iconBg: 'bg-rose-50 border border-rose-200/60',
-      badgeClass: 'bg-rose-50 text-rose-700 border border-rose-200/80 font-semibold',
+      badgeClass: 'bg-[#fff1f1] text-[#e04f32]',
     },
     {
       id: 'att-expired',
@@ -67,8 +64,7 @@ export function NeedsAttentionSection({
       contextType: 'expired-credentials',
       icon: FileCheck2,
       iconColor: 'text-[#e04f32]',
-      iconBg: 'bg-rose-50 border border-rose-200/60',
-      badgeClass: 'bg-rose-50 text-rose-700 border border-rose-200/80 font-semibold',
+      badgeClass: 'bg-[#fff1f1] text-[#e04f32]',
     },
     {
       id: 'att-evv',
@@ -78,8 +74,7 @@ export function NeedsAttentionSection({
       contextType: 'evv-exceptions',
       icon: Clock,
       iconColor: 'text-[#d97706]',
-      iconBg: 'bg-amber-50 border border-amber-200/60',
-      badgeClass: 'bg-amber-50 text-amber-800 border border-amber-200/80 font-semibold',
+      badgeClass: 'bg-[#fffbeb] text-[#b45309]',
     },
     {
       id: 'att-notes',
@@ -88,9 +83,8 @@ export function NeedsAttentionSection({
       actionLabel: 'Open queue',
       contextType: 'care-notes',
       icon: FileText,
-      iconColor: 'text-[#3e6b2b]',
-      iconBg: 'bg-emerald-50 border border-emerald-200/60',
-      badgeClass: 'bg-emerald-50 text-emerald-800 border border-emerald-200/80 font-semibold',
+      iconColor: 'text-[#d97706]',
+      badgeClass: 'bg-[#fffbeb] text-[#b45309]',
     },
     {
       id: 'att-households',
@@ -100,20 +94,19 @@ export function NeedsAttentionSection({
       contextType: 'stuck-households',
       icon: Home,
       iconColor: 'text-[#d97706]',
-      iconBg: 'bg-amber-50 border border-amber-200/60',
-      badgeClass: 'bg-amber-50 text-amber-800 border border-amber-200/80 font-semibold',
+      badgeClass: 'bg-[#fffbeb] text-[#b45309]',
     },
   ];
 
   return (
-    <div className="bg-white rounded-2xl border border-slate-200/90 p-5 sm:p-6 shadow-[0_1px_3px_0_rgba(15,23,42,0.03),0_4px_12px_0_rgba(15,23,42,0.02)]">
+    <div className="bg-white rounded-2xl border border-slate-200/90 p-4 sm:p-5 shadow-[0_1px_3px_0_rgba(15,23,42,0.03),0_4px_12px_0_rgba(15,23,42,0.02)]">
       {/* Header */}
-      <div className="flex items-center justify-between gap-3 pb-3.5 border-b border-slate-100 mb-2">
+      <div className="flex items-center justify-between gap-3 pb-3 border-b border-slate-100 mb-1">
         <div className="flex items-center gap-2.5">
           <h2 className="text-sm sm:text-base font-bold text-[#0f172a] tracking-tight">
             Needs your attention
           </h2>
-          <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200/80">
+          <span className="text-[11px] font-semibold px-2.5 py-0.5 rounded-full bg-[#fff1f1] text-[#e04f32]">
             {items.length} priority items
           </span>
         </div>
@@ -121,7 +114,7 @@ export function NeedsAttentionSection({
         <button
           type="button"
           onClick={onViewAllTasks}
-          className="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1 font-semibold transition-colors cursor-pointer group hover:underline"
+          className="text-xs text-slate-500 hover:text-slate-900 flex items-center gap-1 font-medium transition-colors cursor-pointer group"
         >
           <span>View all tasks</span>
           <span className="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
@@ -129,41 +122,32 @@ export function NeedsAttentionSection({
       </div>
 
       {/* 7 Priority Rows */}
-      <div className="divide-y divide-slate-100">
+      <div className="divide-y divide-slate-100/90">
         {items.map((item) => {
           const IconComponent = item.icon;
           return (
             <div
               key={item.id}
-              className="py-3 sm:py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50 px-2.5 sm:px-3 rounded-xl transition-all group"
+              className="py-2.5 sm:py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 hover:bg-slate-50/70 px-2 rounded-xl transition-all group"
             >
               {/* Left: Icon & Description */}
-              <div className="flex items-center gap-3.5 min-w-0">
-                <div
-                  className={`w-8 h-8 rounded-full ${item.iconBg} ${item.iconColor} flex items-center justify-center shrink-0 shadow-2xs`}
-                >
-                  <IconComponent className="w-4 h-4" />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs sm:text-[13px] text-slate-900 font-bold leading-snug">
-                    {item.description}
-                  </p>
-                </div>
+              <div className="flex items-center gap-3 min-w-0">
+                <IconComponent className={`w-4 h-4 shrink-0 ${item.iconColor}`} />
+                <span className="text-xs sm:text-[13px] text-slate-800 font-medium leading-snug truncate">
+                  {item.description}
+                </span>
               </div>
 
               {/* Right: Status Pill & Action Button */}
               <div className="flex items-center justify-between sm:justify-end gap-3 shrink-0 self-end sm:self-auto">
-                <span className={`text-[11px] px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-2xs ${item.badgeClass}`}>
+                <span className={`text-[11px] px-2.5 py-0.5 rounded-full font-medium whitespace-nowrap shadow-2xs ${item.badgeClass}`}>
                   {item.status}
                 </span>
 
                 <button
                   type="button"
                   onClick={() => onOpenAttentionDrawer(item.contextType)}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap active:scale-[0.98] ${item.status === 'Immediate'
-                    ? 'bg-gradient-to-r from-[#ff6b4a] to-[#ff8867] hover:from-[#f05a37] hover:to-[#ff7b57] text-white shadow-[0_2px_8px_rgba(255,107,74,0.3)] hover:shadow-[0_4px_12px_rgba(255,107,74,0.4)]'
-                    : 'bg-white hover:bg-slate-50 border border-slate-200/90 hover:border-slate-300 text-slate-700 shadow-2xs'
-                    }`}
+                  className="px-3.5 py-1 bg-white hover:bg-slate-50 border border-slate-200/90 rounded-lg text-xs font-medium text-slate-700 shadow-2xs hover:shadow-xs transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
                 >
                   {item.actionLabel}
                 </button>

@@ -2,23 +2,6 @@
 
 import React from 'react';
 import { BranchData, DashboardTabId } from './dashboard-data';
-import {
-  Users,
-  HeartHandshake,
-  FileClock,
-  ShieldAlert,
-  Home,
-  Layers,
-  ShieldCheck,
-  Clock,
-  FileText,
-  UserCheck,
-  DollarSign,
-  AlertTriangle,
-  CheckCircle2,
-  Calendar,
-  AlertCircle,
-} from 'lucide-react';
 
 interface KpiCardsProps {
   branchData: BranchData;
@@ -27,320 +10,60 @@ interface KpiCardsProps {
 }
 
 export function KpiCards({ branchData, domain = 'top-summary', onOpenKpiDrawer }: KpiCardsProps) {
-  const { kpis, executiveMetrics } = branchData;
-
-  // 7 Compact Cards for Top Summary Section (EHR Dashboard Standard)
-  if (domain === 'top-summary') {
-    const summaryCards = [
-      {
-        id: 'clients',
-        drawerTarget: 'kpi-clients',
-        label: 'Active Patients',
-        value: executiveMetrics?.activePatients?.value ?? 247,
-        subtext: executiveMetrics?.activePatients?.change ?? '+12 this month',
-        subtextColor: 'text-emerald-700 font-semibold',
-        icon: Users,
-        iconBg: 'bg-emerald-50 text-[#00d084]',
-      },
-      {
-        id: 'caregivers',
-        drawerTarget: 'kpi-caregivers',
-        label: 'Active Caregivers',
-        value: executiveMetrics?.activeCaregivers?.value ?? 84,
-        subtext: executiveMetrics?.activeCaregivers?.subtext ?? '1 onboarding',
-        subtextColor: 'text-slate-500 font-medium',
-        icon: HeartHandshake,
-        iconBg: 'bg-purple-50 text-purple-600',
-      },
-      {
-        id: 'visits',
-        drawerTarget: 'evv-exceptions',
-        label: "Today's Visits",
-        value: executiveMetrics?.todaysVisits?.value ?? 142,
-        subtext: executiveMetrics?.todaysVisits?.subtext ?? '58 completed · 44 upcoming',
-        subtextColor: 'text-slate-500 font-medium',
-        icon: Calendar,
-        iconBg: 'bg-blue-50 text-blue-600',
-      },
-      {
-        id: 'evv',
-        drawerTarget: 'evv-exceptions',
-        label: 'EVV Compliance',
-        value: executiveMetrics?.evvCompliance?.value ?? '96.4%',
-        subtext: executiveMetrics?.evvCompliance?.subtext ?? '4 exceptions today',
-        subtextColor: 'text-rose-600 font-semibold',
-        icon: ShieldCheck,
-        iconBg: 'bg-emerald-50 text-[#3e6b2b]',
-      },
-      {
-        id: 'unfilled-shifts',
-        drawerTarget: 'staffing',
-        label: 'Open Unfilled Shifts',
-        value: executiveMetrics?.openUnfilledShifts?.value ?? 8,
-        subtext: executiveMetrics?.openUnfilledShifts?.subtext ?? '3 urgent (within 4 hrs)',
-        subtextColor: 'text-orange-600 font-semibold',
-        icon: Clock,
-        iconBg: 'bg-orange-50 text-orange-600',
-      },
-      {
-        id: 'incidents',
-        drawerTarget: 'expired-credentials',
-        label: 'Open Incidents',
-        value: executiveMetrics?.openIncidents?.value ?? 3,
-        subtext: executiveMetrics?.openIncidents?.subtext ?? '1 in compliance review',
-        subtextColor: 'text-amber-700 font-semibold',
-        icon: AlertTriangle,
-        iconBg: 'bg-amber-50 text-amber-600',
-      },
-      {
-        id: 'revenue',
-        drawerTarget: 'kpi-authorizations',
-        label: 'Monthly Revenue',
-        value: executiveMetrics?.monthlyRevenue?.value ?? '$486k',
-        subtext: executiveMetrics?.monthlyRevenue?.change ?? '+4.4% vs last month',
-        subtextColor: 'text-emerald-700 font-semibold',
-        icon: DollarSign,
-        iconBg: 'bg-teal-50 text-teal-600',
-      },
-    ];
-
-    return (
-      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2.5 sm:gap-3.5 w-full">
-        {summaryCards.map((card) => {
-          const IconComponent = card.icon;
-          return (
-            <button
-              key={card.id}
-              type="button"
-              onClick={() => onOpenKpiDrawer?.(card.drawerTarget)}
-              className="bg-white rounded-2xl p-3 sm:p-3.5 border border-slate-200/90 shadow-[0_2px_8px_rgba(15,23,42,0.04),0_1px_2px_rgba(15,23,42,0.02)] hover:shadow-card-hover hover:border-slate-300 transition-all text-left cursor-pointer flex flex-col justify-between group h-full"
-            >
-              <div className="flex items-center justify-between gap-1 w-full">
-                <span className="text-[11px] sm:text-xs font-semibold text-slate-500 truncate group-hover:text-slate-800 transition-colors">
-                  {card.label}
-                </span>
-                <div
-                  className={`w-6 h-6 rounded-full ${card.iconBg} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}
-                >
-                  <IconComponent className="w-3.5 h-3.5" />
-                </div>
-              </div>
-
-              <div className="mt-1.5">
-                <div className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight font-mono leading-none">
-                  {card.value}
-                </div>
-                <div className={`text-[10px] sm:text-[11px] mt-1 font-medium truncate ${card.subtextColor}`}>
-                  {card.subtext}
-                </div>
-              </div>
-            </button>
-          );
-        })}
-      </div>
-    );
-  }
+  const { kpis } = branchData;
 
   const getCardsForDomain = () => {
     switch (domain) {
-      case 'onboarding':
-        return [
-          {
-            id: 'caregivers',
-            label: 'ACTIVE CAREGIVERS',
-            value: '902',
-            subtext: '38 in pipeline',
-            subtextColor: 'text-slate-500',
-            hasDot: false,
-            icon: HeartHandshake,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
-          },
-          {
-            id: 'households',
-            label: 'STUCK IN ONBOARDING',
-            value: '11',
-            subtext: '>5 days delayed',
-            subtextColor: 'text-amber-800 font-bold',
-            hasDot: true,
-            dotColor: 'bg-amber-500',
-            icon: Home,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
-          },
-          {
-            id: 'pipeline',
-            label: 'INQUIRIES PIPELINE',
-            value: '78',
-            subtext: '24 new leads',
-            subtextColor: 'text-slate-500',
-            hasDot: false,
-            icon: Layers,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
-          },
-          {
-            id: 'screening',
-            label: 'BACKGROUND CHECKS',
-            value: '77',
-            subtext: '3 flagged for review',
-            subtextColor: 'text-rose-700 font-bold',
-            hasDot: true,
-            dotColor: 'bg-rose-500',
-            icon: ShieldCheck,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
-          },
-          {
-            id: 'activation',
-            label: 'ACTIVATION',
-            value: '7 days',
-            subtext: 'Current avg',
-            subtextColor: 'text-slate-500',
-            hasDot: false,
-            icon: Clock,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
-          },
-        ];
-
       case 'compliance':
         return [
           {
-            id: 'compliance',
+            id: 'credentials-expiring',
+            drawerTarget: 'expired-credentials',
             label: 'CREDENTIALS EXPIRING',
-            value: '41',
+            value: 41,
             subtext: '8 expired now',
-            subtextColor: 'text-rose-700 font-bold',
             hasDot: true,
             dotColor: 'bg-rose-500',
-            icon: ShieldAlert,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
+            isSelected: false,
           },
           {
-            id: 'authorizations',
+            id: 'overdue-auths',
+            drawerTarget: 'kpi-authorizations',
             label: 'OVERDUE AUTHORIZATIONS',
-            value: '6',
+            value: 6,
             subtext: 'Payment at risk',
-            subtextColor: 'text-rose-700 font-bold',
             hasDot: true,
             dotColor: 'bg-rose-500',
-            icon: FileClock,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
+            isSelected: false,
           },
           {
-            id: 'care-notes',
+            id: 'notes-awaiting-audit',
+            drawerTarget: 'care-notes',
             label: 'NOTES AWAITING AUDIT',
-            value: '26',
+            value: 26,
             subtext: 'AI suggestions ready',
-            subtextColor: 'text-amber-800 font-bold',
             hasDot: true,
             dotColor: 'bg-amber-500',
-            icon: FileText,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
+            isSelected: false,
           },
           {
             id: 'evv-exceptions',
+            drawerTarget: 'evv-exceptions',
             label: 'EVV EXCEPTIONS',
-            value: '14',
+            value: 14,
             subtext: '7 self-correct pending',
-            subtextColor: 'text-amber-800 font-bold',
             hasDot: true,
             dotColor: 'bg-amber-500',
-            icon: Clock,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
+            isSelected: false,
           },
           {
             id: 'supervisory-visits',
+            drawerTarget: 'all-notifications',
             label: 'SUPERVISORY VISITS',
             value: '278/310',
             subtext: '90% on track',
-            subtextColor: 'text-emerald-700 font-bold',
             hasDot: false,
-            icon: UserCheck,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
-          },
-        ];
-
-      case 'billing':
-        return [
-          {
-            id: 'billed-amount',
-            label: 'BILLED AMOUNT',
-            value: '$184k',
-            subtext: '712 claims paid',
-            subtextColor: 'text-slate-500',
-            hasDot: false,
-            icon: DollarSign,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
-          },
-          {
-            id: 'unbilled-amount',
-            label: 'UNBILLED AMOUNT',
-            value: '$28.5k',
-            subtext: 'Awaiting notes / EVV',
-            subtextColor: 'text-amber-800 font-bold',
-            hasDot: true,
-            dotColor: 'bg-amber-500',
-            icon: Clock,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
-          },
-          {
-            id: 'denied-claims',
-            label: 'DENIED CLAIMS',
-            value: '$8.9k',
-            subtext: '3 claims to appeal',
-            subtextColor: 'text-rose-700 font-bold',
-            hasDot: true,
-            dotColor: 'bg-rose-500',
-            icon: AlertTriangle,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
-          },
-          {
-            id: 'auths-unapproved',
-            label: 'AUTHS WITHOUT APPROVAL',
-            value: '6',
-            subtext: '$14,200 at risk',
-            subtextColor: 'text-rose-700 font-bold',
-            hasDot: true,
-            dotColor: 'bg-rose-500',
-            icon: ShieldAlert,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
-          },
-          {
-            id: 'payroll-ready',
-            label: 'ADP PAYROLL READY',
-            value: '$246k',
-            subtext: '6 exceptions to clear',
-            subtextColor: 'text-slate-500',
-            hasDot: false,
-            icon: CheckCircle2,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
+            isSelected: false,
           },
         ];
 
@@ -348,134 +71,209 @@ export function KpiCards({ branchData, domain = 'top-summary', onOpenKpiDrawer }
         return [
           {
             id: 'unfilled-shifts',
+            drawerTarget: 'staffing',
             label: 'UNFILLED SHIFTS',
-            value: '8',
+            value: 8,
             subtext: '5 urgent ≤48h',
-            subtextColor: 'text-rose-700 font-bold',
             hasDot: true,
             dotColor: 'bg-rose-500',
-            icon: AlertCircle,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
+            isSelected: false,
           },
           {
             id: 'evv-compliance',
+            drawerTarget: 'evv-exceptions',
             label: 'EVV COMPLIANCE',
             value: '96.4%',
             subtext: 'Target: 95.0%',
-            subtextColor: 'text-slate-500',
             hasDot: false,
-            icon: CheckCircle2,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
+            isSelected: false,
           },
           {
             id: 'unverified-hours',
+            drawerTarget: 'evv-exceptions',
             label: 'UNVERIFIED HOURS',
             value: '42.5h',
-            subtext: '-$935.00 cost impact',
-            subtextColor: 'text-amber-800 font-bold',
+            subtext: '~$935.00 cost impact',
             hasDot: true,
             dotColor: 'bg-amber-500',
-            icon: Clock,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
+            isSelected: false,
           },
           {
-            id: 'near-ot',
+            id: 'caregivers-near-ot',
+            drawerTarget: 'staffing',
             label: 'CAREGIVERS NEAR OT',
-            value: '14',
+            value: 14,
             subtext: '37-39.5 hrs logged',
-            subtextColor: 'text-amber-800 font-bold',
             hasDot: true,
             dotColor: 'bg-amber-500',
-            icon: Users,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
+            isSelected: false,
           },
           {
             id: 'completed-visits',
+            drawerTarget: 'evv-exceptions',
             label: 'COMPLETED VISITS',
-            value: '412',
+            value: 412,
             subtext: 'This pay period',
-            subtextColor: 'text-slate-500',
             hasDot: false,
-            icon: Calendar,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
+            isSelected: false,
           },
         ];
 
-      case 'executive':
-      default:
+      case 'onboarding':
         return [
           {
-            id: 'clients',
-            label: 'ACTIVE CLIENTS',
-            value: kpis.activeClients.value,
-            subtext: kpis.activeClients.change,
-            subtextColor: 'text-emerald-700',
-            hasDot: false,
-            icon: Users,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
-          },
-          {
-            id: 'caregivers',
+            id: 'active-caregivers',
+            drawerTarget: 'kpi-caregivers',
             label: 'ACTIVE CAREGIVERS',
-            value: kpis.activeCaregivers.value,
-            subtext: kpis.activeCaregivers.subtext,
-            subtextColor: 'text-slate-500',
+            value: 902,
+            subtext: '38 in onboarding',
             hasDot: false,
-            icon: HeartHandshake,
-            iconColor: 'text-[#3e6b2b]',
-            iconBg: 'bg-emerald-50 border border-emerald-200/70',
-            accentHover: 'hover:border-[#3e6b2b]',
+            isSelected: false,
           },
           {
-            id: 'authorizations',
-            label: 'PENDING AUTHORIZATIONS',
-            value: kpis.pendingAuthorizations.value,
-            subtext: '6 overdue',
-            subtextColor: 'text-rose-700 font-bold',
-            hasDot: true,
-            dotColor: 'bg-rose-500',
-            icon: FileClock,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
-          },
-          {
-            id: 'compliance',
-            label: 'CREDENTIALS EXPIRING',
-            value: kpis.credentialsExpiring.value,
-            subtext: '8 expired',
-            subtextColor: 'text-rose-700 font-bold',
-            hasDot: true,
-            dotColor: 'bg-rose-500',
-            icon: ShieldAlert,
-            iconColor: 'text-[#e04f32]',
-            iconBg: 'bg-rose-50 border border-rose-200/70',
-            accentHover: 'hover:border-rose-400',
-          },
-          {
-            id: 'households',
+            id: 'households-stuck',
+            drawerTarget: 'stuck-households',
             label: 'HOUSEHOLDS STUCK',
-            value: kpis.householdsStuck.value,
-            subtext: '>5 days delayed',
-            subtextColor: 'text-amber-800 font-bold',
+            value: 11,
+            subtext: '> 5 days delayed',
             hasDot: true,
             dotColor: 'bg-amber-500',
-            icon: Home,
-            iconColor: 'text-[#d97706]',
-            iconBg: 'bg-amber-50 border border-amber-200/70',
-            accentHover: 'hover:border-amber-400',
+            isSelected: false,
+          },
+          {
+            id: 'inquiries-pipeline',
+            drawerTarget: 'kpi-clients',
+            label: 'INQUIRIES PIPELINE',
+            value: 78,
+            subtext: '24 new leads',
+            hasDot: false,
+            isSelected: false,
+          },
+          {
+            id: 'background-checks',
+            drawerTarget: 'screening-flags',
+            label: 'BACKGROUND CHECKS',
+            value: 77,
+            subtext: '3 flagged for review',
+            hasDot: true,
+            dotColor: 'bg-rose-500',
+            isSelected: false,
+          },
+          {
+            id: 'activation',
+            drawerTarget: 'kpi-caregivers',
+            label: 'ACTIVATION',
+            value: '7 days',
+            subtext: 'Current avg',
+            hasDot: false,
+            isSelected: false,
+          },
+        ];
+
+      case 'billing':
+        return [
+          {
+            id: 'billed-amount',
+            drawerTarget: 'kpi-authorizations',
+            label: 'BILLED AMOUNT',
+            value: '$184k',
+            subtext: '712 claims paid',
+            hasDot: false,
+            isSelected: false,
+          },
+          {
+            id: 'unbilled-amount',
+            drawerTarget: 'kpi-authorizations',
+            label: 'UNBILLED AMOUNT',
+            value: '$28.5k',
+            subtext: 'Awaiting notes / EVV',
+            hasDot: true,
+            dotColor: 'bg-amber-500',
+            isSelected: false,
+          },
+          {
+            id: 'denied-claims',
+            drawerTarget: 'kpi-authorizations',
+            label: 'DENIED CLAIMS',
+            value: '$8.9k',
+            subtext: '3 claims to appeal',
+            hasDot: true,
+            dotColor: 'bg-rose-500',
+            isSelected: false,
+          },
+          {
+            id: 'auths-unapproved',
+            drawerTarget: 'unapproved-shifts',
+            label: 'AUTHS WITHOUT APPROVAL',
+            value: 6,
+            subtext: '$14,200 at risk',
+            hasDot: true,
+            dotColor: 'bg-rose-500',
+            isSelected: false,
+          },
+          {
+            id: 'payroll-ready',
+            drawerTarget: 'staffing',
+            label: 'ADP PAYROLL READY',
+            value: '$246k',
+            subtext: '6 exceptions to clear',
+            hasDot: false,
+            isSelected: false,
+          },
+        ];
+
+      case 'top-summary':
+      case 'executive':
+      default:
+        // 5 Brand-Defined Top Stats Cards matching Reference Screenshot exactly
+        return [
+          {
+            id: 'active-clients',
+            drawerTarget: 'kpi-clients',
+            label: 'ACTIVE CLIENTS',
+            value: kpis?.activeClients?.value ?? 487,
+            subtext: kpis?.activeClients?.change ?? '+12 this month',
+            hasDot: false,
+            isSelected: true, // Subtle green border outline matching screenshot
+          },
+          {
+            id: 'active-caregivers',
+            drawerTarget: 'kpi-caregivers',
+            label: 'ACTIVE CAREGIVERS',
+            value: kpis?.activeCaregivers?.value ?? 902,
+            subtext: kpis?.activeCaregivers?.subtext ?? '38 in onboarding',
+            hasDot: false,
+            isSelected: false,
+          },
+          {
+            id: 'pending-authorizations',
+            drawerTarget: 'kpi-authorizations',
+            label: 'PENDING AUTHORIZATIONS',
+            value: kpis?.pendingAuthorizations?.value ?? 23,
+            subtext: '6 overdue',
+            hasDot: true,
+            dotColor: 'bg-rose-500',
+            isSelected: false,
+          },
+          {
+            id: 'credentials-expiring',
+            drawerTarget: 'expired-credentials',
+            label: 'CREDENTIALS EXPIRING',
+            value: kpis?.credentialsExpiring?.value ?? 41,
+            subtext: '8 expired',
+            hasDot: true,
+            dotColor: 'bg-rose-500',
+            isSelected: false,
+          },
+          {
+            id: 'households-stuck',
+            drawerTarget: 'stuck-households',
+            label: 'HOUSEHOLDS STUCK',
+            value: kpis?.householdsStuck?.value ?? 11,
+            subtext: '> 5 days delayed',
+            hasDot: true,
+            dotColor: 'bg-amber-500',
+            isSelected: false,
           },
         ];
     }
@@ -484,44 +282,32 @@ export function KpiCards({ branchData, domain = 'top-summary', onOpenKpiDrawer }
   const cards = getCardsForDomain();
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-3.5 sm:gap-4 lg:gap-5">
-      {cards.map((card) => {
-        const IconComponent = card.icon;
-        return (
-          <button
-            key={card.id}
-            type="button"
-            onClick={() => onOpenKpiDrawer?.(card.id)}
-            className={`bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/80 shadow-[0_2px_8px_rgba(15,23,42,0.03)] hover:shadow-md transition-all duration-200 text-left cursor-pointer group flex flex-col justify-between ${card.accentHover} hover:-translate-y-0.5 relative overflow-hidden`}
-          >
-            <div>
-              <div className="flex items-center justify-between gap-1.5 mb-2">
-                <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
-                  {card.label}
-                </span>
-                <div
-                  className={`w-8 h-8 rounded-full ${card.iconBg} ${card.iconColor} flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform`}
-                >
-                  <IconComponent className="w-4 h-4" />
-                </div>
-              </div>
-
-              <div className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight font-mono">
-                {card.value}
-              </div>
-            </div>
-
-            <div className="mt-3 pt-2.5 border-t border-slate-100/90 flex items-center gap-1.5">
-              {card.hasDot && (
-                <span className={`w-1.5 h-1.5 rounded-full ${card.dotColor || 'bg-rose-500'} shrink-0`} />
-              )}
-              <span className={`text-xs ${card.subtextColor} font-medium truncate block`}>
-                {card.subtext}
-              </span>
-            </div>
-          </button>
-        );
-      })}
+    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5 w-full">
+      {cards.map((card) => (
+        <button
+          key={card.id}
+          type="button"
+          onClick={() => onOpenKpiDrawer?.(card.drawerTarget)}
+          className={`bg-white rounded-2xl p-4 sm:p-5 border text-left cursor-pointer transition-all duration-150 hover:-translate-y-0.5 shadow-[0_1px_3px_0_rgba(15,23,42,0.03),0_4px_12px_0_rgba(15,23,42,0.02)] ${
+            card.isSelected
+              ? 'border-[#3e6b2b] ring-1 ring-[#3e6b2b]/40 shadow-xs'
+              : 'border-slate-200/90 hover:border-slate-300'
+          }`}
+        >
+          <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase truncate block">
+            {card.label}
+          </span>
+          <div className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-none mt-2.5 mb-2 font-sans">
+            {card.value}
+          </div>
+          <div className="flex items-center gap-1.5 text-xs text-slate-500 font-medium">
+            {card.hasDot && (
+              <span className={`w-2 h-2 rounded-full ${card.dotColor || 'bg-rose-500'} shrink-0`} />
+            )}
+            <span className="truncate">{card.subtext}</span>
+          </div>
+        </button>
+      ))}
     </div>
   );
 }

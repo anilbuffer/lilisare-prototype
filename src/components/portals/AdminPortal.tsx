@@ -4,8 +4,11 @@ import React, { useState } from 'react';
 import { usePortal } from '@/lib/store/portal-context';
 import { DashboardControls } from '../dashboard/DashboardControls';
 import { KpiCards } from '../dashboard/KpiCards';
+import { NeedsAttentionSection } from '../dashboard/NeedsAttentionSection';
+import { FunnelAndPipelineSection } from '../dashboard/FunnelAndPipelineSection';
 import { VisitsAndSatisfactionSection } from '../dashboard/VisitsAndSatisfactionSection';
 import { EVVAndWastedHoursSection } from '../dashboard/EVVAndWastedHoursSection';
+import { ComplianceAndSupervisorySection } from '../dashboard/ComplianceAndSupervisorySection';
 import { FinancialAndAuthSection } from '../dashboard/FinancialAndAuthSection';
 import { IncidentsAndPerformanceSection } from '../dashboard/IncidentsAndPerformanceSection';
 import { InsightsAndFeedSection } from '../dashboard/InsightsAndFeedSection';
@@ -178,25 +181,54 @@ export function AdminPortal() {
         onOpenAIBriefing={() => setIsAIBriefingOpen(true)}
       />
 
-      {/* 2. TOP KPI SUMMARY SECTION (7 Compact Cards in Clean Single Row) */}
+      {/* 2. TOP BRAND STATS CARDS (5 Cards matching Reference: 487 Clients, 902 Caregivers, 23 Auths, 41 Expiring, 11 Stuck) */}
       <KpiCards
         branchData={branchData}
         domain="top-summary"
         onOpenKpiDrawer={handleOpenKpiDrawer}
       />
 
-      {/* 3. ROW 2: VISITS THIS WEEK (Bar Chart) & PATIENT SATISFACTION (Radial Gauge) */}
+      {/* 3. COMMON BRAND SECTION: NEEDS YOUR ATTENTION (7 Priority Items with Action Triggers) */}
+      <NeedsAttentionSection
+        branchData={branchData}
+        onOpenAttentionDrawer={(contextType) => setActiveDrawer(contextType)}
+        onViewAllTasks={() => setActiveDrawer('all-notifications')}
+      />
+
+      {/* 4. BRAND FUNNEL & PIPELINE SECTION: ONBOARDING FUNNEL & CLIENT INTAKE PIPELINE */}
+      <FunnelAndPipelineSection
+        branchData={branchData}
+        onViewAllFunnel={() => setActiveDrawer('kpi-caregivers')}
+        onViewAllPipeline={() => setActiveDrawer('kpi-clients')}
+        onOpenStageDetails={(type, stageName) => {
+          setActiveDrawer(type === 'funnel' ? 'kpi-caregivers' : 'kpi-clients');
+          setDrawerData({ stage: stageName });
+        }}
+      />
+
+      {/* 5. VISITS THIS WEEK (Bar Chart) & PATIENT SATISFACTION (Radial Gauge) */}
       <VisitsAndSatisfactionSection
         branchData={branchData}
         onViewAllSatisfaction={() => setActiveDrawer('all-notifications')}
         onViewVisitsDetail={() => setActiveDrawer('evv-exceptions')}
       />
 
-      {/* 4. ROW 3: EVV COMPLIANCE (Donut Ring & Risk Card) & WASTED HOURS (Schedule vs Actual Breakdown) */}
+      {/* 6. EVV COMPLIANCE (Donut Ring & Risk Card) & WASTED HOURS (Schedule vs Actual Breakdown) */}
       <EVVAndWastedHoursSection
         branchData={branchData}
         onOpenEvvExceptions={() => setActiveDrawer('evv-exceptions')}
         onOpenWastedTime={() => setActiveDrawer('evv-exceptions')}
+      />
+
+      {/* 7. BRAND COMPLIANCE & SUPERVISORY VISITS (RN / non-RN) */}
+      <ComplianceAndSupervisorySection
+        branchData={branchData}
+        onViewAllCredentials={() => setActiveDrawer('expired-credentials')}
+        onViewAllSupervisory={() => setActiveDrawer('all-notifications')}
+        onOpenCredentialDetail={(item) => {
+          setActiveDrawer('expired-credentials');
+          setDrawerData(item);
+        }}
       />
 
       {/* 5. ROW 4: FINANCIAL HEALTH (Donut & AR Aging), AUTHORIZATION UTILIZATION (Bars), CAREGIVER OVERTIME */}
